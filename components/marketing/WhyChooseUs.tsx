@@ -11,7 +11,7 @@ const reasons = [
   {
     icon: '📍',
     title: 'Pakistan-Based Sourcing',
-    description: 'Direct access to Pakistan's agricultural heartland with established supplier relationships.',
+    description: "Direct access to Pakistan's agricultural heartland with established supplier relationships.",
   },
   {
     icon: '🤝',
