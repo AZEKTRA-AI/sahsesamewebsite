@@ -3,10 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    // bcrypt is a native addon and Prisma ships its own query-engine binary.
-    // Bundling either into the serverless output breaks them at runtime — keep
-    // them external so Next traces the real files into the function instead.
-    serverComponentsExternalPackages: ['bcrypt', '@prisma/client', 'prisma'],
+    // Prisma ships its own query-engine binary; bundling it breaks resolution
+    // at runtime, so keep it external and let Next trace the real files.
+    serverComponentsExternalPackages: ['@prisma/client', 'prisma'],
   },
   images: {
     remotePatterns: [

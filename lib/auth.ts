@@ -1,13 +1,17 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
 import { authConfig } from './auth.config'
 
 /**
- * Full Auth.js setup — Node runtime only. Imports bcrypt (a native module) and
- * Prisma, neither of which can run on the Edge runtime, so middleware must use
- * lib/auth.config.ts instead of this file.
+ * Full Auth.js setup — Node runtime only. Imports Prisma, which cannot run on
+ * the Edge runtime, so middleware must use lib/auth.config.ts instead.
+ *
+ * Uses bcryptjs rather than bcrypt: bcrypt resolves its native binary at
+ * runtime via node-gyp-build, which build-time tracing cannot follow, so the
+ * binary goes missing in serverless bundles. bcryptjs is pure JS and verifies
+ * the same $2b$ hashes.
  */
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,

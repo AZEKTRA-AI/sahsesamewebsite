@@ -3,13 +3,21 @@ import type { NextAuthConfig } from 'next-auth'
 /**
  * Edge-safe half of the Auth.js setup.
  *
- * Middleware runs on the Edge runtime, which cannot load native Node modules.
- * The Credentials provider needs bcrypt (native) and Prisma, so it lives in
- * lib/auth.ts and is only used in the Node runtime. Anything imported here must
- * stay dependency-free enough to run on the edge.
+ * Middleware runs on the Edge runtime, which cannot load Prisma. The
+ * Credentials provider needs a database lookup, so it lives in lib/auth.ts and
+ * is only used in the Node runtime. Anything imported here must stay
+ * dependency-free enough to run on the edge.
  */
 export const authConfig = {
   providers: [],
+  // Auth.js v5 reads AUTH_SECRET; NEXTAUTH_SECRET is the v4 name. Accept either
+  // so an existing deployment's variable keeps working. Dev auto-generates a
+  // secret, but production throws "server configuration" without one.
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  // Auth.js refuses requests from hosts it does not recognise. It auto-trusts
+  // Vercel, but not a self-hosted production build or a custom domain, which
+  // fails with UntrustedHost. The app is always served from a known origin.
+  trustHost: true,
   session: {
     strategy: 'jwt',
   },
