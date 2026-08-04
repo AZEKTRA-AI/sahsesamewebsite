@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -9,11 +9,12 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
-  // Track scroll to toggle header style
-  typeof window !== 'undefined' &&
-  window.addEventListener('scroll', () => {
-    setScrolled(window.scrollY > 50)
-  }, { passive: true })
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const navLinks = [
     { label: 'Home', href: '/' },
@@ -99,7 +100,7 @@ export default function Header() {
             </svg>
             WhatsApp
           </a>
-          <Link href="/request-a-quote" className="btn-primary text-sm">
+          <Link href="/contact" className="btn-primary text-sm">
             Request a Quote
           </Link>
         </div>
@@ -157,7 +158,7 @@ export default function Header() {
               >
                 WhatsApp
               </a>
-              <Link href="/request-a-quote" className="block btn-primary text-center" onClick={() => setMobileMenuOpen(false)}>
+              <Link href="/contact" className="block btn-primary text-center" onClick={() => setMobileMenuOpen(false)}>
                 Request a Quote
               </Link>
             </div>

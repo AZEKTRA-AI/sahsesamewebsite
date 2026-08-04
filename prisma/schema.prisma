@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String @id @default(cuid())
+  name      String @unique
+  slug      String @unique
+  icon      String?
+  products  Product[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id        String @id @default(cuid())
+  categoryId String
+  category  Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name      String
+  slug      String @unique
+  origin    String?
+  specs     Json @default("{}")
+  status    String @default("DRAFT")
+  sortOrder Int @default(0)
+  images    ProductImage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductImage {
+  id        String @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cloudinaryId String
+  url       String
+  alt       String?
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Certification {
+  id        String @id @default(cuid())
+  name      String
+  description String?
+  iconUrl   String?
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  id        String @id @default(cuid())
+  slug      String @unique
+  title     String
+  description String
+  ogImage   String?
+  canonical String?
+  sections  PageSection[]
+  seoData   Json?
+  status    String @default("PUBLISHED")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PageSection {
+  id        String @id @default(cuid())
+  pageId    String
+  page      Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      String
+  content   Json
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([pageId, type, sortOrder])
+}
+
+model Enquiry {
+  id        String @id @default(cuid())
+  buyerName String
+  company   String
+  country   String
+  email     String
+  phone     String
+  product   String
+  quantity  String
+  packaging String?
+  incoterm  String?
+  sampleRequest Boolean @default(false)
+  comments  String?
+  attachmentUrl String?
+  status    String @default("NEW")
+  ipHash    String?
+  emailSent Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id        String @id @default(cuid())
+  email     String @unique
+  passwordHash String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  key   String @id
+  value Json
+  updatedAt DateTime @updatedAt
+}

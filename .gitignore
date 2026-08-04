@@ -39,3 +39,8 @@ Thumbs.db
 *.launch
 .settings/
 *.sublime-workspace
+
+# Local SQLite artifacts (project uses Neon Postgres)
+*.db
+*.db-journal
+prisma/prisma/

@@ -89,7 +89,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/request-a-quote" className="hover:text-sah-gold transition-colors">
+                <Link href="/contact" className="hover:text-sah-gold transition-colors">
                   Request a Quote
                 </Link>
               </li>

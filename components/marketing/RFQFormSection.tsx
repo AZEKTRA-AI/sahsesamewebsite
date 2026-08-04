@@ -4,21 +4,25 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
+const EMPTY_FORM = {
+  buyerName: '',
+  company: '',
+  country: '',
+  email: '',
+  phone: '',
+  product: '',
+  quantity: '',
+  packaging: '',
+  incoterm: 'FOB',
+  sampleRequest: false,
+  comments: '',
+  website: '', // honeypot
+}
+
 export default function RFQFormSection() {
-  const [formState, setFormState] = useState<'idle' | 'submitted'>('idle')
-  const [formData, setFormData] = useState({
-    buyerName: '',
-    companyName: '',
-    country: '',
-    email: '',
-    phone: '',
-    product: '',
-    quantity: '',
-    packagingRequirement: '',
-    incoterm: 'FOB',
-    sampleRequired: false,
-    comments: '',
-  })
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted'>('idle')
+  const [error, setError] = useState<string | null>(null)
+  const [formData, setFormData] = useState(EMPTY_FORM)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, type, value } = e.target
@@ -29,30 +33,35 @@ export default function RFQFormSection() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // For now, just show success state (backend wired in next phase)
-    setFormState('submitted')
-    setTimeout(() => {
-      setFormState('idle')
-      setFormData({
-        buyerName: '',
-        companyName: '',
-        country: '',
-        email: '',
-        phone: '',
-        product: '',
-        quantity: '',
-        packagingRequirement: '',
-        incoterm: 'FOB',
-        sampleRequired: false,
-        comments: '',
+    setFormState('submitting')
+    setError(null)
+
+    try {
+      const res = await fetch('/api/rfq', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       })
-    }, 3000)
+      const result = await res.json()
+
+      if (!res.ok) {
+        setError(result.error || 'Something went wrong. Please try again.')
+        setFormState('idle')
+        return
+      }
+
+      setFormState('submitted')
+      setFormData(EMPTY_FORM)
+    } catch {
+      setError('Network error. Please check your connection and try again.')
+      setFormState('idle')
+    }
   }
 
   return (
-    <section className="py-20 bg-sah-light">
+    <section id="rfq-form" className="py-20 bg-sah-light">
       <div className="container-wide">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -87,7 +96,7 @@ export default function RFQFormSection() {
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="relative space-y-6">
               {/* Buyer Info */}
               <div>
                 <h3 className="font-bold text-sah-green mb-4">Buyer Information</h3>
@@ -108,8 +117,8 @@ export default function RFQFormSection() {
                     <label className="block text-sm font-medium text-sah-charcoal mb-2">Company Name *</label>
                     <input
                       type="text"
-                      name="companyName"
-                      value={formData.companyName}
+                      name="company"
+                      value={formData.company}
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sah-green"
@@ -189,8 +198,8 @@ export default function RFQFormSection() {
                     <label className="block text-sm font-medium text-sah-charcoal mb-2">Packaging Requirement</label>
                     <input
                       type="text"
-                      name="packagingRequirement"
-                      value={formData.packagingRequirement}
+                      name="packaging"
+                      value={formData.packaging}
                       onChange={handleChange}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-sah-green"
                       placeholder="E.g., 50kg PP woven bags"
@@ -217,8 +226,8 @@ export default function RFQFormSection() {
                 <div className="flex items-center gap-3 mb-4">
                   <input
                     type="checkbox"
-                    name="sampleRequired"
-                    checked={formData.sampleRequired}
+                    name="sampleRequest"
+                    checked={formData.sampleRequest}
                     onChange={handleChange}
                     className="w-4 h-4 rounded border-gray-300 text-sah-green cursor-pointer"
                   />
@@ -240,14 +249,35 @@ export default function RFQFormSection() {
                 </div>
               </div>
 
+              {/* Honeypot — hidden from users, bots fill it in */}
+              <div className="absolute left-[-9999px]" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
+              {error && (
+                <div className="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </div>
+              )}
+
               {/* Submit Button */}
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full btn-primary text-lg"
+                disabled={formState === 'submitting'}
+                whileHover={formState === 'submitting' ? undefined : { scale: 1.02 }}
+                whileTap={formState === 'submitting' ? undefined : { scale: 0.98 }}
+                className="w-full btn-primary text-lg disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Submit Enquiry
+                {formState === 'submitting' ? 'Submitting…' : 'Submit Enquiry'}
               </motion.button>
 
               <p className="text-xs text-gray-500 text-center">

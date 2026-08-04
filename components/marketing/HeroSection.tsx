@@ -1,21 +1,27 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
+import HeroScene from '@/components/three/HeroScene'
 
 export default function HeroSection() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <section className="relative min-h-[600px] bg-gradient-to-br from-sah-cream via-white to-sah-light overflow-hidden">
+      {/* Procedural 3D grain field (falls back to a static wash) */}
+      <HeroScene />
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className="absolute top-10 left-10 w-80 h-80 bg-sah-green opacity-5 rounded-full blur-3xl"
-          animate={{ y: [0, 40, 0], x: [0, 20, 0] }}
+          animate={reduceMotion ? undefined : { y: [0, 40, 0], x: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity }}
         />
         <motion.div
           className="absolute bottom-10 right-10 w-96 h-96 bg-sah-gold opacity-5 rounded-full blur-3xl"
-          animate={{ y: [0, -40, 0], x: [0, -20, 0] }}
+          animate={reduceMotion ? undefined : { y: [0, -40, 0], x: [0, -20, 0] }}
           transition={{ duration: 10, repeat: Infinity }}
         />
       </div>
@@ -64,7 +70,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            <Link href="/request-a-quote" className="btn-primary">
+            <Link href="#rfq-form" className="btn-primary">
               Request a Quotation
             </Link>
             <Link href="/products/sesame" className="btn-secondary">
@@ -88,7 +94,7 @@ export default function HeroSection() {
       {/* Scroll indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
+        animate={reduceMotion ? undefined : { y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <svg className="w-6 h-6 text-sah-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
