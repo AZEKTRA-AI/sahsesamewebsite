@@ -2,6 +2,13 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ProductGallery from '@/components/marketing/ProductGallery'
+import PageCTA from '@/components/marketing/PageCTA'
+
+const categoryImages: Record<string, string> = {
+  sesame: '/hero-sesame.jpg',
+  pulses: '/category-pulses.jpg',
+  rice: '/category-rice.jpg',
+}
 
 export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
   const product = await prisma.product.findUnique({
@@ -44,57 +51,61 @@ export default async function ProductDetailPage({
   }
 
   const specs = (product.specs as Record<string, any>) || {}
+  const fallbackImage = categoryImages[product.category.slug] || '/hero-sesame.jpg'
+
+  const infoCards = [
+    { title: 'Quality Assurance', description: 'Third-party inspection and laboratory testing available upon request' },
+    { title: 'Flexible Packaging', description: 'Customized packaging options to meet your specific requirements' },
+    { title: 'Global Shipping', description: 'FOB, CFR, and CIF incoterms available for worldwide delivery' },
+  ]
 
   return (
-    <div className="space-y-12 py-16">
+    <div className="pt-8">
       {/* Breadcrumb */}
-      <section className="container-wide">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Link href="/products" className="hover:text-sah-green">Products</Link>
-          <span>•</span>
-          <Link href={`/products/${product.category.slug}`} className="hover:text-sah-green">
+      <section className="container-wide mb-8">
+        <div className="flex items-center gap-2 text-sm font-body text-sah-charcoal/60">
+          <Link href="/products" className="hover:text-sah-gold transition-colors">Products</Link>
+          <span>·</span>
+          <Link href={`/products/${product.category.slug}`} className="hover:text-sah-gold transition-colors">
             {product.category.name}
           </Link>
-          <span>•</span>
-          <span className="text-sah-green font-semibold">{product.name}</span>
+          <span>·</span>
+          <span className="text-sah-gold font-medium">{product.name}</span>
         </div>
       </section>
 
       {/* Product Overview */}
-      <section className="container-wide grid md:grid-cols-2 gap-12">
-        {/* Image gallery */}
-        <ProductGallery images={product.images} productName={product.name} />
+      <section className="container-wide grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 mb-16 sm:mb-24">
+        <ProductGallery images={product.images} productName={product.name} fallbackImage={fallbackImage} />
 
-        {/* Details */}
         <div className="space-y-8">
           <div>
-            <h1 className="text-4xl font-bold text-sah-charcoal mb-2">{product.name}</h1>
+            <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">{product.category.name}</p>
+            <h1 className="font-display text-3xl sm:text-4xl italic text-sah-charcoal mb-3">{product.name}</h1>
             {product.origin && (
-              <p className="text-gray-600 text-lg">📍 Origin: {product.origin}</p>
+              <p className="font-body text-sah-charcoal/70">Origin: {product.origin}</p>
             )}
           </div>
 
-          {/* Specifications */}
           {Object.keys(specs).length > 0 && (
             <div className="space-y-4">
-              <h2 className="text-xl font-bold text-sah-charcoal">Specifications</h2>
-              <div className="bg-sah-cream rounded-lg p-6 space-y-3">
+              <h2 className="font-display text-lg italic text-sah-charcoal">Specifications</h2>
+              <div className="bg-sah-light rounded-lg p-6 space-y-3 border border-sah-gold/10">
                 {Object.entries(specs).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center pb-3 border-b border-white last:border-0">
-                    <span className="capitalize text-gray-700 font-medium">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                    <span className="text-sah-charcoal font-semibold">{String(value)}</span>
+                  <div key={key} className="flex justify-between items-center pb-3 border-b border-sah-gold/10 last:border-0 last:pb-0">
+                    <span className="capitalize font-body text-sm text-sah-charcoal/70">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                    <span className="font-body text-sm font-medium text-sah-charcoal">{String(value)}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* CTAs */}
-          <div className="flex flex-col gap-3 pt-4">
-            <Link href="/contact" className="btn-primary bg-sah-green text-white hover:bg-sah-charcoal">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <Link href="/contact" className="px-6 py-3 bg-sah-gold text-white font-body font-medium rounded-lg hover:bg-sah-charcoal transition-colors text-center">
               Request Quotation
             </Link>
-            <Link href="/contact" className="btn-primary border-2 border-sah-green text-sah-green hover:bg-sah-cream">
+            <Link href="/contact" className="px-6 py-3 border border-sah-gold text-sah-gold font-body font-medium rounded-lg hover:bg-sah-cream transition-colors text-center">
               Request Sample
             </Link>
           </div>
@@ -102,49 +113,22 @@ export default async function ProductDetailPage({
       </section>
 
       {/* Additional Info */}
-      <section className="container-wide grid md:grid-cols-3 gap-8">
-        <div className="bg-sah-cream rounded-lg p-6 space-y-3">
-          <h3 className="font-bold text-sah-charcoal">Quality Assurance</h3>
-          <p className="text-sm text-gray-600">
-            Third-party inspection and laboratory testing available upon request
-          </p>
-        </div>
-        <div className="bg-sah-cream rounded-lg p-6 space-y-3">
-          <h3 className="font-bold text-sah-charcoal">Flexible Packaging</h3>
-          <p className="text-sm text-gray-600">
-            Customized packaging options to meet your specific requirements
-          </p>
-        </div>
-        <div className="bg-sah-cream rounded-lg p-6 space-y-3">
-          <h3 className="font-bold text-sah-charcoal">Global Shipping</h3>
-          <p className="text-sm text-gray-600">
-            FOB, CFR, and CIF incoterms available for worldwide delivery
-          </p>
-        </div>
-      </section>
-
-      {/* Related Products */}
-      <section className="container-wide space-y-8">
-        <h2 className="text-3xl font-bold text-sah-charcoal">More from {product.category.name}</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Related products would go here */}
-          <p className="text-gray-600 col-span-full">Browse other products in this category</p>
-        </div>
+      <section className="container-wide grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 sm:mb-24">
+        {infoCards.map((card, idx) => (
+          <div key={idx} className="bg-sah-light rounded-lg p-6 border border-sah-gold/10">
+            <h3 className="font-display text-base italic text-sah-charcoal mb-2">{card.title}</h3>
+            <p className="font-body text-sm text-sah-charcoal/70">{card.description}</p>
+          </div>
+        ))}
       </section>
 
       {/* CTA */}
-      <section className="container-wide bg-gradient-to-r from-sah-green to-sah-charcoal text-white rounded-lg p-12 space-y-6 text-center">
-        <h2 className="text-3xl font-bold">Ready to Place an Order?</h2>
-        <p className="text-lg opacity-90">Get in touch for quotations, samples, or to discuss bulk orders</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/contact" className="btn-primary bg-white text-sah-green hover:bg-sah-cream">
-            Request Quote
-          </Link>
-          <a href="https://wa.me/923000959524" className="btn-primary border border-white hover:bg-white/10">
-            WhatsApp Us
-          </a>
-        </div>
-      </section>
+      <div className="pb-16 sm:pb-24">
+        <PageCTA
+          title="Ready to Place an Order?"
+          subtitle="Get in touch for quotations, samples, or to discuss bulk orders."
+        />
+      </div>
     </div>
   )
 }

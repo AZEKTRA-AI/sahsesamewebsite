@@ -4,77 +4,90 @@ import { motion } from 'framer-motion'
 
 const reasons = [
   {
-    icon: '👨‍🌾',
     title: 'Family Experience',
-    description: 'Decades of commodity-trading experience grounded in the pulses business since 1992.',
+    description: 'Decades of commodity trading grounded in agricultural operations since 1985.',
   },
   {
-    icon: '📍',
     title: 'Pakistan-Based Sourcing',
-    description: "Direct access to Pakistan's agricultural heartland with established supplier relationships.",
+    description: 'Direct access to agricultural heartland with established supplier relationships.',
   },
   {
-    icon: '🤝',
-    title: 'Selected Partners',
-    description: 'Work with verified processors and supply partners for quality assurance at every step.',
+    title: 'Verified Partners',
+    description: 'Work exclusively with verified processors for quality assurance at every step.',
   },
   {
-    icon: '📋',
-    title: 'Buyer-Specific Specs',
-    description: 'Products tailored to your exact requirements, with flexible specifications and packaging.',
+    title: 'Buyer Specifications',
+    description: 'Products tailored to exact requirements with flexible packaging and sizing.',
   },
   {
-    icon: '✓',
     title: 'Testing & Inspection',
-    description: 'Batch-specific testing and third-party inspection arrangements available on request.',
+    description: 'Batch testing and third-party inspection arrangements available on request.',
   },
   {
-    icon: '📦',
     title: 'Flexible Packaging',
-    description: 'Multiple packaging options from standard bags to custom solutions, per your needs.',
+    description: 'Multiple options from standard bags to fully customized solutions.',
   },
   {
-    icon: '📄',
     title: 'Export Support',
-    description: 'Complete documentation and logistics support for FOB, CFR, and CIF shipments.',
+    description: 'Complete documentation and logistics for FOB, CFR, and CIF shipments.',
   },
   {
-    icon: '💬',
     title: 'Direct Communication',
-    description: 'Transparent, responsive dialogue with your team throughout the supply process.',
+    description: 'Transparent, responsive dialogue with your team throughout supply process.',
   },
 ]
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-20 bg-sah-light">
+    <section className="py-16 sm:py-24 bg-white border-y border-sah-gold/10">
       <div className="container-wide">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-20 max-w-3xl"
         >
-          <h2 className="section-heading mb-4">Why Choose SAH Company</h2>
-          <p className="text-xl text-sah-charcoal max-w-2xl mx-auto">
-            Our approach combines agricultural heritage with modern B2B supply practices.
+          <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">
+            WHY CHOOSE SAH
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl italic text-sah-charcoal leading-tight mb-6">
+            Eight Reasons to Partner With Us
+          </h2>
+          <p className="font-body text-lg text-sah-charcoal/80">
+            Our approach combines agricultural heritage with modern B2B supply excellence—from sourcing to delivery.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 2x4 grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {reasons.map((reason, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: (idx % 4) * 0.1, duration: 0.6 }}
+              transition={{ delay: (idx % 4) * 0.08, duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              className="group"
             >
-              <div className="text-4xl mb-4">{reason.icon}</div>
-              <h3 className="text-lg font-bold text-sah-charcoal mb-3">{reason.title}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{reason.description}</p>
+              <div className="relative p-8 bg-sah-light rounded-lg border border-sah-gold/10 hover:border-sah-gold/40 hover:bg-sah-cream transition-all duration-300 h-full">
+                {/* Number badge */}
+                <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-sah-gold/10 flex items-center justify-center font-display text-sm text-sah-gold group-hover:bg-sah-gold group-hover:text-white transition-all">
+                  {String(idx + 1).padStart(2, '0')}
+                </div>
+
+                {/* Content */}
+                <h3 className="font-display text-xl italic text-sah-charcoal mb-3 pr-12">
+                  {reason.title}
+                </h3>
+                <p className="font-body text-sm leading-relaxed text-sah-charcoal/75">
+                  {reason.description}
+                </p>
+
+                {/* Accent line */}
+                <div className="mt-6 pt-6 border-t border-sah-gold/20 group-hover:border-sah-gold/40 transition-colors" />
+              </div>
             </motion.div>
           ))}
         </div>

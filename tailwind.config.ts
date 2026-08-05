@@ -8,15 +8,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand palette from sahlogo.png
-        'sah-green': '#1F7A6D',        // deep forest green (primary)
-        'sah-gold': '#C4A361',         // warm gold (accent)
-        'sah-cream': '#F5F0E8',        // warm cream/off-white
-        'sah-charcoal': '#2A2A2A',     // dark charcoal
-        'sah-light': '#FAFAF8',        // almost white
+        'sah-green': '#1F7A6D',
+        'sah-gold': '#C4A361',
+        'sah-cream': '#F5F0E8',
+        'sah-charcoal': '#2A2A2A',
+        'sah-light': '#FAFAF8',
+        'sah-earth': '#141410',
       },
       fontFamily: {
-        sans: ['system-ui', 'sans-serif'],
+        body: 'var(--font-body)',
+        display: 'var(--font-display)',
+        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
       },
       spacing: {
         'section': '6rem',

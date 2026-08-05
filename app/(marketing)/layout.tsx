@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
+import TrustMarquee from '@/components/marketing/TrustMarquee'
 
 export default function MarketingLayout({
   children,
@@ -12,6 +13,7 @@ export default function MarketingLayout({
       <SmoothScroll />
       <Header />
       {children}
+      <TrustMarquee />
       <Footer />
     </main>
   )

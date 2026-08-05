@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma'
 import HeroSection from '@/components/marketing/HeroSection'
-import TrustStrip from '@/components/marketing/TrustStrip'
 import TradingRootsSection from '@/components/marketing/TradingRootsSection'
 import CategoriesShowcase from '@/components/marketing/CategoriesShowcase'
 import WhyChooseUs from '@/components/marketing/WhyChooseUs'
@@ -32,7 +31,6 @@ export default async function PageRenderer({ slug }: { slug: string }) {
       {page.sections.map((section) => (
         <div key={section.id}>
           {section.type === 'hero' && <HeroSection />}
-          {section.type === 'trust-strip' && <TrustStrip />}
           {section.type === 'trading-roots' && <TradingRootsSection />}
           {section.type === 'categories-showcase' && <CategoriesShowcase />}
           {section.type === 'why-choose-us' && <WhyChooseUs />}

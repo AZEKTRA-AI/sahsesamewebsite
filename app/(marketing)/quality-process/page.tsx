@@ -1,135 +1,99 @@
+import Image from 'next/image'
+import PageHero from '@/components/marketing/PageHero'
+import PageCTA from '@/components/marketing/PageCTA'
+
 export const metadata = {
   title: 'Quality & Sourcing Process | SAH Company',
   description: 'Learn about our 10-step quality assurance and sourcing process for agricultural commodities',
 }
 
 const processSteps = [
-  {
-    number: '1',
-    title: 'Supplier Verification',
-    description: 'Establish relationships with verified suppliers across Faisalabad region',
-  },
-  {
-    number: '2',
-    title: 'Batch Inspection',
-    description: 'Inspect each batch for quality, origin authenticity, and packaging standards',
-  },
-  {
-    number: '3',
-    title: 'Lab Testing',
-    description: 'Conduct laboratory tests for moisture, purity, oil content, and contaminants',
-  },
-  {
-    number: '4',
-    title: 'Grading & Sorting',
-    description: 'Grade products according to international standards and buyer specifications',
-  },
-  {
-    number: '5',
-    title: 'Third-Party Inspection',
-    description: 'Arrange independent inspection via SGS or Intertek if requested',
-  },
-  {
-    number: '6',
-    title: 'Customized Packaging',
-    description: 'Package in sizes and materials meeting buyer requirements and regulations',
-  },
-  {
-    number: '7',
-    title: 'Documentation Preparation',
-    description: 'Prepare certificates of analysis, certificates of origin, and compliance docs',
-  },
-  {
-    number: '8',
-    title: 'Storage & Handling',
-    description: 'Maintain proper storage conditions to preserve quality until shipment',
-  },
-  {
-    number: '9',
-    title: 'Logistics Coordination',
-    description: 'Arrange shipment under FOB, CFR, or CIF terms with reliable carriers',
-  },
-  {
-    number: '10',
-    title: 'Delivery Confirmation',
-    description: 'Confirm delivery and provide post-delivery support for any concerns',
-  },
+  { number: '01', title: 'Supplier Verification', description: 'Establish relationships with verified suppliers across Faisalabad region' },
+  { number: '02', title: 'Batch Inspection', description: 'Inspect each batch for quality, origin authenticity, and packaging standards' },
+  { number: '03', title: 'Lab Testing', description: 'Conduct laboratory tests for moisture, purity, oil content, and contaminants' },
+  { number: '04', title: 'Grading & Sorting', description: 'Grade products according to international standards and buyer specifications' },
+  { number: '05', title: 'Third-Party Inspection', description: 'Arrange independent inspection via SGS or Intertek if requested' },
+  { number: '06', title: 'Customized Packaging', description: 'Package in sizes and materials meeting buyer requirements and regulations' },
+  { number: '07', title: 'Documentation Preparation', description: 'Prepare certificates of analysis, certificates of origin, and compliance docs' },
+  { number: '08', title: 'Storage & Handling', description: 'Maintain proper storage conditions to preserve quality until shipment' },
+  { number: '09', title: 'Logistics Coordination', description: 'Arrange shipment under FOB, CFR, or CIF terms with reliable carriers' },
+  { number: '10', title: 'Delivery Confirmation', description: 'Confirm delivery and provide post-delivery support for any concerns' },
+]
+
+const commitments = [
+  { title: 'Transparency', description: 'Every batch is documented with clear specifications, test results, and origin certificates.' },
+  { title: 'Consistency', description: 'Rigorous standards applied across all shipments to ensure predictable quality.' },
+  { title: 'Compliance', description: 'All products meet international food safety and export regulations.' },
 ]
 
 export default function QualityProcessPage() {
   return (
-    <div className="space-y-16 py-16">
-      {/* Hero */}
-      <section className="container-wide space-y-8 text-center">
-        <h1 className="text-5xl font-bold text-sah-charcoal">Quality & Sourcing Process</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Our rigorous 10-step process ensures only the finest agricultural products reach your supply chain
-        </p>
-      </section>
+    <div>
+      <PageHero
+        eyebrow="QUALITY & SOURCING"
+        title="Quality & Sourcing Process"
+        subtitle="Our rigorous 10-step process ensures only the finest agricultural products reach your supply chain."
+        image="/quality-lab-testing.jpg"
+        imageAlt="Laboratory quality testing"
+      />
 
       {/* Timeline */}
-      <section className="container-wide">
-        <div className="max-w-4xl mx-auto">
-          {processSteps.map((step, index) => (
-            <div key={step.number} className="relative">
-              {/* Timeline line */}
-              {index !== processSteps.length - 1 && (
-                <div className="absolute left-12 top-20 h-24 w-1 bg-sah-gold"></div>
-              )}
-
-              {/* Step */}
-              <div className="flex gap-6 mb-8">
-                {/* Circle */}
-                <div className="flex-shrink-0">
-                  <div className="w-24 h-24 bg-sah-green text-white rounded-full flex items-center justify-center">
-                    <span className="text-2xl font-bold">{step.number}</span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 bg-white border-2 border-sah-cream rounded-lg p-6 mt-2">
-                  <h3 className="text-lg font-bold text-sah-charcoal mb-2">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
+      <section className="py-16 sm:py-24 bg-white">
+        <div className="container-wide max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {processSteps.map((step) => (
+              <div
+                key={step.number}
+                className="bg-sah-light border border-sah-gold/10 rounded-lg p-6 hover:border-sah-gold/40 transition-all"
+              >
+                <div className="font-display text-3xl text-sah-gold/30 mb-3">{step.number}</div>
+                <h3 className="font-display text-lg italic text-sah-charcoal mb-2">{step.title}</h3>
+                <p className="font-body text-sm text-sah-charcoal/70 leading-relaxed">{step.description}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lab photo banner */}
+      <section className="relative h-64 sm:h-80">
+        <Image src="/quality-lab-testing.jpg" alt="Laboratory sample testing" fill sizes="100vw" className="object-cover" />
+        <div className="absolute inset-0 bg-sah-earth/50 flex items-center justify-center text-center px-6">
+          <p className="font-display text-2xl sm:text-3xl italic text-white max-w-xl">
+            Every batch tested. Every shipment verified.
+          </p>
         </div>
       </section>
 
       {/* Key Principles */}
-      <section className="container-wide space-y-8">
-        <h2 className="text-3xl font-bold text-sah-charcoal text-center">Our Commitments</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-sah-cream rounded-lg p-8 space-y-4">
-            <h3 className="text-xl font-bold text-sah-charcoal">Transparency</h3>
-            <p className="text-gray-600">
-              Every batch is documented with clear specifications, test results, and origin certificates.
-            </p>
+      <section className="py-16 sm:py-24 bg-sah-cream border-y border-sah-gold/10">
+        <div className="container-wide">
+          <div className="mb-10 sm:mb-16 text-center">
+            <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">OUR COMMITMENTS</p>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl italic text-sah-charcoal leading-tight">
+              Principles We Hold
+            </h2>
           </div>
-          <div className="bg-sah-cream rounded-lg p-8 space-y-4">
-            <h3 className="text-xl font-bold text-sah-charcoal">Consistency</h3>
-            <p className="text-gray-600">
-              Rigorous standards applied across all shipments to ensure predictable quality.
-            </p>
-          </div>
-          <div className="bg-sah-cream rounded-lg p-8 space-y-4">
-            <h3 className="text-xl font-bold text-sah-charcoal">Compliance</h3>
-            <p className="text-gray-600">
-              All products meet international food safety and export regulations.
-            </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            {commitments.map((item, idx) => (
+              <div key={idx} className="bg-white p-8 rounded-lg border border-sah-gold/10">
+                <div className="font-display text-4xl text-sah-gold/20 mb-4">{String(idx + 1).padStart(2, '0')}</div>
+                <h3 className="font-display text-xl italic text-sah-charcoal mb-3">{item.title}</h3>
+                <p className="font-body text-sm text-sah-charcoal/75">{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="container-wide bg-gradient-to-r from-sah-green to-sah-charcoal text-white rounded-lg p-12 space-y-6 text-center">
-        <h2 className="text-3xl font-bold">Want to Know More?</h2>
-        <p className="text-lg opacity-90">Request detailed specifications or schedule a discussion about our quality process</p>
-        <a href="/contact" className="btn-primary bg-white text-sah-green hover:bg-sah-cream inline-block">
-          Contact Us
-        </a>
-      </section>
+      <div className="py-16 sm:py-24 bg-white">
+        <PageCTA
+          title="Want to Know More?"
+          subtitle="Request detailed specifications or schedule a discussion about our quality process."
+          primaryLabel="Contact Us"
+        />
+      </div>
     </div>
   )
 }

@@ -1,6 +1,15 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import PageHero from '@/components/marketing/PageHero'
+import PageCTA from '@/components/marketing/PageCTA'
+
+const categoryImages: Record<string, string> = {
+  sesame: '/hero-sesame.jpg',
+  pulses: '/category-pulses.jpg',
+  rice: '/category-rice.jpg',
+}
 
 export async function generateMetadata({ params }: { params: { category: string } }) {
   const category = await prisma.category.findUnique({
@@ -39,60 +48,64 @@ export default async function CategoryPage({
     notFound()
   }
 
+  const heroImage = categoryImages[category.slug] || '/hero-sesame.jpg'
+
   return (
-    <div className="space-y-16 py-16">
-      {/* Hero */}
-      <section className="container-wide space-y-6 text-center">
-        <div className="text-6xl mb-4">{category.icon}</div>
-        <h1 className="text-5xl font-bold text-sah-charcoal">{category.name}</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Premium {category.name.toLowerCase()} sourced directly from Pakistan's agricultural heartland
-        </p>
-      </section>
+    <div>
+      <PageHero
+        eyebrow="PRODUCT CATEGORY"
+        title={category.name}
+        subtitle={`Premium ${category.name.toLowerCase()} sourced directly from Pakistan's agricultural heartland.`}
+        image={heroImage}
+        imageAlt={category.name}
+      />
 
       {/* Products Grid */}
       {category.products.length > 0 ? (
-        <section className="container-wide">
-          <div className="grid md:grid-cols-3 gap-8">
+        <section className="py-16 sm:py-24 bg-white">
+          <div className="container-wide grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {category.products.map((product) => (
               <Link
                 key={product.id}
                 href={`/products/${category.slug}/${product.slug}`}
-                className="group bg-white border-2 border-sah-cream hover:border-sah-green rounded-lg overflow-hidden transition-all hover:shadow-lg"
+                className="group bg-white border border-sah-gold/10 rounded-lg overflow-hidden hover:border-sah-gold/40 transition-all"
               >
-                <div className="bg-sah-cream p-8 h-48 flex items-center justify-center group-hover:bg-sah-green/10 transition-colors">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">📦</div>
-                    <p className="text-sm text-gray-500">Product Image</p>
-                  </div>
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={heroImage}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-sah-earth/60 via-transparent to-transparent" />
                 </div>
-                <div className="p-6 space-y-3">
-                  <h3 className="text-lg font-bold text-sah-charcoal group-hover:text-sah-green transition-colors">
+                <div className="p-6 space-y-2">
+                  <h3 className="font-display text-lg italic text-sah-charcoal group-hover:text-sah-gold transition-colors">
                     {product.name}
                   </h3>
                   {product.origin && (
-                    <p className="text-sm text-gray-600">📍 {product.origin}</p>
+                    <p className="font-body text-sm text-sah-charcoal/70">{product.origin}</p>
                   )}
-                  <p className="text-sm text-sah-green font-semibold">View Details →</p>
+                  <p className="font-body text-sm text-sah-gold font-medium">View Details →</p>
                 </div>
               </Link>
             ))}
           </div>
         </section>
       ) : (
-        <section className="container-wide text-center py-12">
-          <p className="text-gray-600 text-lg">No products available in this category yet.</p>
+        <section className="py-16 sm:py-24 bg-white text-center">
+          <p className="font-body text-sah-charcoal/70 text-lg">No products available in this category yet.</p>
         </section>
       )}
 
       {/* CTA */}
-      <section className="container-wide bg-gradient-to-r from-sah-green to-sah-charcoal text-white rounded-lg p-12 space-y-6 text-center">
-        <h2 className="text-3xl font-bold">Interested in {category.name}?</h2>
-        <p className="text-lg opacity-90">Request a detailed quotation or samples</p>
-        <Link href="/contact" className="btn-primary bg-white text-sah-green hover:bg-sah-cream inline-block">
-          Request a Quote
-        </Link>
-      </section>
+      <div className="pb-16 sm:pb-24 bg-white">
+        <PageCTA
+          title={`Interested in ${category.name}?`}
+          subtitle="Request a detailed quotation or samples."
+        />
+      </div>
     </div>
   )
 }

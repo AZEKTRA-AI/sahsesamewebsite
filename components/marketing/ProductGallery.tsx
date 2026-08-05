@@ -12,9 +12,11 @@ interface GalleryImage {
 export default function ProductGallery({
   images,
   productName,
+  fallbackImage = '/hero-sesame.jpg',
 }: {
   images: GalleryImage[]
   productName: string
+  fallbackImage?: string
 }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: images.length > 1 })
   const [selected, setSelected] = useState(0)
@@ -35,11 +37,14 @@ export default function ProductGallery({
 
   if (images.length === 0) {
     return (
-      <div className="bg-sah-cream rounded-lg p-8 min-h-96 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-3">📦</div>
-          <p className="text-gray-500">Product image coming soon</p>
-        </div>
+      <div className="relative rounded-lg overflow-hidden h-72 sm:h-96">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={fallbackImage}
+          alt={productName}
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-sah-earth/30" />
       </div>
     )
   }
@@ -54,7 +59,7 @@ export default function ProductGallery({
               <img
                 src={image.url}
                 alt={image.alt || productName}
-                className="h-96 w-full object-contain"
+                className="h-72 sm:h-96 w-full object-contain"
               />
             </div>
           ))}
@@ -71,7 +76,7 @@ export default function ProductGallery({
               aria-label={`Show image ${index + 1} of ${images.length}`}
               aria-current={index === selected}
               className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                index === selected ? 'bg-sah-green' : 'bg-gray-300 hover:bg-gray-400'
+                index === selected ? 'bg-sah-gold' : 'bg-gray-300 hover:bg-gray-400'
               }`}
             />
           ))}

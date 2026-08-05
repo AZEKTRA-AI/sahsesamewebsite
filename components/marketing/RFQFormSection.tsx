@@ -61,18 +61,23 @@ export default function RFQFormSection() {
   }
 
   return (
-    <section id="rfq-form" className="py-20 bg-sah-light">
+    <section id="rfq-form" className="py-16 sm:py-24 bg-white">
       <div className="container-wide">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <h2 className="section-heading mb-4">Request a Quotation</h2>
-          <p className="text-xl text-sah-charcoal max-w-2xl mx-auto">
-            Share your requirements and we'll respond with specifications, samples, and quotations within 24–48 hours.
+          <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">
+            GET A QUOTE
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl italic text-sah-charcoal leading-tight mb-6">
+            Request a Quotation
+          </h2>
+          <p className="font-body text-lg text-sah-charcoal/80 max-w-3xl">
+            Share your requirements and our team will respond with specifications, samples, and quotations within 24–48 hours.
           </p>
         </motion.div>
 
@@ -293,31 +298,28 @@ export default function RFQFormSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
           viewport={{ once: true }}
-          className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          <div className="text-center">
-            <div className="text-4xl mb-4">📧</div>
-            <h4 className="font-bold text-sah-charcoal mb-2">Email Us</h4>
-            <p className="text-sah-green hover:text-sah-charcoal transition-colors">
-              <a href="mailto:sales@sahcompany.com">sales@sahcompany.com</a>
-            </p>
+          <div className="text-center p-8 border border-sah-gold/10 rounded-lg hover:bg-sah-light hover:border-sah-gold/40 transition-all">
+            <h4 className="font-display text-lg italic text-sah-charcoal mb-3">Email</h4>
+            <a href="mailto:sales@sahcompany.com" className="font-body text-sah-gold hover:text-sah-charcoal transition-colors">
+              sales@sahcompany.com
+            </a>
           </div>
-          <div className="text-center">
-            <div className="text-4xl mb-4">📞</div>
-            <h4 className="font-bold text-sah-charcoal mb-2">Call Us</h4>
-            <p className="text-sah-charcoal">
-              +92 300 0959524<br />
-              +92 300 8663396
-            </p>
+          <div className="text-center p-8 border border-sah-gold/10 rounded-lg hover:bg-sah-light hover:border-sah-gold/40 transition-all">
+            <h4 className="font-display text-lg italic text-sah-charcoal mb-3">Phone</h4>
+            <div className="font-body text-sah-charcoal text-sm">
+              <p>+92 300 0959524</p>
+              <p>+92 300 8663396</p>
+            </div>
           </div>
-          <div className="text-center">
-            <div className="text-4xl mb-4">💬</div>
-            <h4 className="font-bold text-sah-charcoal mb-2">WhatsApp</h4>
+          <div className="text-center p-8 border border-sah-gold/10 rounded-lg hover:bg-sah-light hover:border-sah-gold/40 transition-all">
+            <h4 className="font-display text-lg italic text-sah-charcoal mb-3">WhatsApp</h4>
             <a
               href="https://wa.me/923000959524"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sah-green hover:text-sah-charcoal transition-colors font-medium"
+              className="font-body text-sah-gold hover:text-sah-charcoal transition-colors font-medium"
             >
               Chat with us →
             </a>
