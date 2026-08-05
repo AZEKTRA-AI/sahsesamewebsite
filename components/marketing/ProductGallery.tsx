@@ -12,7 +12,7 @@ interface GalleryImage {
 export default function ProductGallery({
   images,
   productName,
-  fallbackImage = '/hero-sesame.jpg',
+  fallbackImage = 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
 }: {
   images: GalleryImage[]
   productName: string

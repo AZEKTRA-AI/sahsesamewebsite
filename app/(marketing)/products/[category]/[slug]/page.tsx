@@ -5,9 +5,9 @@ import ProductGallery from '@/components/marketing/ProductGallery'
 import PageCTA from '@/components/marketing/PageCTA'
 
 const categoryImages: Record<string, string> = {
-  sesame: '/hero-sesame.jpg',
-  pulses: '/category-pulses.jpg',
-  rice: '/category-rice.jpg',
+  sesame: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
+  pulses: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
+  rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
 }
 
 export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
@@ -51,7 +51,7 @@ export default async function ProductDetailPage({
   }
 
   const specs = (product.specs as Record<string, any>) || {}
-  const fallbackImage = categoryImages[product.category.slug] || '/hero-sesame.jpg'
+  const fallbackImage = categoryImages[product.category.slug] || 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'
 
   const infoCards = [
     { title: 'Quality Assurance', description: 'Third-party inspection and laboratory testing available upon request' },

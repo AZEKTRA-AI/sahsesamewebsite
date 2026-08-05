@@ -9,19 +9,19 @@ const categories = [
     title: 'Sesame Seeds',
     href: '/products/sesame',
     description: 'Natural white, hulled, and black varieties sourced and processed to your exact specifications.',
-    image: '/hero-sesame.jpg',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
   },
   {
     title: 'Pulses',
     href: '/products/pulses',
     description: 'Chickpeas, mung beans, lentils, and more sourced from our mills and verified partners.',
-    image: '/category-pulses.jpg',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
   },
   {
     title: 'Rice',
     href: '/products/rice',
     description: 'Premium Pakistani rice varieties for wholesale, import, and distribution markets.',
-    image: '/category-rice.jpg',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
   },
 ]
 

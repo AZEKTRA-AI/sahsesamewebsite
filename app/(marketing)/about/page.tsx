@@ -29,7 +29,7 @@ export default async function AboutPage() {
         eyebrow="ESTABLISHED 1985 · FAISALABAD, PAKISTAN"
         title="Family Trading Roots Since 1985"
         subtitle="Premium agricultural commodities from Pakistan, backed by nearly four decades of family expertise."
-        image="/heritage-field.jpg"
+        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958255/sah-marketing/heritage-field.jpg"
         imageAlt="Golden agricultural fields of Pakistan"
       />
 
@@ -50,7 +50,7 @@ export default async function AboutPage() {
           </div>
           <div className="relative h-72 sm:h-96 rounded-lg overflow-hidden">
             <Image
-              src="/about-hands-grain.jpg"
+              src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958248/sah-marketing/about-hands-grain.jpg"
               alt="Hands holding a harvest of grain"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -84,7 +84,7 @@ export default async function AboutPage() {
       {/* Field photo banner */}
       <section className="relative h-64 sm:h-80 md:h-96">
         <Image
-          src="/about-farmer-field.jpg"
+          src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958245/sah-marketing/about-farmer-field.jpg"
           alt="Agricultural field at work in Pakistan"
           fill
           sizes="100vw"

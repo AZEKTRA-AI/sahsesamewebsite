@@ -33,7 +33,7 @@ export default function TradingRootsSection() {
             className="relative h-64 sm:h-80 lg:h-[28rem] rounded-lg overflow-hidden order-1"
           >
             <Image
-              src="/heritage-field.jpg"
+              src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958255/sah-marketing/heritage-field.jpg"
               alt="Golden agricultural fields of Pakistan at harvest"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

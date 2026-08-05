@@ -6,9 +6,9 @@ import PageHero from '@/components/marketing/PageHero'
 import PageCTA from '@/components/marketing/PageCTA'
 
 const categoryImages: Record<string, string> = {
-  sesame: '/hero-sesame.jpg',
-  pulses: '/category-pulses.jpg',
-  rice: '/category-rice.jpg',
+  sesame: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
+  pulses: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
+  rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
 }
 
 export async function generateMetadata({ params }: { params: { category: string } }) {
@@ -48,7 +48,7 @@ export default async function CategoryPage({
     notFound()
   }
 
-  const heroImage = categoryImages[category.slug] || '/hero-sesame.jpg'
+  const heroImage = categoryImages[category.slug] || 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'
 
   return (
     <div>

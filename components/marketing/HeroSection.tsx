@@ -37,7 +37,7 @@ export default function HeroSection() {
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             <Image
-              src="/hero-sesame.jpg"
+              src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg"
               alt="Premium sesame seeds - Pakistani agricultural heritage"
               fill
               className="object-cover"

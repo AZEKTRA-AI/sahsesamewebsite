@@ -42,7 +42,7 @@ export default function PackagingLogisticsPage() {
         eyebrow="DELIVERY & FLEXIBILITY"
         title="Packaging & Logistics"
         subtitle="Flexible packaging solutions and reliable global shipping to meet your needs."
-        image="/packaging-warehouse.jpg"
+        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958260/sah-marketing/packaging-warehouse.jpg"
         imageAlt="Warehouse storage with palletized goods"
       />
 
@@ -88,7 +88,7 @@ export default function PackagingLogisticsPage() {
 
       {/* Port photo banner */}
       <section className="relative h-64 sm:h-80">
-        <Image src="/logistics-port.jpg" alt="Container port for global shipping" fill sizes="100vw" className="object-cover" />
+        <Image src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958259/sah-marketing/logistics-port.jpg" alt="Container port for global shipping" fill sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-sah-earth/50 flex items-center">
           <div className="container-wide">
             <p className="font-display text-2xl sm:text-3xl md:text-4xl italic text-white max-w-lg">

@@ -16,9 +16,9 @@ const categoryDescriptions: Record<string, string> = {
 }
 
 const categoryImages: Record<string, string> = {
-  sesame: '/hero-sesame.jpg',
-  pulses: '/category-pulses.jpg',
-  rice: '/category-rice.jpg',
+  sesame: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
+  pulses: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
+  rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
 }
 
 const standards = [
@@ -42,7 +42,7 @@ export default async function ProductsPage() {
         eyebrow="WHAT WE SUPPLY"
         title="Our Products"
         subtitle="Premium agricultural commodities sourced directly from Pakistan's agricultural heartland."
-        image="/hero-sesame.jpg"
+        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg"
         imageAlt="Sesame seeds macro photography"
       />
 
@@ -57,7 +57,7 @@ export default async function ProductsPage() {
             >
               <div className="relative h-56 sm:h-64 overflow-hidden">
                 <Image
-                  src={categoryImages[category.slug] || '/hero-sesame.jpg'}
+                  src={categoryImages[category.slug] || 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'}
                   alt={category.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

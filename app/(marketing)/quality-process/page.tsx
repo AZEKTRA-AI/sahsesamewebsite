@@ -33,7 +33,7 @@ export default function QualityProcessPage() {
         eyebrow="QUALITY & SOURCING"
         title="Quality & Sourcing Process"
         subtitle="Our rigorous 10-step process ensures only the finest agricultural products reach your supply chain."
-        image="/quality-lab-testing.jpg"
+        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958261/sah-marketing/quality-lab-testing.jpg"
         imageAlt="Laboratory quality testing"
       />
 
@@ -57,7 +57,7 @@ export default function QualityProcessPage() {
 
       {/* Lab photo banner */}
       <section className="relative h-64 sm:h-80">
-        <Image src="/quality-lab-testing.jpg" alt="Laboratory sample testing" fill sizes="100vw" className="object-cover" />
+        <Image src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958261/sah-marketing/quality-lab-testing.jpg" alt="Laboratory sample testing" fill sizes="100vw" className="object-cover" />
         <div className="absolute inset-0 bg-sah-earth/50 flex items-center justify-center text-center px-6">
           <p className="font-display text-2xl sm:text-3xl italic text-white max-w-xl">
             Every batch tested. Every shipment verified.

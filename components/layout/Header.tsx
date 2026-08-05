@@ -28,7 +28,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 flex-shrink-0">
           <Image
-            src="/sahlogo.png"
+            src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png"
             alt="SAH Company"
             width={60}
             height={60}

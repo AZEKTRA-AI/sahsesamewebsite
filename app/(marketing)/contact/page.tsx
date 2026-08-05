@@ -14,7 +14,7 @@ export default function ContactPage() {
         eyebrow="WE'D LOVE TO HEAR FROM YOU"
         title="Get in Touch"
         subtitle="Have questions about our products or need a custom quote? We're here to help."
-        image="/contact-handshake.jpg"
+        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958254/sah-marketing/contact-handshake.jpg"
         imageAlt="Business partnership handshake"
       />
 

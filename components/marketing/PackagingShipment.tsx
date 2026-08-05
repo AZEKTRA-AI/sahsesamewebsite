@@ -54,7 +54,7 @@ export default function PackagingShipment() {
           className="relative h-56 sm:h-72 lg:h-80 rounded-lg overflow-hidden mb-16 sm:mb-20"
         >
           <Image
-            src="/logistics-port.jpg"
+            src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958259/sah-marketing/logistics-port.jpg"
             alt="Shipping containers at port for global export"
             fill
             sizes="100vw"
