@@ -68,7 +68,7 @@ export default async function CategoryPage({
               <Link
                 key={product.id}
                 href={`/products/${category.slug}/${product.slug}`}
-                className="group bg-white border border-sah-gold/10 rounded-lg overflow-hidden hover:border-sah-gold/40 transition-all"
+                className="group bg-white border border-sah-gold/10 rounded-lg overflow-hidden hover:border-sah-gold/40 transition-[border-color] duration-200 ease-out active:scale-[0.98]"
               >
                 <div className="relative h-48 overflow-hidden">
                   <Image
@@ -76,7 +76,7 @@ export default async function CategoryPage({
                     alt={product.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-sah-earth/60 via-transparent to-transparent" />
                 </div>

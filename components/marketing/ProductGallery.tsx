@@ -75,8 +75,8 @@ export default function ProductGallery({
               onClick={() => emblaApi?.scrollTo(index)}
               aria-label={`Show image ${index + 1} of ${images.length}`}
               aria-current={index === selected}
-              className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                index === selected ? 'bg-sah-gold' : 'bg-gray-300 hover:bg-gray-400'
+              className={`h-2.5 rounded-full transition-[background-color,width] duration-200 ease-out active:scale-90 ${
+                index === selected ? 'bg-sah-gold w-6' : 'bg-gray-300 hover:bg-gray-400 w-2.5'
               }`}
             />
           ))}

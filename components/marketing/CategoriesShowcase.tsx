@@ -57,7 +57,7 @@ export default function CategoriesShowcase() {
               className="group"
             >
               <Link href={cat.href} className="block h-full">
-                <div className="relative h-full bg-white border border-sah-gold/10 rounded-lg overflow-hidden hover:border-sah-gold/40 transition-all duration-300">
+                <div className="relative h-full bg-white border border-sah-gold/10 rounded-lg overflow-hidden hover:border-sah-gold/40 transition-[border-color] duration-200 ease-out active:scale-[0.98]">
                   {/* Photo */}
                   <div className="relative h-56 sm:h-64 overflow-hidden">
                     <Image
@@ -65,7 +65,7 @@ export default function CategoriesShowcase() {
                       alt={cat.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-sah-earth/70 via-transparent to-transparent" />
                     {/* Number badge on photo */}

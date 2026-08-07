@@ -102,10 +102,10 @@ export default async function ProductDetailPage({
           )}
 
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
-            <Link href="/contact" className="px-6 py-3 bg-sah-gold text-white font-body font-medium rounded-lg hover:bg-sah-charcoal transition-colors text-center">
+            <Link href="/contact" className="px-6 py-3 bg-sah-gold text-white font-body font-medium rounded-lg hover:bg-sah-charcoal transition-colors duration-150 ease-out active:scale-[0.97] text-center">
               Request Quotation
             </Link>
-            <Link href="/contact" className="px-6 py-3 border border-sah-gold text-sah-gold font-body font-medium rounded-lg hover:bg-sah-cream transition-colors text-center">
+            <Link href="/contact" className="px-6 py-3 border border-sah-gold text-sah-gold font-body font-medium rounded-lg hover:bg-sah-cream transition-colors duration-150 ease-out active:scale-[0.97] text-center">
               Request Sample
             </Link>
           </div>
