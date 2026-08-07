@@ -17,12 +17,34 @@ const inter = Inter({
   variable: '--font-body',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sahcompany.com'
+/**
+ * metadataBase is evaluated while Next collects page data, so anything thrown
+ * here fails the whole build. Env vars are routinely entered without a scheme
+ * ("sahcompany.com", or Vercel's bare VERCEL_URL), which `new URL` rejects —
+ * so add the scheme when it is missing and fall back rather than throw.
+ */
+function resolveMetadataBase(): URL | undefined {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+  const candidates = [
+    raw && (/^https?:\/\//i.test(raw) ? raw : `https://${raw}`),
+    'https://sahcompany.com',
+  ].filter(Boolean) as string[]
+
+  for (const candidate of candidates) {
+    try {
+      return new URL(candidate)
+    } catch {
+      // Try the next candidate.
+    }
+  }
+  return undefined
+}
+
 const ogImage =
   'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: resolveMetadataBase(),
   title: {
     default: 'SAH Company | Pakistani Sesame Seeds, Pulses & Rice Exporter',
     template: '%s | SAH Company',
