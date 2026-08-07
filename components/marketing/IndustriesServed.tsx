@@ -1,91 +1,129 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Image from 'next/image'
+import { RevealGroup, RevealItem } from '@/components/ui/Reveal'
+import SectionIntro from '@/components/ui/SectionIntro'
+import SpotlightCard from '@/components/ui/SpotlightCard'
 
 const industries = [
-  { title: 'Sesame Processors', description: 'Tahini and oil production facilities' },
-  { title: 'Bakeries', description: 'Sesame supplies for bread and bakery products' },
-  { title: 'Confectionery', description: 'Sesame and pulses for candy manufacturing' },
-  { title: 'Food Ingredient Companies', description: 'Commodity sourcing for food service' },
-  { title: 'Pulse Importers', description: 'Wholesale distribution and import traders' },
-  { title: 'Food Wholesalers', description: 'Distribution to retail and food-service' },
-  { title: 'Commodity Traders', description: 'B2B trading and re-export markets' },
-  { title: 'Supermarket Suppliers', description: 'Private-label and branded products' },
-  { title: 'Ethnic Food Distributors', description: 'Specialty and ethnic food markets' },
-  { title: 'Private-Label Producers', description: 'OEM/ODM manufacturing partners' },
+  { title: 'Sesame processors', description: 'Tahini lines and oil crushing plants' },
+  { title: 'Bakeries', description: 'Topping and dough-inclusion sesame' },
+  { title: 'Confectionery', description: 'Halva, brittle, and coated products' },
+  { title: 'Food ingredient firms', description: 'Contracted commodity sourcing' },
+  { title: 'Pulse importers', description: 'Wholesale import and distribution' },
+  { title: 'Food wholesalers', description: 'Retail and food-service supply' },
+  { title: 'Commodity traders', description: 'B2B trading and re-export' },
+  { title: 'Supermarket suppliers', description: 'Private-label and branded packs' },
+  { title: 'Ethnic food distributors', description: 'South Asian specialty channels' },
+  { title: 'Private-label producers', description: 'OEM and ODM manufacturing' },
 ]
 
 export default function IndustriesServed() {
   return (
-    <section className="py-16 sm:py-24 bg-white">
+    <section className="bg-white py-20 sm:py-28">
       <div className="container-wide">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-16"
+        <SectionIntro
+          eyebrow="Who we supply"
+          title="The desks that buy from us"
+          lead="Our buyers sit across food processing, distribution, retail, and specialty channels — from single-container importers to multi-plant manufacturers."
+        />
+
+        {/* Bento: ten trade tiles interleaved with a photo and a closing panel. */}
+        <RevealGroup
+          className="mt-12 grid grid-cols-1 gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4"
+          stagger={0.05}
         >
-          <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">
-            WHO WE SUPPLY
-          </p>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl italic text-sah-charcoal leading-tight mb-6">
-            Industries We Serve
-          </h2>
-          <p className="font-body text-lg text-sah-charcoal/80 max-w-3xl">
-            Our buyer network spans food processing, distribution, retail, and specialty markets across the globe.
-          </p>
-        </motion.div>
-
-        {/* Industries grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-          {industries.map((industry, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: (idx % 5) * 0.08, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="relative h-full p-6 bg-sah-light border border-sah-gold/10 rounded-lg hover:bg-sah-cream hover:border-sah-gold/40 transition-all duration-300">
-                {/* Number */}
-                <div className="font-display text-3xl text-sah-gold/20 mb-4">
-                  {String(idx + 1).padStart(2, '0')}
-                </div>
-
-                {/* Title */}
-                <h3 className="font-display text-base italic text-sah-charcoal mb-3 group-hover:text-sah-gold transition-colors leading-tight">
-                  {industry.title}
-                </h3>
-
-                {/* Description */}
-                <p className="font-body text-sm text-sah-charcoal/70">
-                  {industry.description}
-                </p>
-
-                {/* Accent line */}
-                <div className="mt-4 pt-4 border-t border-sah-gold/20 group-hover:border-sah-gold/40 transition-colors" />
-              </div>
-            </motion.div>
+          {industries.slice(0, 3).map((industry, idx) => (
+            <IndustryTile key={industry.title} industry={industry} index={idx} />
           ))}
-        </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-20 p-12 bg-sah-earth text-white rounded-lg text-center"
-        >
-          <h3 className="font-display text-2xl italic mb-4">Not Listed?</h3>
-          <p className="font-body text-white/80 mb-6 max-w-2xl mx-auto">
-            If your industry or use case is not represented, we welcome inquiries. Contact our export team to discuss your specific sourcing requirements and partnership opportunities.
-          </p>
-        </motion.div>
+          {/* Photo tile breaks up the run of text cards. */}
+          <RevealItem className="h-full">
+            <div className="relative h-full min-h-[13rem] overflow-hidden rounded-card">
+              <Image
+                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958245/sah-marketing/about-farmer-field.jpg"
+                alt="A grower inspecting the standing crop before harvest"
+                fill
+                sizes="(max-width: 1024px) 100vw, 25vw"
+                className="object-cover"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-sah-earth/85 via-sah-earth/25 to-transparent"
+              />
+              <p className="absolute bottom-5 left-5 right-5 font-display text-lg italic text-white">
+                Sourced at origin, not from a warehouse
+              </p>
+            </div>
+          </RevealItem>
+
+          {industries.slice(3).map((industry, idx) => (
+            <IndustryTile key={industry.title} industry={industry} index={idx + 3} />
+          ))}
+
+          {/* Closing panel completes the final row instead of leaving a gap. */}
+          <RevealItem className="h-full">
+            <div className="grain relative flex h-full min-h-[13rem] flex-col justify-between overflow-hidden rounded-card bg-sah-earth p-6">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    'radial-gradient(90% 70% at 20% 0%, rgba(196,163,97,0.22), transparent 65%)',
+                }}
+              />
+              <div className="relative">
+                <h3 className="font-display text-xl italic text-white">Not listed?</h3>
+                <p className="mt-2 font-body text-sm leading-relaxed text-white/65">
+                  Tell us the spec and the destination. If we can source it properly,
+                  we will quote it.
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="group relative mt-5 inline-flex items-center gap-2 font-body text-sm font-medium text-sah-gold transition-colors duration-200 hover:text-white active:scale-[0.97]"
+              >
+                Start an enquiry
+                <svg
+                  className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
+            </div>
+          </RevealItem>
+        </RevealGroup>
       </div>
     </section>
+  )
+}
+
+function IndustryTile({
+  industry,
+  index,
+}: {
+  industry: { title: string; description: string }
+  index: number
+}) {
+  return (
+    <RevealItem className="h-full">
+      <SpotlightCard className="group flex h-full min-h-[13rem] flex-col justify-between rounded-card border border-sah-gold/15 bg-sah-light p-6 transition-[border-color,background-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 hover:bg-white">
+        <p className="tnum font-display text-3xl text-sah-gold/20 transition-colors duration-300 group-hover:text-sah-gold/45">
+          {String(index + 1).padStart(2, '0')}
+        </p>
+        <div>
+          <h3 className="font-display text-lg italic leading-tight text-sah-charcoal transition-colors duration-200 group-hover:text-sah-gold">
+            {industry.title}
+          </h3>
+          <p className="mt-2 font-body text-sm text-sah-charcoal/60">{industry.description}</p>
+        </div>
+      </SpotlightCard>
+    </RevealItem>
   )
 }

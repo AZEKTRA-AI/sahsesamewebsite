@@ -1,96 +1,124 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
+import SectionIntro from '@/components/ui/SectionIntro'
+import ParallaxImage from '@/components/ui/ParallaxImage'
 
 const reasons = [
   {
-    title: 'Family Experience',
-    description: 'Decades of commodity trading grounded in agricultural operations since 1985.',
+    title: 'Family experience',
+    description: 'Decades of commodity trading grounded in real agricultural operations since 1985.',
   },
   {
-    title: 'Pakistan-Based Sourcing',
-    description: 'Direct access to agricultural heartland with established supplier relationships.',
+    title: 'Pakistan-based sourcing',
+    description: 'Direct access to the agricultural heartland and long-standing supplier relationships.',
   },
   {
-    title: 'Verified Partners',
-    description: 'Work exclusively with verified processors for quality assurance at every step.',
+    title: 'Verified partners',
+    description: 'We work only with processors whose plants and output we have inspected ourselves.',
   },
   {
-    title: 'Buyer Specifications',
-    description: 'Products tailored to exact requirements with flexible packaging and sizing.',
+    title: 'Buyer specifications',
+    description: 'Lots cleaned and graded to your exact purity, moisture, and sizing requirements.',
   },
   {
-    title: 'Testing & Inspection',
-    description: 'Batch testing and third-party inspection arrangements available on request.',
+    title: 'Testing & inspection',
+    description: 'Batch analysis and third-party inspection through SGS or Intertek on request.',
   },
   {
-    title: 'Flexible Packaging',
-    description: 'Multiple options from standard bags to fully customized solutions.',
+    title: 'Flexible packaging',
+    description: 'From 25 kg PP woven bags to jumbo bags and fully private-label packing.',
   },
   {
-    title: 'Export Support',
-    description: 'Complete documentation and logistics for FOB, CFR, and CIF shipments.',
+    title: 'Export support',
+    description: 'Complete documentation and logistics handled for FOB, CFR, and CIF shipments.',
   },
   {
-    title: 'Direct Communication',
-    description: 'Transparent, responsive dialogue with your team throughout supply process.',
+    title: 'Direct communication',
+    description: 'One point of contact from enquiry to bill of lading — no agents in between.',
   },
 ]
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-16 sm:py-24 bg-white border-y border-sah-gold/10">
-      <div className="container-wide">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-20 max-w-3xl"
-        >
-          <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">
-            WHY CHOOSE SAH
-          </p>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl italic text-sah-charcoal leading-tight mb-6">
-            Eight Reasons to Partner With Us
-          </h2>
-          <p className="font-body text-lg text-sah-charcoal/80">
-            Our approach combines agricultural heritage with modern B2B supply excellence—from sourcing to delivery.
-          </p>
-        </motion.div>
+    <section className="border-y border-sah-gold/10 bg-sah-light py-20 sm:py-28">
+      <div className="container-wide grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+        {/* Sticky column — the heading holds while the list moves past it. */}
+        <div className="lg:col-span-5">
+          <div className="lg:sticky lg:top-32">
+            <SectionIntro
+              eyebrow="Why choose SAH"
+              title="Eight reasons buyers stay with us"
+              lead="Agricultural heritage run on modern B2B discipline — from first sample through to the bill of lading."
+              size="md"
+            />
 
-        {/* 2x4 grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {reasons.map((reason, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: (idx % 4) * 0.08, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="relative p-8 bg-sah-light rounded-lg border border-sah-gold/10 hover:border-sah-gold/40 hover:bg-sah-cream transition-all duration-300 h-full">
-                {/* Number badge */}
-                <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-sah-gold/10 flex items-center justify-center font-display text-sm text-sah-gold group-hover:bg-sah-gold group-hover:text-white transition-all">
-                  {String(idx + 1).padStart(2, '0')}
-                </div>
+            <Reveal delay={0.2}>
+              <ParallaxImage
+                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958248/sah-marketing/about-hands-grain.jpg"
+                alt="Hands running through freshly milled grain"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="mt-10 hidden h-56 rounded-card shadow-lift lg:block"
+                distance={30}
+              >
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-sah-earth/55 to-transparent"
+                />
+              </ParallaxImage>
+            </Reveal>
 
-                {/* Content */}
-                <h3 className="font-display text-xl italic text-sah-charcoal mb-3 pr-12">
-                  {reason.title}
-                </h3>
-                <p className="font-body text-sm leading-relaxed text-sah-charcoal/75">
-                  {reason.description}
-                </p>
-
-                {/* Accent line */}
-                <div className="mt-6 pt-6 border-t border-sah-gold/20 group-hover:border-sah-gold/40 transition-colors" />
-              </div>
-            </motion.div>
-          ))}
+            <Reveal delay={0.3} blur={false}>
+              <Link
+                href="/about"
+                className="group mt-8 inline-flex items-center gap-2 font-body text-sm font-medium text-sah-gold transition-colors duration-200 hover:text-sah-charcoal active:scale-[0.97]"
+              >
+                Read our story
+                <svg
+                  className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
+            </Reveal>
+          </div>
         </div>
+
+        {/* Numbered rows rather than another grid of identical boxes. */}
+        <RevealGroup className="lg:col-span-7" stagger={0.06}>
+          <ol className="border-t border-sah-gold/15">
+            {reasons.map((reason, idx) => (
+              <li key={reason.title} className="group relative border-b border-sah-gold/15">
+                {/* Gold bar wipes down the left edge on hover. */}
+                <span
+                  aria-hidden="true"
+                  className="absolute left-0 top-0 z-10 h-full w-[2px] origin-top scale-y-0 bg-sah-gold transition-transform duration-300 ease-out-expo group-hover:scale-y-100"
+                />
+                <RevealItem>
+                  <div className="flex gap-5 py-6 pl-0 transition-[padding-left,background-color] duration-300 ease-out-expo group-hover:bg-white group-hover:pl-5 sm:gap-7">
+                    <span className="tnum shrink-0 pt-1 font-display text-sm text-sah-gold/70">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <h3 className="font-display text-xl italic text-sah-charcoal transition-colors duration-200 group-hover:text-sah-gold">
+                        {reason.title}
+                      </h3>
+                      <p className="mt-2 max-w-xl font-body text-sm leading-relaxed text-sah-charcoal/65">
+                        {reason.description}
+                      </p>
+                    </div>
+                  </div>
+                </RevealItem>
+              </li>
+            ))}
+          </ol>
+        </RevealGroup>
       </div>
     </section>
   )

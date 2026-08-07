@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/* Tokens                                                              */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --sah-gold: #c4a361;
+  --sah-gold-soft: #dcc08a;
+  --sah-earth: #141410;
+  --sah-charcoal: #2a2a2a;
+
+  --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-expo: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --header-h: 5.5rem;
+
+  /* Reused noise tile — keeps every grain surface identical. */
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 6rem;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +34,10 @@
 }
 
 html {
+  /* Lenis drives scrolling on marketing pages; native smooth would fight it. */
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -17,50 +45,406 @@ body {
   background-color: #fafaf8;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display, Georgia, serif);
+  text-wrap: balance;
 }
 
-/* Utilities */
-.container-wide {
-  @apply max-w-7xl mx-auto px-4 md:px-6;
+p {
+  text-wrap: pretty;
 }
+
+::selection {
+  background-color: rgba(196, 163, 97, 0.28);
+  color: #141410;
+}
+
+/* Visible keyboard focus everywhere, without a ring on mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--sah-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Honour the OS setting — every decorative animation stops. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Layout utilities                                                    */
+/* ------------------------------------------------------------------ */
+
+.container-wide {
+  @apply max-w-7xl mx-auto px-5 md:px-8;
+}
+
+.container-narrow {
+  @apply max-w-3xl mx-auto px-5 md:px-8;
+}
+
+/* Skip link — hidden until a keyboard user tabs to it. */
+.skip-link {
+  @apply absolute left-4 z-50 -translate-y-24 rounded-lg bg-sah-earth px-5 py-3 font-body text-sm text-white;
+  top: 1rem;
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------------ */
+/* Surfaces — glassmorphism                                            */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Real glass, not just a blur: a translucent tinted fill, a hairline
+ * top-edge highlight and a darker bottom edge to fake refraction, plus a
+ * saturation bump so colours behind it stay alive.
+ */
+.glass {
+  background-color: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 0 rgba(42, 32, 12, 0.06),
+    0 16px 40px -20px rgba(42, 32, 12, 0.25);
+}
+
+.glass-dark {
+  background-color: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.3),
+    0 24px 60px -28px rgba(0, 0, 0, 0.75);
+}
+
+.glass-gold {
+  background-color: rgba(196, 163, 97, 0.1);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(196, 163, 97, 0.28);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
+    0 16px 40px -22px rgba(196, 163, 97, 0.5);
+}
+
+/* Fallback for browsers without backdrop-filter (older Firefox). */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background-color: rgba(255, 255, 255, 0.94);
+  }
+  .glass-dark {
+    background-color: rgba(28, 28, 22, 0.94);
+  }
+  .glass-gold {
+    background-color: rgba(196, 163, 97, 0.16);
+  }
+}
+
+/* Fixed film grain — breaks the flatness of large solid areas. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Cursor-tracked spotlight border, driven by --mx / --my set in JS. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(196, 163, 97, 0.85),
+    rgba(196, 163, 97, 0) 65%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(196, 163, 97, 0.1),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out-expo);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.spotlight:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Buttons                                                             */
+/* ------------------------------------------------------------------ */
 
 .btn-primary {
-  @apply px-6 py-3 bg-transparent border border-sah-gold text-white rounded-lg font-medium transition-all duration-200;
-  background-clip: padding-box;
-  position: relative;
+  @apply relative inline-flex items-center justify-center overflow-hidden rounded-full border border-sah-gold px-7 py-3 font-body font-medium text-white;
+  /* Own stacking context so the z-index:-1 fill can't drop behind an
+     ancestor's background. */
+  isolation: isolate;
+  transition:
+    color 200ms var(--ease-out-expo),
+    transform 140ms var(--ease-out-expo),
+    box-shadow 260ms var(--ease-out-expo);
 }
 
+/* Gold fill wipes in from the left rather than a flat colour swap. */
 .btn-primary::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  background-color: #C4A361;
+  inset: 0;
+  background-color: var(--sah-gold);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 320ms var(--ease-out-expo);
   z-index: -1;
-  transition: width 240ms cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 0.5rem;
 }
 
 .btn-primary:hover::before {
-  width: 100%;
+  clip-path: inset(0 0 0 0);
 }
 
 .btn-primary:hover {
-  color: #2A2A2A;
+  color: #141410;
+  box-shadow: 0 8px 32px -12px rgba(196, 163, 97, 0.55);
 }
 
-.btn-secondary {
-  @apply px-6 py-3 bg-white border border-sah-green text-sah-green rounded-lg font-medium hover:bg-sah-cream transition-colors;
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-solid {
+  @apply relative inline-flex items-center justify-center overflow-hidden rounded-full bg-sah-gold px-7 py-3 font-body font-medium text-sah-earth;
+  transition:
+    background-color 200ms var(--ease-out-expo),
+    transform 140ms var(--ease-out-expo),
+    box-shadow 260ms var(--ease-out-expo);
+}
+
+.btn-solid:hover {
+  background-color: var(--sah-gold-soft);
+  box-shadow: 0 8px 32px -12px rgba(196, 163, 97, 0.6);
+}
+
+.btn-solid:active {
+  transform: scale(0.97);
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-full border border-white/25 px-7 py-3 font-body font-medium;
+  transition:
+    background-color 200ms var(--ease-out-expo),
+    border-color 200ms var(--ease-out-expo),
+    transform 140ms var(--ease-out-expo);
+}
+
+.btn-ghost:active {
+  transform: scale(0.97);
+}
+
+/* Text link with an underline that draws in from the left. */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms var(--ease-out-expo);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Form fields                                                         */
+/* ------------------------------------------------------------------ */
+
+.field {
+  @apply w-full rounded-xl border border-sah-charcoal/15 bg-white/70 px-4 py-3 font-body text-sah-charcoal;
+  transition:
+    border-color 180ms var(--ease-out-expo),
+    box-shadow 180ms var(--ease-out-expo),
+    background-color 180ms var(--ease-out-expo);
+}
+
+.field::placeholder {
+  color: rgba(42, 42, 42, 0.4);
+}
+
+.field:hover {
+  border-color: rgba(196, 163, 97, 0.45);
+}
+
+.field:focus {
+  outline: none;
+  background-color: #fff;
+  border-color: var(--sah-gold);
+  box-shadow: 0 0 0 4px rgba(196, 163, 97, 0.16);
+}
+
+.field-label {
+  @apply mb-2 block font-body text-xs font-medium uppercase tracking-[0.14em] text-sah-charcoal/65;
+}
+
+.field-error {
+  @apply mt-2 font-body text-sm text-[#9B2C2C];
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography helpers                                                  */
+/* ------------------------------------------------------------------ */
+
+.eyebrow {
+  @apply font-body text-[11px] font-medium uppercase tracking-[0.32em] text-sah-gold;
+}
+
+/* Large display type wants tighter tracking than the browser default. */
+.display-xl {
+  @apply font-display italic leading-[0.98];
+  letter-spacing: -0.02em;
+}
+
+.display-lg {
+  @apply font-display italic leading-[1.04];
+  letter-spacing: -0.015em;
+}
+
+/* Figures that sit in columns must not jitter as they change. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
 }
 
 .section-heading {
-  @apply text-4xl md:text-5xl font-bold text-sah-charcoal font-display;
+  @apply font-display text-4xl italic text-sah-charcoal md:text-5xl;
 }
 
 .section-subheading {
-  @apply text-xl md:text-2xl font-medium text-sah-green font-display;
+  @apply font-display text-xl italic text-sah-gold md:text-2xl;
+}
+
+/* Policy pages: one set of rules instead of per-element utility classes. */
+.legal-body > section + section {
+  margin-top: 2.5rem;
+}
+
+.legal-body h2 {
+  @apply font-display text-2xl italic text-sah-charcoal;
+}
+
+.legal-body h3 {
+  @apply mt-5 font-display text-lg italic text-sah-charcoal;
+}
+
+.legal-body p {
+  @apply mt-3 font-body leading-relaxed text-sah-charcoal/70;
+}
+
+.legal-body ul {
+  @apply mt-4 space-y-2 font-body text-sah-charcoal/70;
+}
+
+.legal-body li {
+  @apply relative pl-5;
+}
+
+.legal-body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  height: 4px;
+  width: 4px;
+  transform: rotate(45deg);
+  background-color: var(--sah-gold);
+}
+
+.legal-body a {
+  @apply text-sah-gold underline-offset-4;
+  transition: color 200ms var(--ease-out-expo);
+}
+
+.legal-body a:hover {
+  @apply text-sah-charcoal underline;
+}
+
+.legal-body strong {
+  @apply font-medium text-sah-charcoal;
+}
+
+/* Let a reader stop the credential marquee to actually read it. */
+.marquee-pause:hover .animate-marquee,
+.marquee-pause:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* Hairline rule that fades out at both ends. */
+.rule-fade {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(196, 163, 97, 0.35) 20%,
+    rgba(196, 163, 97, 0.35) 80%,
+    transparent
+  );
 }

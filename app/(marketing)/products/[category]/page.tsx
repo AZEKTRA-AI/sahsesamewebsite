@@ -4,23 +4,34 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import PageHero from '@/components/marketing/PageHero'
 import PageCTA from '@/components/marketing/PageCTA'
+import { RevealGroup, RevealItem } from '@/components/ui/Reveal'
+import SpotlightCard from '@/components/ui/SpotlightCard'
 
 const categoryImages: Record<string, string> = {
-  sesame: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
-  pulses: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
+  sesame:
+    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
+  pulses:
+    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
   rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
 }
 
-export async function generateMetadata({ params }: { params: { category: string } }) {
-  const category = await prisma.category.findUnique({
-    where: { slug: params.category },
-  })
+const categoryLead: Record<string, string> = {
+  sesame:
+    'Hulled and natural white sesame, cleaned to your purity and moisture ceiling for tahini, bakery, and oil crushing.',
+  pulses:
+    'Chickpeas, split red lentils, and split yellow gram — milled and graded under our own supervision in Faisalabad.',
+  rice: 'Long-grain Basmati and IRRI varieties, sortex-cleaned and graded for wholesale, import, and re-export.',
+}
 
-  if (!category) return { title: 'Not Found' }
+export async function generateMetadata({ params }: { params: { category: string } }) {
+  const category = await prisma.category.findUnique({ where: { slug: params.category } })
+  if (!category) return { title: 'Not found' }
 
   return {
-    title: `${category.name} | SAH Company`,
-    description: `Browse our premium ${category.name.toLowerCase()} collection from Pakistan`,
+    title: category.name,
+    description:
+      categoryLead[category.slug] ??
+      `Export-grade ${category.name.toLowerCase()} from Pakistan.`,
   }
 }
 
@@ -40,75 +51,142 @@ export default async function CategoryPage({
       products: {
         where: { status: 'PUBLISHED' },
         orderBy: { sortOrder: 'asc' },
-        include: {
-          images: { orderBy: { sortOrder: 'asc' }, take: 1 },
-        },
+        include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
       },
     },
   })
 
-  if (!category) {
-    notFound()
-  }
+  if (!category) notFound()
 
-  const heroImage = categoryImages[category.slug] || 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'
+  const heroImage = categoryImages[category.slug] || categoryImages.sesame
 
   return (
-    <div>
+    <>
       <PageHero
-        eyebrow="PRODUCT CATEGORY"
+        eyebrow="Product category"
         title={category.name}
-        subtitle={`Premium ${category.name.toLowerCase()} sourced directly from Pakistan's agricultural heartland.`}
+        subtitle={
+          categoryLead[category.slug] ??
+          `Export-grade ${category.name.toLowerCase()} sourced from Pakistan’s agricultural heartland.`
+        }
         image={heroImage}
         imageAlt={category.name}
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Products', href: '/products' },
+          { label: category.name },
+        ]}
       />
 
-      {/* Products Grid */}
       {category.products.length > 0 ? (
-        <section className="py-16 sm:py-24 bg-white">
-          <div className="container-wide grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {category.products.map((product) => (
-              <Link
-                key={product.id}
-                href={`/products/${category.slug}/${product.slug}`}
-                className="group bg-white border border-sah-gold/10 rounded-lg overflow-hidden hover:border-sah-gold/40 transition-[border-color] duration-200 ease-out active:scale-[0.98]"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={product.images[0]?.url || heroImage}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-sah-earth/60 via-transparent to-transparent" />
-                </div>
-                <div className="p-6 space-y-2">
-                  <h3 className="font-display text-lg italic text-sah-charcoal group-hover:text-sah-gold transition-colors">
-                    {product.name}
-                  </h3>
-                  {product.origin && (
-                    <p className="font-body text-sm text-sah-charcoal/70">{product.origin}</p>
-                  )}
-                  <p className="font-body text-sm text-sah-gold font-medium">View Details →</p>
-                </div>
-              </Link>
-            ))}
+        <section className="bg-white py-20 sm:py-28">
+          <div className="container-wide">
+            <div className="mb-10 flex items-baseline justify-between gap-4 sm:mb-14">
+              <h2 className="font-display text-2xl italic text-sah-charcoal sm:text-3xl">
+                The {category.name.toLowerCase()} range
+              </h2>
+              <p className="tnum shrink-0 font-body text-sm text-sah-charcoal/50">
+                {category.products.length} product
+                {category.products.length !== 1 ? 's' : ''}
+              </p>
+            </div>
+
+            <RevealGroup
+              className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+              stagger={0.07}
+            >
+              {category.products.map((product, idx) => (
+                <RevealItem key={product.id} className="h-full">
+                  <SpotlightCard
+                    as="article"
+                    className="h-full overflow-hidden rounded-card border border-sah-gold/15 bg-white transition-[border-color,transform,box-shadow] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 hover:shadow-lift"
+                  >
+                    <Link
+                      href={`/products/${category.slug}/${product.slug}`}
+                      className="group block h-full transition-transform duration-200 ease-out-expo active:scale-[0.985]"
+                    >
+                      <div className="relative h-52 overflow-hidden">
+                        <Image
+                          src={product.images[0]?.url || heroImage}
+                          alt={product.images[0]?.alt || product.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.07]"
+                        />
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-gradient-to-t from-sah-earth/55 via-transparent to-transparent"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="tnum absolute left-4 top-4 font-display text-lg text-white/60"
+                        >
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                      </div>
+
+                      <div className="p-6">
+                        <h3 className="font-display text-lg italic leading-snug text-sah-charcoal transition-colors duration-200 group-hover:text-sah-gold">
+                          {product.name}
+                        </h3>
+                        {product.origin && (
+                          <p className="mt-1.5 font-body text-sm text-sah-charcoal/60">
+                            {product.origin}
+                          </p>
+                        )}
+                        <span className="mt-5 inline-flex items-center gap-2 font-body text-sm font-medium text-sah-gold">
+                          Specifications
+                          <svg
+                            className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5 12h14M13 6l6 6-6 6"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </Link>
+                  </SpotlightCard>
+                </RevealItem>
+              ))}
+            </RevealGroup>
           </div>
         </section>
       ) : (
-        <section className="py-16 sm:py-24 bg-white text-center">
-          <p className="font-body text-sah-charcoal/70 text-lg">No products available in this category yet.</p>
+        <section className="bg-white py-20 sm:py-28">
+          <div className="container-wide">
+            <div className="mx-auto max-w-md rounded-panel border border-sah-gold/15 bg-sah-light p-10 text-center">
+              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-sah-gold/35">
+                <span className="h-1.5 w-1.5 rounded-full bg-sah-gold" />
+              </div>
+              <h2 className="font-display text-xl italic text-sah-charcoal">
+                Nothing listed here yet
+              </h2>
+              <p className="mt-3 font-body text-sm text-sah-charcoal/65">
+                We are still preparing the {category.name.toLowerCase()} listings. Tell us
+                what you need and we will quote against your specification directly.
+              </p>
+              <Link href="/contact" className="btn-solid mt-7">
+                Send an enquiry
+              </Link>
+            </div>
+          </div>
         </section>
       )}
 
-      {/* CTA */}
-      <div className="pb-16 sm:pb-24 bg-white">
+      <div className="bg-white pb-20 sm:pb-28">
         <PageCTA
-          title={`Interested in ${category.name}?`}
-          subtitle="Request a detailed quotation or samples."
+          title={`Interested in ${category.name.toLowerCase()}?`}
+          subtitle="Request a detailed quotation, a certificate of analysis, or a sample before you contract."
         />
       </div>
-    </div>
+    </>
   )
 }

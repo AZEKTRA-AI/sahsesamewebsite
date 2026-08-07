@@ -1,135 +1,184 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
+const productLinks = [
+  { label: 'Sesame seeds', href: '/products/sesame' },
+  { label: 'Pulses', href: '/products/pulses' },
+  { label: 'Rice', href: '/products/rice' },
+  { label: 'All products', href: '/products' },
+]
+
+const companyLinks = [
+  { label: 'About us', href: '/about' },
+  { label: 'Quality & process', href: '/quality-process' },
+  { label: 'Packaging & logistics', href: '/packaging-logistics' },
+  { label: 'Request a quote', href: '/contact' },
+]
+
 export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer className="bg-sah-charcoal text-white py-16">
-      <div className="container-wide">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Company Info */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
+    <footer className="grain relative overflow-hidden bg-sah-earth text-white">
+      {/* Warm glow anchoring the footer to the rest of the dark sections. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(90% 60% at 10% 0%, rgba(196,163,97,0.13), transparent 60%)',
+        }}
+      />
+
+      <div className="container-wide relative py-16 sm:py-20">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
+          {/* Brand */}
+          <div className="lg:col-span-5">
+            <Link href="/" className="inline-flex items-center gap-3">
               <Image
                 src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png"
-                alt="SAH Company"
-                width={40}
-                height={40}
-                className="h-10 w-auto"
+                alt=""
+                width={56}
+                height={56}
+                className="h-12 w-auto"
               />
-            </div>
-            <h3 className="font-bold text-lg mb-3">Sain Abdul Hakim & Company</h3>
-            <p className="text-gray-300 text-sm mb-4">
-              Pakistan-based supplier of sesame seeds, pulses and rice, backed by family trading roots dating to 1992.
+              <span className="font-display text-xl italic leading-tight text-white">
+                Sain Abdul Hakim
+                <span className="block font-body text-[10px] uppercase tracking-[0.24em] text-sah-gold">
+                  &amp; Company · Est. 1985
+                </span>
+              </span>
+            </Link>
+
+            <p className="mt-6 max-w-sm font-body text-sm leading-relaxed text-white/60">
+              A Faisalabad family business supplying sesame seeds, pulses, and rice
+              to buyers worldwide — sourced through our own mills and verified
+              processing partners.
             </p>
-            <div className="flex gap-4">
+
+            <div className="mt-7 flex items-center gap-3">
               <a
                 href="https://wa.me/923000959524"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-sah-gold transition-colors"
                 aria-label="WhatsApp"
+                className="glass-dark flex h-10 w-10 items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-sah-gold active:scale-[0.94]"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.364-3.905 6.75-1.905 10.23.846 1.668 2.355 2.913 4.568 3.557.987.243 2.468.271 3.617.045l.3-.047c1.013-.188 1.969-.644 2.757-1.289.832-.639 1.432-1.613 1.846-2.613.414-1 .645-2.094.645-3.231 0-2.59-1.039-5.02-2.614-6.76-1.575-1.74-3.716-2.747-5.925-2.747zm10.906-9.142c-3.857-3.6-9.648-4.211-14.143-1.432C.904.757-1.25 4.469.825 8.31c1.054 1.93 2.94 3.398 5.228 4.118 2.287.72 4.882.545 6.931-.52 1.339-.688 2.440-1.553 3.268-2.66 1.27-1.7 1.708-3.887 1.241-5.993-.467-2.106-1.609-3.976-3.27-5.195z" />
+                <svg className="h-[18px] w-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.13-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.38-1.99-1.23-.74-.65-1.23-1.46-1.38-1.71-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43l-.47-.01c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.74 2.65 4.21 3.72.59.25 1.05.4 1.4.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z" />
                 </svg>
               </a>
               <a
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-sah-gold transition-colors"
                 aria-label="LinkedIn"
+                className="glass-dark flex h-10 w-10 items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-sah-gold active:scale-[0.94]"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="h-[18px] w-[18px]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                 </svg>
               </a>
             </div>
           </div>
 
-          {/* Products */}
-          <div>
-            <h4 className="font-bold text-lg mb-4">Products</h4>
-            <ul className="space-y-3 text-gray-300">
-              <li>
-                <Link href="/products/sesame" className="hover:text-sah-gold transition-colors">
-                  Sesame Seeds
-                </Link>
-              </li>
-              <li>
-                <Link href="/products/pulses" className="hover:text-sah-gold transition-colors">
-                  Pulses
-                </Link>
-              </li>
-              <li>
-                <Link href="/products/rice" className="hover:text-sah-gold transition-colors">
-                  Rice
-                </Link>
-              </li>
+          {/* Links */}
+          <nav className="lg:col-span-2" aria-label="Products">
+            <h2 className="font-body text-[11px] uppercase tracking-[0.24em] text-sah-gold">
+              Products
+            </h2>
+            <ul className="mt-5 space-y-3">
+              {productLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="link-underline font-body text-sm text-white/65 transition-colors duration-200 hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-bold text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-3 text-gray-300">
-              <li>
-                <Link href="/about" className="hover:text-sah-gold transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/quality-process" className="hover:text-sah-gold transition-colors">
-                  Quality & Process
-                </Link>
-              </li>
-              <li>
-                <Link href="/packaging-logistics" className="hover:text-sah-gold transition-colors">
-                  Packaging & Logistics
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-sah-gold transition-colors">
-                  Request a Quote
-                </Link>
-              </li>
+          <nav className="lg:col-span-2" aria-label="Company">
+            <h2 className="font-body text-[11px] uppercase tracking-[0.24em] text-sah-gold">
+              Company
+            </h2>
+            <ul className="mt-5 space-y-3">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="link-underline font-body text-sm text-white/65 transition-colors duration-200 hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-bold text-lg mb-4">Contact</h4>
-            <div className="space-y-4 text-gray-300 text-sm">
-              <div>
-                <p className="text-sah-gold font-medium mb-1">Address</p>
-                <p>Office No. 170, New Grain Market,<br />Dijkot Road, Faisalabad, Pakistan</p>
-              </div>
-              <div>
-                <p className="text-sah-gold font-medium mb-1">Phone</p>
-                <p>+92 300 0959524<br />+92 300 8663396</p>
-              </div>
-              <div>
-                <p className="text-sah-gold font-medium mb-1">Email</p>
-                <p>info@sahcompany.com</p>
-              </div>
-            </div>
+          {/* Contact */}
+          <div className="lg:col-span-3">
+            <h2 className="font-body text-[11px] uppercase tracking-[0.24em] text-sah-gold">
+              Contact
+            </h2>
+            <address className="mt-5 space-y-4 font-body text-sm not-italic text-white/65">
+              <p className="leading-relaxed">
+                Office No. 170, New Grain Market,
+                <br />
+                Dijkot Road, Faisalabad, Pakistan
+              </p>
+              <p className="tnum">
+                <a href="tel:+923000959524" className="block transition-colors duration-200 hover:text-white">
+                  +92 300 0959524
+                </a>
+                <a href="tel:+923008663396" className="block transition-colors duration-200 hover:text-white">
+                  +92 300 8663396
+                </a>
+              </p>
+              <p>
+                <a
+                  href="mailto:info@sahcompany.com"
+                  className="link-underline transition-colors duration-200 hover:text-white"
+                >
+                  info@sahcompany.com
+                </a>
+              </p>
+            </address>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-700 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} Sain Abdul Hakim and Company. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-gray-400 text-sm">
-              <Link href="/privacy-policy" className="hover:text-sah-gold transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms-conditions" className="hover:text-sah-gold transition-colors">
-                Terms & Conditions
-              </Link>
-            </div>
+        {/* Oversized wordmark — the footer's visual anchor, clipped by the edge. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none mt-14 select-none overflow-hidden"
+        >
+          <p className="whitespace-nowrap font-display text-[19vw] italic leading-[0.8] text-white/[0.045] lg:text-[15vw]">
+            Sesame · Pulses · Rice
+          </p>
+        </div>
+
+        <div className="rule-fade mt-10" />
+
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <p className="font-body text-xs text-white/45">
+            © {year} Sain Abdul Hakim &amp; Company. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <Link
+              href="/privacy-policy"
+              className="font-body text-xs text-white/45 transition-colors duration-200 hover:text-sah-gold"
+            >
+              Privacy policy
+            </Link>
+            <Link
+              href="/terms-conditions"
+              className="font-body text-xs text-white/45 transition-colors duration-200 hover:text-sah-gold"
+            >
+              Terms &amp; conditions
+            </Link>
           </div>
         </div>
       </div>

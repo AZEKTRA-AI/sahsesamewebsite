@@ -1,117 +1,105 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
+import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
+import SectionIntro from '@/components/ui/SectionIntro'
+import ParallaxImage from '@/components/ui/ParallaxImage'
+import Counter from '@/components/ui/Counter'
+
+const FOUNDED = 1985
+const YEARS = new Date().getFullYear() - FOUNDED
 
 const pillars = [
   {
-    label: 'Pulses Heritage',
-    description: 'Decades of experience in Pakistan\'s pulses trade, with ownership of two modern mills in Faisalabad.',
+    label: 'Pulses heritage',
+    description:
+      'Decades in Pakistan’s pulses trade, with two modern mills of our own in Faisalabad.',
   },
   {
-    label: 'Global Reach',
-    description: 'Connecting Pakistani agricultural products with international buyers through professional supply networks.',
+    label: 'Global reach',
+    description:
+      'Pakistani agricultural products moved to international buyers through established supply networks.',
   },
   {
-    label: 'Quality First',
-    description: 'Buyer-specific specifications, batch testing, and transparent communication in every transaction.',
+    label: 'Quality first',
+    description:
+      'Buyer-specific specifications, batch testing, and transparent communication on every contract.',
   },
 ]
 
 export default function TradingRootsSection() {
   return (
-    <section className="py-16 sm:py-24 bg-sah-cream border-y border-sah-gold/10">
+    <section className="relative overflow-hidden border-b border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
       <div className="container-wide">
-        {/* Image + Heading/Description */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 sm:mb-20">
-          {/* Photo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative h-64 sm:h-80 lg:h-[28rem] rounded-lg overflow-hidden order-1"
-          >
-            <Image
-              src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958255/sah-marketing/heritage-field.jpg"
-              alt="Golden agricultural fields of Pakistan at harvest"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+        {/* Asymmetric split: photo runs wider than the copy and sits lower. */}
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="relative lg:col-span-7">
+            <Reveal direction="right" duration={0.9}>
+              <ParallaxImage
+                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958255/sah-marketing/heritage-field.jpg"
+                alt="Golden wheat and sesame fields outside Faisalabad at harvest"
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="h-72 rounded-panel shadow-lift-lg sm:h-96 lg:h-[30rem]"
+                distance={40}
+              >
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-sah-earth/70 via-sah-earth/10 to-transparent"
+                />
+                <p className="absolute bottom-6 left-6 right-6 font-display text-xl italic text-white sm:text-2xl">
+                  Faisalabad, Punjab
+                </p>
+              </ParallaxImage>
+            </Reveal>
+
+            {/* Overlapping glass badge — breaks the rectangle and adds depth. */}
+            <Reveal delay={0.25} direction="up">
+              <div className="glass mx-auto -mt-10 w-[85%] rounded-card px-6 py-5 sm:absolute sm:-bottom-8 sm:-right-6 sm:mt-0 sm:w-auto lg:-right-10">
+                <p className="font-display text-3xl italic text-sah-charcoal">
+                  <Counter value={YEARS} suffix=" yrs" />
+                </p>
+                <p className="mt-1 font-body text-[11px] uppercase tracking-[0.2em] text-sah-charcoal/55">
+                  Trading without interruption
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          <div className="lg:col-span-5">
+            <SectionIntro
+              eyebrow={`Est. ${FOUNDED} · Family tradition`}
+              title="Family trading roots, four decades deep"
+              size="md"
+              lead="For nearly four decades our family has traded on the same terms: consistent quality, honest grading, and relationships that outlast any single shipment."
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-sah-earth/50 via-transparent to-transparent" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <p className="font-display text-xl sm:text-2xl italic text-white">Faisalabad, Pakistan</p>
-            </div>
-          </motion.div>
 
-          {/* Text content */}
-          <div className="order-2">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-6"
-            >
-              EST. 1985 · FAMILY TRADITION
-            </motion.p>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.8 }}
-              viewport={{ once: true }}
-              className="font-display text-3xl sm:text-4xl md:text-5xl italic text-sah-charcoal mb-6 leading-tight"
-            >
-              Family Trading Roots Since 1985
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              viewport={{ once: true }}
-              className="font-body text-base sm:text-lg leading-relaxed text-sah-charcoal"
-            >
-              For nearly four decades, our family has built trust through consistent quality and transparent relationships. From our mills in Faisalabad to buyers worldwide, we bring deep knowledge of agricultural sourcing, rigorous quality evaluation, and reliable supply chains that have defined our reputation.
-            </motion.p>
+            <Reveal delay={0.2}>
+              <p className="mt-6 max-w-xl font-body text-base leading-relaxed text-sah-charcoal/70">
+                From the mills in Faisalabad to a container leaving Karachi Port,
+                every lot passes through the same hands — deep sourcing knowledge,
+                rigorous evaluation, and a supply chain we can answer for.
+              </p>
+            </Reveal>
           </div>
         </div>
 
-        {/* Three pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+        {/* Pillars */}
+        <RevealGroup className="mt-20 grid grid-cols-1 gap-px overflow-hidden rounded-card bg-sah-gold/15 sm:mt-28 md:grid-cols-3">
           {pillars.map((pillar, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + idx * 0.1, duration: 0.6 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="flex flex-col h-full">
-                {/* Icon circle */}
-                <div className="w-12 h-12 rounded-full bg-sah-gold/15 flex items-center justify-center mb-6">
-                  <div className="w-6 h-6 rounded-full bg-sah-gold" />
-                </div>
-
-                {/* Label */}
-                <h3 className="font-display text-xl italic text-sah-charcoal mb-4">
+            <RevealItem key={pillar.label} className="bg-sah-cream">
+              <div className="group h-full bg-sah-cream p-8 transition-colors duration-300 ease-out-expo hover:bg-white">
+                <p className="font-display text-4xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
+                  {String(idx + 1).padStart(2, '0')}
+                </p>
+                <h3 className="mt-5 font-display text-xl italic text-sah-charcoal">
                   {pillar.label}
                 </h3>
-
-                {/* Description */}
-                <p className="font-body text-sm leading-relaxed text-sah-charcoal/80">
+                <p className="mt-3 font-body text-sm leading-relaxed text-sah-charcoal/70">
                   {pillar.description}
                 </p>
-
-                {/* Bottom accent line */}
-                <div className="mt-6 pt-6 border-t border-sah-gold/20 flex-grow" />
               </div>
-            </motion.div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   )

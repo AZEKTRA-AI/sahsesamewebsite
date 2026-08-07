@@ -1,99 +1,86 @@
+import LegalShell from '@/components/marketing/LegalShell'
+
 export const metadata = {
-  title: 'Privacy Policy | SAH Company',
-  description: 'Privacy policy for SAH Company website',
+  title: 'Privacy policy',
+  description: 'How SAH Company collects, uses, and protects personal data submitted through this website.',
 }
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="py-16">
-      <div className="container-wide max-w-3xl space-y-8">
-        <div className="space-y-4 mb-12">
-          <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold">LEGAL</p>
-          <h1 className="font-display text-4xl sm:text-5xl italic text-sah-charcoal">Privacy Policy</h1>
-          <p className="font-body text-sah-charcoal/60">Last updated: {new Date().toLocaleDateString()}</p>
+    <LegalShell title="Privacy policy" updated="12 January 2026">
+      <section>
+        <h2>1. Introduction</h2>
+        <p>
+          Sain Abdul Hakim &amp; Company (“we”, “us”, “our”) operates the SAH Company
+          website. This page explains what personal data we collect, how we use it, and the
+          choices you have.
+        </p>
+      </section>
+
+      <section>
+        <h2>2. Information we collect</h2>
+        <p>
+          We collect a small amount of information, for clearly defined purposes.
+        </p>
+        <h3>Personal data</h3>
+        <p>
+          When you submit a contact form or a request for quotation we collect your name,
+          email address, phone number, company details, and whatever message you write.
+        </p>
+        <h3>Usage data</h3>
+        <p>
+          We may collect information about how the website is accessed and used, including
+          pages visited, time spent on them, and interactions.
+        </p>
+      </section>
+
+      <section>
+        <h2>3. How we use it</h2>
+        <p>SAH Company uses the collected data to:</p>
+        <ul>
+          <li>Provide and maintain this website</li>
+          <li>Respond to your enquiries and quotation requests</li>
+          <li>Send business-related announcements where you have asked for them</li>
+          <li>Monitor and analyse usage trends</li>
+          <li>Detect, prevent, and address technical problems</li>
+          <li>Comply with legal obligations</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>4. Security of data</h2>
+        <p>
+          We take the security of your data seriously, but no method of transmission over
+          the internet or of electronic storage is completely secure. We use commercially
+          reasonable measures to protect your personal data and cannot guarantee absolute
+          security.
+        </p>
+      </section>
+
+      <section>
+        <h2>5. Changes to this policy</h2>
+        <p>
+          We may update this privacy policy from time to time. Changes are published on this
+          page along with a revised effective date.
+        </p>
+      </section>
+
+      <section>
+        <h2>6. Contact</h2>
+        <p>If you have questions about this policy:</p>
+        <div className="mt-4 rounded-card border border-sah-gold/15 bg-sah-light p-6">
+          <p>
+            <strong>Email:</strong> <a href="mailto:info@sahcompany.com">info@sahcompany.com</a>
+          </p>
+          <p>
+            <strong>Phone:</strong> <a href="tel:+923000959524">+92 300 0959524</a>
+          </p>
+          <p>
+            <strong>Address:</strong> Office No. 170, New Grain Market, Dijkot Road,
+            Faisalabad, Pakistan
+          </p>
         </div>
-
-        <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-sah-charcoal">1. Introduction</h2>
-          <p className="font-body text-sah-charcoal/75 leading-relaxed">
-            Sain Abdul Hakim and Company ("we," "us," "our," or "Company") operates the SAH Company website. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our website and the choices you have associated with that data.
-          </p>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-sah-charcoal">2. Information Collection and Use</h2>
-          <p className="font-body text-sah-charcoal/75 leading-relaxed">
-            We collect several different types of information for various purposes to provide and improve our service to you.
-          </p>
-          <div className="space-y-3 ml-4">
-            <div>
-              <h3 className="font-display italic text-sah-charcoal">Personal Data</h3>
-              <p className="font-body text-sah-charcoal/75 text-sm">
-                When you submit a contact form or request for quotation, we may collect: name, email address, phone number, company information, and any messages you provide.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-display italic text-sah-charcoal">Usage Data</h3>
-              <p className="font-body text-sah-charcoal/75 text-sm">
-                We may collect information on how the website is accessed and used, including pages visited, time spent on pages, and user interactions.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-sah-charcoal">3. Use of Data</h2>
-          <p className="font-body text-sah-charcoal/75 leading-relaxed">
-            SAH Company uses the collected data for various purposes:
-          </p>
-          <ul className="list-disc list-inside space-y-2 font-body text-sah-charcoal/75 ml-2">
-            <li>To provide and maintain our website</li>
-            <li>To respond to your inquiries and quotation requests</li>
-            <li>To send you business-related announcements and updates</li>
-            <li>To monitor and analyze trends and usage of the website</li>
-            <li>To detect, prevent, and address technical issues</li>
-            <li>To comply with legal obligations</li>
-          </ul>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-sah-charcoal">4. Security of Data</h2>
-          <p className="font-body text-sah-charcoal/75 leading-relaxed">
-            The security of your data is important to us but remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal data, we cannot guarantee its absolute security.
-          </p>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-sah-charcoal">5. Changes to This Privacy Policy</h2>
-          <p className="font-body text-sah-charcoal/75 leading-relaxed">
-            We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "effective date" at the top of this Privacy Policy.
-          </p>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-sah-charcoal">6. Contact Us</h2>
-          <p className="font-body text-sah-charcoal/75 leading-relaxed">
-            If you have any questions about this Privacy Policy, please contact us:
-          </p>
-          <div className="bg-sah-light border border-sah-gold/10 rounded-lg p-6 space-y-2">
-            <p className="font-body text-sah-charcoal/75">
-              <strong>Email:</strong>{' '}
-              <a href="mailto:info@sahcompany.pk" className="text-sah-gold hover:underline">
-                info@sahcompany.pk
-              </a>
-            </p>
-            <p className="font-body text-sah-charcoal/75">
-              <strong>Phone:</strong>{' '}
-              <a href="tel:+923000959524" className="text-sah-gold hover:underline">
-                +92 300 0959524
-              </a>
-            </p>
-            <p className="font-body text-sah-charcoal/75">
-              <strong>Address:</strong> Office No. 170, New Grain Market, Dijkot Road, Faisalabad, Pakistan
-            </p>
-          </div>
-        </section>
-      </div>
-    </div>
+      </section>
+    </LegalShell>
   )
 }

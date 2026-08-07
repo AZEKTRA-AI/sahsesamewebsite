@@ -1,32 +1,54 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import ProductGallery from '@/components/marketing/ProductGallery'
 import PageCTA from '@/components/marketing/PageCTA'
+import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
+import SpotlightCard from '@/components/ui/SpotlightCard'
 
 const categoryImages: Record<string, string> = {
-  sesame: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
-  pulses: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
+  sesame:
+    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
+  pulses:
+    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
   rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
 }
 
-export async function generateMetadata({ params }: { params: { category: string; slug: string } }) {
-  const product = await prisma.product.findUnique({
-    where: { slug: params.slug },
-  })
+const infoCards = [
+  {
+    title: 'Quality assurance',
+    description:
+      'Batch lab analysis and third-party inspection by SGS or Intertek arranged on request.',
+  },
+  {
+    title: 'Flexible packaging',
+    description:
+      '25 and 50 kg PP woven bags, kraft with liner, jumbo bags, or your own private-label artwork.',
+  },
+  {
+    title: 'Global shipping',
+    description:
+      'FOB Karachi, CFR, and CIF, with full export documentation prepared for your destination.',
+  },
+]
 
-  if (!product) return { title: 'Not Found' }
+export async function generateMetadata({
+  params,
+}: {
+  params: { category: string; slug: string }
+}) {
+  const product = await prisma.product.findUnique({ where: { slug: params.slug } })
+  if (!product) return { title: 'Not found' }
 
   return {
-    title: `${product.name} | SAH Company`,
-    description: `${product.name} - ${product.origin || 'Premium product'} from Pakistan`,
+    title: product.name,
+    description: `${product.name} from ${product.origin || 'Pakistan'} — export-grade, packed and documented to contract specification.`,
   }
 }
 
 export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    include: { category: true },
-  })
+  const products = await prisma.product.findMany({ include: { category: true } })
   return products.map((product) => ({
     category: product.category.slug,
     slug: product.slug,
@@ -46,89 +68,218 @@ export default async function ProductDetailPage({
     },
   })
 
-  if (!product || product.category.slug !== params.category) {
-    notFound()
-  }
+  if (!product || product.category.slug !== params.category) notFound()
 
-  const specs = (product.specs as Record<string, any>) || {}
-  const fallbackImage = categoryImages[product.category.slug] || 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'
+  const related = await prisma.product.findMany({
+    where: {
+      categoryId: product.categoryId,
+      status: 'PUBLISHED',
+      NOT: { id: product.id },
+    },
+    orderBy: { sortOrder: 'asc' },
+    take: 3,
+    include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
+  })
 
-  const infoCards = [
-    { title: 'Quality Assurance', description: 'Third-party inspection and laboratory testing available upon request' },
-    { title: 'Flexible Packaging', description: 'Customized packaging options to meet your specific requirements' },
-    { title: 'Global Shipping', description: 'FOB, CFR, and CIF incoterms available for worldwide delivery' },
-  ]
+  const specs = (product.specs as Record<string, unknown>) || {}
+  const specEntries = Object.entries(specs)
+  const fallbackImage = categoryImages[product.category.slug] || categoryImages.sesame
 
   return (
-    <div className="pt-8">
-      {/* Breadcrumb */}
-      <section className="container-wide mb-8">
-        <div className="flex items-center gap-2 text-sm font-body text-sah-charcoal/60">
-          <Link href="/products" className="hover:text-sah-gold transition-colors">Products</Link>
-          <span>·</span>
-          <Link href={`/products/${product.category.slug}`} className="hover:text-sah-gold transition-colors">
-            {product.category.name}
-          </Link>
-          <span>·</span>
-          <span className="text-sah-gold font-medium">{product.name}</span>
-        </div>
-      </section>
+    <>
+      {/* Breadcrumb bar */}
+      <div className="border-b border-sah-gold/12 bg-sah-light">
+        <nav aria-label="Breadcrumb" className="container-wide py-4">
+          <ol className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-body text-xs text-sah-charcoal/55">
+            <li>
+              <Link href="/products" className="transition-colors duration-200 hover:text-sah-gold">
+                Products
+              </Link>
+            </li>
+            <li aria-hidden="true" className="h-1 w-1 rotate-45 bg-sah-gold/60" />
+            <li>
+              <Link
+                href={`/products/${product.category.slug}`}
+                className="transition-colors duration-200 hover:text-sah-gold"
+              >
+                {product.category.name}
+              </Link>
+            </li>
+            <li aria-hidden="true" className="h-1 w-1 rotate-45 bg-sah-gold/60" />
+            <li className="font-medium text-sah-gold">{product.name}</li>
+          </ol>
+        </nav>
+      </div>
 
-      {/* Product Overview */}
-      <section className="container-wide grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 mb-16 sm:mb-24">
-        <ProductGallery images={product.images} productName={product.name} fallbackImage={fallbackImage} />
-
-        <div className="space-y-8">
-          <div>
-            <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">{product.category.name}</p>
-            <h1 className="font-display text-3xl sm:text-4xl italic text-sah-charcoal mb-3">{product.name}</h1>
-            {product.origin && (
-              <p className="font-body text-sah-charcoal/70">Origin: {product.origin}</p>
-            )}
-          </div>
-
-          {Object.keys(specs).length > 0 && (
-            <div className="space-y-4">
-              <h2 className="font-display text-lg italic text-sah-charcoal">Specifications</h2>
-              <div className="bg-sah-light rounded-lg p-6 space-y-3 border border-sah-gold/10">
-                {Object.entries(specs).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center pb-3 border-b border-sah-gold/10 last:border-0 last:pb-0">
-                    <span className="capitalize font-body text-sm text-sah-charcoal/70">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                    <span className="font-body text-sm font-medium text-sah-charcoal">{String(value)}</span>
-                  </div>
-                ))}
-              </div>
+      {/* Overview */}
+      <section className="bg-white py-12 sm:py-16">
+        <div className="container-wide grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+          <Reveal className="lg:col-span-6" duration={0.8}>
+            <div className="lg:sticky lg:top-32">
+              <ProductGallery
+                images={product.images}
+                productName={product.name}
+                fallbackImage={fallbackImage}
+              />
             </div>
-          )}
+          </Reveal>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-4">
-            <Link href="/contact" className="px-6 py-3 bg-sah-gold text-white font-body font-medium rounded-lg hover:bg-sah-charcoal transition-colors duration-150 ease-out active:scale-[0.97] text-center">
-              Request Quotation
-            </Link>
-            <Link href="/contact" className="px-6 py-3 border border-sah-gold text-sah-gold font-body font-medium rounded-lg hover:bg-sah-cream transition-colors duration-150 ease-out active:scale-[0.97] text-center">
-              Request Sample
-            </Link>
+          <div className="lg:col-span-6">
+            <Reveal blur={false} duration={0.6}>
+              <div className="mb-5 flex items-center gap-3">
+                <span className="h-px w-8 bg-sah-gold/60" />
+                <p className="eyebrow">{product.category.name}</p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <h1 className="display-lg text-3xl text-sah-charcoal sm:text-4xl md:text-5xl">
+                {product.name}
+              </h1>
+            </Reveal>
+
+            {product.origin && (
+              <Reveal delay={0.16}>
+                <p className="mt-4 font-body text-sah-charcoal/65">
+                  <span className="text-sah-charcoal/45">Origin — </span>
+                  {product.origin}
+                </p>
+              </Reveal>
+            )}
+
+            {specEntries.length > 0 && (
+              <Reveal delay={0.2}>
+                <div className="mt-9">
+                  <h2 className="font-display text-lg italic text-sah-charcoal">
+                    Specifications
+                  </h2>
+                  <dl className="mt-4 overflow-hidden rounded-card border border-sah-gold/15 bg-sah-light">
+                    {specEntries.map(([key, value], idx) => (
+                      <div
+                        key={key}
+                        className={`flex items-baseline justify-between gap-6 px-5 py-3.5 transition-colors duration-200 hover:bg-white ${
+                          idx > 0 ? 'border-t border-sah-gold/12' : ''
+                        }`}
+                      >
+                        <dt className="font-body text-sm capitalize text-sah-charcoal/60">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                        </dt>
+                        <dd className="tnum text-right font-body text-sm font-medium text-sah-charcoal">
+                          {String(value)}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </Reveal>
+            )}
+
+            <Reveal delay={0.28} blur={false}>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <Link href="/contact" className="btn-solid text-center">
+                  Request quotation
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-full border border-sah-gold/45 px-7 py-3 font-body font-medium text-sah-gold transition-[background-color,border-color,transform] duration-200 ease-out-expo hover:border-sah-gold hover:bg-sah-gold/10 active:scale-[0.97]"
+                >
+                  Request a sample
+                </Link>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.34}>
+              <p className="mt-5 font-body text-xs leading-relaxed text-sah-charcoal/45">
+                Specifications shown are typical export ranges. Final contract values are
+                agreed per lot and confirmed on the certificate of analysis.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Additional Info */}
-      <section className="container-wide grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 sm:mb-24">
-        {infoCards.map((card, idx) => (
-          <div key={idx} className="bg-sah-light rounded-lg p-6 border border-sah-gold/10">
-            <h3 className="font-display text-base italic text-sah-charcoal mb-2">{card.title}</h3>
-            <p className="font-body text-sm text-sah-charcoal/70">{card.description}</p>
-          </div>
-        ))}
+      {/* Assurances */}
+      <section className="border-y border-sah-gold/10 bg-sah-cream py-16 sm:py-20">
+        <div className="container-wide">
+          <RevealGroup className="grid grid-cols-1 gap-5 md:grid-cols-3" stagger={0.08}>
+            {infoCards.map((card, idx) => (
+              <RevealItem key={card.title} className="h-full">
+                <SpotlightCard className="group h-full rounded-card border border-sah-gold/15 bg-white p-7 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40">
+                  <p className="tnum font-display text-3xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
+                    {String(idx + 1).padStart(2, '0')}
+                  </p>
+                  <h2 className="mt-4 font-display text-lg italic text-sah-charcoal">
+                    {card.title}
+                  </h2>
+                  <p className="mt-2.5 font-body text-sm leading-relaxed text-sah-charcoal/65">
+                    {card.description}
+                  </p>
+                </SpotlightCard>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
       </section>
 
-      {/* CTA */}
-      <div className="pb-16 sm:pb-24">
+      {/* Related */}
+      {related.length > 0 && (
+        <section className="bg-white py-16 sm:py-20">
+          <div className="container-wide">
+            <div className="mb-8 flex items-baseline justify-between gap-4">
+              <h2 className="font-display text-2xl italic text-sah-charcoal">
+                Also in {product.category.name.toLowerCase()}
+              </h2>
+              <Link
+                href={`/products/${product.category.slug}`}
+                className="group inline-flex shrink-0 items-center gap-2 font-body text-sm font-medium text-sah-gold transition-colors duration-200 hover:text-sah-charcoal"
+              >
+                View all
+                <svg
+                  className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
+            </div>
+
+            <RevealGroup className="grid grid-cols-1 gap-5 sm:grid-cols-3" stagger={0.08}>
+              {related.map((item) => (
+                <RevealItem key={item.id} className="h-full">
+                  <Link
+                    href={`/products/${product.category.slug}/${item.slug}`}
+                    className="group block h-full overflow-hidden rounded-card border border-sah-gold/15 transition-[border-color,transform] duration-300 ease-out-expo hover:border-sah-gold/40 active:scale-[0.985]"
+                  >
+                    <div className="relative h-40 overflow-hidden">
+                      <Image
+                        src={item.images[0]?.url || fallbackImage}
+                        alt={item.images[0]?.alt || item.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                        className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.07]"
+                      />
+                    </div>
+                    <p className="p-5 font-display text-base italic text-sah-charcoal transition-colors duration-200 group-hover:text-sah-gold">
+                      {item.name}
+                    </p>
+                  </Link>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
+        </section>
+      )}
+
+      <div className="bg-white pb-20 sm:pb-28">
         <PageCTA
-          title="Ready to Place an Order?"
-          subtitle="Get in touch for quotations, samples, or to discuss bulk orders."
+          title="Ready to place an order?"
+          subtitle="Quotations, samples, and bulk contracts — talk to the export desk directly."
         />
       </div>
-    </div>
+    </>
   )
 }

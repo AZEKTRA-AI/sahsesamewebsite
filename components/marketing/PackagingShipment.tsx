@@ -1,170 +1,147 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
+import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
+import SectionIntro from '@/components/ui/SectionIntro'
+import ParallaxImage from '@/components/ui/ParallaxImage'
+import SpotlightCard from '@/components/ui/SpotlightCard'
 
 const packagingOptions = [
-  '25 kg PP woven bags',
-  '50 kg PP woven bags',
-  'Kraft paper bags with inner liner',
-  'Jumbo bags (IBC containers)',
-  'Buyer-branded or private-label',
-  'Custom packaging per requirements',
+  { label: '25 kg PP woven bags', note: 'Standard export unit' },
+  { label: '50 kg PP woven bags', note: 'Bulk handling' },
+  { label: 'Kraft paper bags', note: 'With inner food-grade liner' },
+  { label: 'Jumbo bags', note: '1 MT flexible bulk containers' },
+  { label: 'Buyer-branded packing', note: 'Your artwork, our line' },
+  { label: 'Custom formats', note: 'Specified per contract' },
 ]
 
 const shippingTerms = [
-  { label: 'FOB Karachi', description: 'Free on Board from Karachi Port' },
-  { label: 'CFR', description: 'Cost and Freight included' },
-  { label: 'CIF', description: 'Cost, Insurance & Freight' },
-  { label: 'Sample Orders', description: 'Small quantities available' },
+  { label: 'FOB Karachi', description: 'Free on board, loaded at Karachi Port' },
+  { label: 'CFR', description: 'Cost and freight to your named port' },
+  { label: 'CIF', description: 'Cost, insurance, and freight covered' },
+  { label: 'Sample orders', description: 'Small quantities by courier' },
 ]
 
 const docs = [
-  'Commercial Invoice', 'Packing List', 'Certificate of Origin', 'Phytosanitary Certificate',
-  'Fumigation Certificate', 'Certificate of Analysis', 'Inspection Report', 'Bill of Lading',
-  'Insurance Certificate', 'Destination-Specific Docs',
+  'Commercial invoice',
+  'Packing list',
+  'Certificate of origin',
+  'Phytosanitary certificate',
+  'Fumigation certificate',
+  'Certificate of analysis',
+  'Inspection report',
+  'Bill of lading',
+  'Insurance certificate',
+  'Destination-specific docs',
 ]
 
 export default function PackagingShipment() {
   return (
-    <section className="py-16 sm:py-24 bg-sah-cream border-y border-sah-gold/10">
+    <section className="border-y border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
       <div className="container-wide">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-10 sm:mb-16"
-        >
-          <p className="font-body text-xs uppercase tracking-[0.3em] text-sah-gold mb-4">
-            DELIVERY & FLEXIBILITY
-          </p>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl italic text-sah-charcoal leading-tight">
-            Packaging & Logistics
-          </h2>
-        </motion.div>
+        <SectionIntro
+          eyebrow="Delivery & flexibility"
+          title="Packed your way, shipped on your terms"
+          lead="Packing, documentation, and incoterms are set by the contract — not by what happens to be convenient at the mill."
+        />
 
-        {/* Port banner photo */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative h-56 sm:h-72 lg:h-80 rounded-lg overflow-hidden mb-16 sm:mb-20"
-        >
-          <Image
+        {/* Port banner with an overlapping glass caption */}
+        <Reveal className="relative mt-12 sm:mt-16" duration={0.85}>
+          <ParallaxImage
             src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958259/sah-marketing/logistics-port.jpg"
-            alt="Shipping containers at port for global export"
-            fill
+            alt="Container ship loading at Karachi Port"
             sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-sah-earth/80 via-sah-earth/30 to-transparent" />
-          <div className="absolute inset-0 flex items-center">
-            <div className="px-6 sm:px-10 max-w-xl">
-              <p className="font-display text-2xl sm:text-3xl md:text-4xl italic text-white leading-tight">
-                From Karachi Port to Global Markets
-              </p>
-            </div>
+            className="h-64 rounded-panel shadow-lift-lg sm:h-80 lg:h-[26rem]"
+            distance={50}
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-r from-sah-earth/85 via-sah-earth/35 to-transparent"
+            />
+          </ParallaxImage>
+
+          <div className="glass-dark absolute bottom-6 left-6 right-6 rounded-card p-6 sm:bottom-8 sm:left-8 sm:right-auto sm:max-w-md sm:p-8">
+            <p className="font-display text-2xl italic leading-tight text-white sm:text-3xl">
+              From Karachi Port to global markets
+            </p>
+            <p className="mt-3 font-body text-sm text-white/65">
+              Primary loading at Karachi Port, with Port Qasim as an alternative when
+              berth scheduling demands it.
+            </p>
           </div>
-        </motion.div>
+        </Reveal>
 
-        {/* Packaging & Shipping Terms */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
-          {/* Packaging */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="font-display text-2xl italic text-sah-charcoal mb-8">Packaging Options</h3>
-            <div className="space-y-3">
-              {packagingOptions.map((option, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="flex items-center gap-4 p-4 bg-white border border-sah-gold/10 rounded-lg hover:border-sah-gold/40 transition-all"
-                >
-                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-sah-gold" />
-                  <span className="font-body text-sah-charcoal">{option}</span>
-                </motion.div>
+        {/* Packaging + terms */}
+        <div className="mt-16 grid grid-cols-1 gap-10 lg:mt-24 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <Reveal blur={false}>
+              <h3 className="font-display text-2xl italic text-sah-charcoal">
+                Packaging options
+              </h3>
+            </Reveal>
+
+            <RevealGroup className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2" stagger={0.05}>
+              {packagingOptions.map((option) => (
+                <RevealItem key={option.label}>
+                  <SpotlightCard className="h-full rounded-card border border-sah-gold/15 bg-white p-5 transition-[border-color,transform] duration-300 ease-out-expo hover:border-sah-gold/40 hover:-translate-y-0.5">
+                    <p className="font-body text-sm font-medium text-sah-charcoal">
+                      {option.label}
+                    </p>
+                    <p className="mt-1 font-body text-xs text-sah-charcoal/55">{option.note}</p>
+                  </SpotlightCard>
+                </RevealItem>
               ))}
-            </div>
-          </motion.div>
+            </RevealGroup>
+          </div>
 
-          {/* Shipping Terms */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="font-display text-2xl italic text-sah-charcoal mb-8">Shipping Terms</h3>
-            <div className="space-y-3 mb-8">
+          <div className="lg:col-span-5">
+            <Reveal blur={false}>
+              <h3 className="font-display text-2xl italic text-sah-charcoal">Shipping terms</h3>
+            </Reveal>
+
+            <RevealGroup className="mt-7 overflow-hidden rounded-card border border-sah-gold/15 bg-white">
               {shippingTerms.map((term, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="p-4 bg-white border border-sah-gold/10 rounded-lg hover:border-sah-gold/40 transition-all"
-                >
-                  <h4 className="font-display italic text-sah-charcoal mb-1">{term.label}</h4>
-                  <p className="font-body text-sm text-sah-charcoal/75">{term.description}</p>
-                </motion.div>
+                <RevealItem key={term.label}>
+                  <div
+                    className={`p-5 transition-colors duration-200 hover:bg-sah-cream ${
+                      idx > 0 ? 'border-t border-sah-gold/12' : ''
+                    }`}
+                  >
+                    <h4 className="font-display text-lg italic text-sah-charcoal">
+                      {term.label}
+                    </h4>
+                    <p className="mt-1 font-body text-sm text-sah-charcoal/65">
+                      {term.description}
+                    </p>
+                  </div>
+                </RevealItem>
               ))}
-            </div>
-
-            <div className="bg-white p-6 rounded-lg border border-sah-gold/20">
-              <h4 className="font-display italic text-sah-charcoal mb-3">Ports of Departure</h4>
-              <ul className="space-y-2 text-sm text-sah-charcoal/75 font-body">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-sah-gold rounded-full" />
-                  Karachi Port (primary)
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-sah-gold rounded-full" />
-                  Port Qasim (alternative)
-                </li>
-              </ul>
-            </div>
-          </motion.div>
+            </RevealGroup>
+          </div>
         </div>
 
         {/* Documentation */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="mb-8">
-            <h3 className="font-display text-2xl italic text-sah-charcoal mb-3">Export Documentation</h3>
-            <p className="font-body text-sah-charcoal/75 mb-8">
-              Complete documentation arranged per product, destination requirements, and contractual terms.
+        <div className="mt-16 lg:mt-24">
+          <Reveal>
+            <h3 className="font-display text-2xl italic text-sah-charcoal">
+              Export documentation
+            </h3>
+            <p className="mt-3 max-w-2xl font-body text-sah-charcoal/65">
+              Prepared per product, destination requirement, and contractual term — checked
+              before the container is sealed.
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {docs.map((doc, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.04, duration: 0.6 }}
-                viewport={{ once: true }}
-                className="bg-white p-4 rounded-lg border border-sah-gold/10 text-center hover:border-sah-gold/40 transition-all"
-              >
-                <p className="font-body text-sm text-sah-charcoal">{doc}</p>
-              </motion.div>
+          </Reveal>
+
+          <RevealGroup className="mt-7 flex flex-wrap gap-2.5" stagger={0.035}>
+            {docs.map((doc) => (
+              <RevealItem key={doc}>
+                <span className="inline-flex items-center gap-2 rounded-lg border border-sah-gold/20 bg-white px-4 py-2.5 font-body text-sm text-sah-charcoal/80 transition-[border-color,color] duration-200 hover:border-sah-gold/50 hover:text-sah-charcoal">
+                  <span className="h-1 w-1 rotate-45 bg-sah-gold" aria-hidden="true" />
+                  {doc}
+                </span>
+              </RevealItem>
             ))}
-          </div>
-        </motion.div>
+          </RevealGroup>
+        </div>
       </div>
     </section>
   )

@@ -3,168 +3,337 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+
+const EASE = [0.23, 1, 0.32, 1] as const
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Quality & Process', href: '/quality-process' },
+  { label: 'Packaging & Logistics', href: '/packaging-logistics' },
+  { label: 'Contact', href: '/contact' },
+]
+
+const productLinks = [
+  { label: 'Sesame Seeds', href: '/products/sesame', hint: 'Hulled · Natural' },
+  { label: 'Pulses', href: '/products/pulses', hint: 'Chickpeas · Lentils · Moong' },
+  { label: 'Rice', href: '/products/rice', hint: '1121 · Super · PK-385 · IRRI-6' },
+]
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [productsOpen, setProductsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const reduceMotion = useReducedMotion()
 
-  const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Quality & Process', href: '/quality-process' },
-    { label: 'Packaging & Logistics', href: '/packaging-logistics' },
-    { label: 'Contact', href: '/contact' },
-  ]
+  // Condense the bar once the page has moved past the first fold of the hero.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
-  const productLinks = [
-    { label: 'Sesame Seeds', href: '/products/sesame' },
-    { label: 'Pulses', href: '/products/pulses' },
-    { label: 'Rice', href: '/products/rice' },
-  ]
+  // Route change closes whatever is open.
+  useEffect(() => {
+    setMobileOpen(false)
+    setProductsOpen(false)
+  }, [pathname])
+
+  // Lock the page behind the mobile drawer.
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
+
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
+
+  const productsActive = pathname.startsWith('/products')
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-white border-b border-sah-gold/10 shadow-sm">
-      <div className="container-wide flex items-center justify-between h-24">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-          <Image
-            src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png"
-            alt="SAH Company"
-            width={60}
-            height={60}
-            className="h-16 w-auto"
-          />
-          <span className="hidden sm:flex flex-col">
-            <span className="font-display text-lg italic text-sah-charcoal leading-tight">SAH Company</span>
-            <span className="font-body text-xs text-sah-gold uppercase tracking-wider">Est. 1985</span>
-          </span>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="px-4 py-2 font-body text-sm text-sah-charcoal hover:text-sah-gold transition-colors font-medium"
-            >
-              {link.label}
-            </Link>
-          ))}
-
-          {/* Products Dropdown */}
-          <div className="relative group px-4 py-2">
-            <button className="font-body text-sm text-sah-charcoal hover:text-sah-gold transition-colors font-medium flex items-center gap-2">
-              Products
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
-            </button>
-            <div className="absolute left-0 mt-0 w-48 bg-white border border-sah-gold/20 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-              {productLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block px-4 py-3 text-sm text-sah-charcoal hover:bg-sah-cream hover:text-sah-gold first:rounded-t-lg last:rounded-b-lg transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </nav>
-
-        {/* CTA Buttons */}
-        <div className="hidden md:flex items-center gap-3">
-          <a
-            href="https://wa.me/923000959524"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 text-sah-gold hover:text-sah-charcoal font-body font-medium text-sm transition-colors"
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.364-3.905 6.75-1.905 10.23.846 1.668 2.355 2.913 4.568 3.557.987.243 2.468.271 3.617.045l.3-.047c1.013-.188 1.969-.644 2.757-1.289.832-.639 1.432-1.613 1.846-2.613.414-1 .645-2.094.645-3.231 0-2.59-1.039-5.02-2.614-6.76-1.575-1.74-3.716-2.747-5.925-2.747zm10.906-9.142c-3.857-3.6-9.648-4.211-14.143-1.432C.904.757-1.25 4.469.825 8.31c1.054 1.93 2.94 3.398 5.228 4.118 2.287.72 4.882.545 6.931-.52 1.339-.688 2.440-1.553 3.268-2.66 1.27-1.7 1.708-3.887 1.241-5.993-.467-2.106-1.609-3.976-3.27-5.195z" />
-            </svg>
-            WhatsApp
-          </a>
-          <Link href="/contact" className="px-5 py-2.5 bg-sah-gold text-white font-body font-medium text-sm rounded-lg hover:bg-sah-charcoal transition-colors">
-            Request a Quote
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,border-color,backdrop-filter] duration-300 ease-out-expo ${
+          scrolled
+            ? 'border-b border-sah-gold/15 bg-white/80 shadow-[0_8px_32px_-24px_rgba(42,32,12,0.5)] backdrop-blur-xl backdrop-saturate-150'
+            : 'border-b border-transparent bg-white/55 backdrop-blur-md backdrop-saturate-150'
+        }`}
+      >
+        <div
+          className={`container-wide flex items-center justify-between transition-[height] duration-300 ease-out-expo ${
+            scrolled ? 'h-[4.5rem]' : 'h-[5.5rem] lg:h-24'
+          }`}
         >
-          <svg className="w-6 h-6 text-sah-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="lg:hidden bg-white border-t border-sah-gold/10 shadow-lg"
+          {/* Logo */}
+          <Link
+            href="/"
+            className="group flex flex-shrink-0 items-center gap-3 rounded-lg"
+            aria-label="SAH Company — home"
           >
-            <nav className="container-wide py-6 flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sah-charcoal hover:text-sah-gold font-body font-medium py-2 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+            <Image
+              src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png"
+              alt=""
+              width={72}
+              height={72}
+              priority
+              className={`w-auto transition-[height] duration-300 ease-out-expo ${
+                scrolled ? 'h-11' : 'h-14 lg:h-16'
+              }`}
+            />
+            <span className="hidden flex-col sm:flex">
+              <span className="font-display text-lg italic leading-tight text-sah-charcoal">
+                SAH Company
+              </span>
+              <span className="font-body text-[10px] uppercase tracking-[0.22em] text-sah-gold">
+                Est. 1985
+              </span>
+            </span>
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Main">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                className={`relative rounded-lg px-3.5 py-2 font-body text-sm font-medium transition-colors duration-200 ${
+                  isActive(link.href)
+                    ? 'text-sah-gold'
+                    : 'text-sah-charcoal/80 hover:text-sah-charcoal'
+                }`}
+              >
+                {link.label}
+                {isActive(link.href) && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-x-3 -bottom-0.5 h-[2px] rounded-full bg-sah-gold"
+                    transition={{ duration: 0.35, ease: EASE }}
+                  />
+                )}
+              </Link>
+            ))}
+
+            {/* Products */}
+            <div
+              className="relative"
+              onMouseEnter={() => setProductsOpen(true)}
+              onMouseLeave={() => setProductsOpen(false)}
+            >
+              <button
+                type="button"
+                aria-expanded={productsOpen}
+                aria-haspopup="true"
+                onClick={() => setProductsOpen((open) => !open)}
+                className={`relative flex items-center gap-1.5 rounded-lg px-3.5 py-2 font-body text-sm font-medium transition-colors duration-200 ${
+                  productsActive ? 'text-sah-gold' : 'text-sah-charcoal/80 hover:text-sah-charcoal'
+                }`}
+              >
+                Products
+                <svg
+                  className={`h-3.5 w-3.5 transition-transform duration-200 ease-out-expo ${
+                    productsOpen ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <div className="border-t border-sah-gold/10 pt-4 mt-4">
-                <p className="text-sm font-body font-medium text-sah-gold mb-3 uppercase tracking-wider">Products</p>
-                {productLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="block text-sah-charcoal hover:text-sah-gold font-body py-2 pl-4 transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                </svg>
+                {productsActive && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-x-3.5 -bottom-0.5 h-[2px] rounded-full bg-sah-gold"
+                    transition={{ duration: 0.35, ease: EASE }}
+                  />
+                )}
+              </button>
+
+              <AnimatePresence>
+                {productsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.2, ease: EASE }}
+                    // Scales out of the trigger above it, not from its own middle.
+                    style={{ transformOrigin: 'top center' }}
+                    className="glass absolute left-1/2 top-full w-72 -translate-x-1/2 overflow-hidden rounded-card p-1.5"
                   >
-                    {link.label}
-                  </Link>
+                    <Link
+                      href="/products"
+                      className="block rounded-xl px-4 py-2.5 font-body text-xs uppercase tracking-[0.18em] text-sah-gold transition-colors duration-150 hover:bg-sah-gold/10"
+                    >
+                      All products
+                    </Link>
+                    <div className="rule-fade mx-3 my-1" />
+                    {productLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="group block rounded-xl px-4 py-3 transition-colors duration-150 hover:bg-sah-gold/10 active:scale-[0.98]"
+                      >
+                        <span className="block font-display text-base italic text-sah-charcoal transition-colors duration-150 group-hover:text-sah-gold">
+                          {link.label}
+                        </span>
+                        <span className="mt-0.5 block font-body text-xs text-sah-charcoal/55">
+                          {link.hint}
+                        </span>
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </nav>
+
+          {/* Desktop CTAs */}
+          <div className="hidden items-center gap-2 md:flex">
+            <a
+              href="https://wa.me/923000959524"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full px-3 py-2 font-body text-sm font-medium text-sah-charcoal/80 transition-colors duration-200 hover:text-sah-gold active:scale-[0.97]"
+            >
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.13-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.38-1.99-1.23-.74-.65-1.23-1.46-1.38-1.71-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43l-.47-.01c-.16 0-.43.06-.65.31-.23.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.74 2.65 4.21 3.72.59.25 1.05.4 1.4.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z" />
+              </svg>
+              WhatsApp
+            </a>
+            <Link href="/contact" className="btn-solid px-5 py-2.5 text-sm">
+              Request a Quote
+            </Link>
+          </div>
+
+          {/* Mobile toggle */}
+          <button
+            type="button"
+            className="flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-200 hover:bg-sah-gold/10 active:scale-[0.94] lg:hidden"
+            onClick={() => setMobileOpen((open) => !open)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+          >
+            <span className="relative block h-4 w-6">
+              <span
+                className={`absolute left-0 block h-[1.5px] w-6 rounded-full bg-sah-charcoal transition-transform duration-300 ease-out-expo ${
+                  mobileOpen ? 'top-[7px] rotate-45' : 'top-0'
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-[7px] block h-[1.5px] w-6 rounded-full bg-sah-charcoal transition-opacity duration-200 ${
+                  mobileOpen ? 'opacity-0' : 'opacity-100'
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-[1.5px] w-6 rounded-full bg-sah-charcoal transition-transform duration-300 ease-out-expo ${
+                  mobileOpen ? 'top-[7px] -rotate-45' : 'top-[14px]'
+                }`}
+              />
+            </span>
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: EASE }}
+            className="fixed inset-0 z-30 lg:hidden"
+          >
+            <div
+              className="absolute inset-0 bg-sah-earth/40 backdrop-blur-sm"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.nav
+              initial={{ y: '-100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-100%' }}
+              transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
+              className="glass absolute inset-x-0 top-0 max-h-[92dvh] overflow-y-auto rounded-b-panel px-6 pb-8 pt-[6.5rem]"
+              aria-label="Mobile"
+            >
+              <div className="flex flex-col">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.08 + i * 0.045, duration: 0.4, ease: EASE }}
+                  >
+                    <Link
+                      href={link.href}
+                      className={`block border-b border-sah-gold/10 py-3.5 font-display text-2xl italic transition-colors duration-200 ${
+                        isActive(link.href) ? 'text-sah-gold' : 'text-sah-charcoal'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
                 ))}
-              </div>
-              <div className="border-t border-sah-gold/10 pt-4 mt-4 flex flex-col gap-2">
-                <a
-                  href="https://wa.me/923000959524"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block px-4 py-2 bg-sah-gold text-white text-center font-body font-medium rounded-lg hover:bg-sah-charcoal transition-colors"
+
+                <motion.p
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.32, duration: 0.4, ease: EASE }}
+                  className="eyebrow mb-1 mt-7"
                 >
-                  WhatsApp
-                </a>
-                <Link
-                  href="/contact"
-                  className="block px-4 py-2 bg-sah-gold text-white text-center font-body font-medium rounded-lg hover:bg-sah-charcoal transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+                  Products
+                </motion.p>
+
+                {productLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.36 + i * 0.045, duration: 0.4, ease: EASE }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="flex items-baseline justify-between border-b border-sah-gold/10 py-3 font-body text-base text-sah-charcoal/85 transition-colors duration-200 hover:text-sah-gold"
+                    >
+                      {link.label}
+                      <span className="font-body text-[11px] text-sah-charcoal/45">
+                        {link.hint}
+                      </span>
+                    </Link>
+                  </motion.div>
+                ))}
+
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.52, duration: 0.4, ease: EASE }}
+                  className="mt-8 flex flex-col gap-3"
                 >
-                  Request a Quote
-                </Link>
+                  <Link href="/contact" className="btn-solid w-full">
+                    Request a Quote
+                  </Link>
+                  <a
+                    href="https://wa.me/923000959524"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center rounded-full border border-sah-gold/40 px-7 py-3 font-body font-medium text-sah-gold transition-colors duration-200 hover:bg-sah-gold/10 active:scale-[0.97]"
+                  >
+                    WhatsApp us
+                  </a>
+                </motion.div>
               </div>
-            </nav>
+            </motion.nav>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Add padding to page body to account for fixed header */}
-      <style jsx>{`
-        :global(body) {
-          padding-top: 6rem;
-        }
-      `}</style>
-    </header>
+    </>
   )
 }
