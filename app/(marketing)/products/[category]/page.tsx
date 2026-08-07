@@ -40,6 +40,9 @@ export default async function CategoryPage({
       products: {
         where: { status: 'PUBLISHED' },
         orderBy: { sortOrder: 'asc' },
+        include: {
+          images: { orderBy: { sortOrder: 'asc' }, take: 1 },
+        },
       },
     },
   })
@@ -72,7 +75,7 @@ export default async function CategoryPage({
               >
                 <div className="relative h-48 overflow-hidden">
                   <Image
-                    src={heroImage}
+                    src={product.images[0]?.url || heroImage}
                     alt={product.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
