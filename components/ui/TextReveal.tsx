@@ -8,6 +8,10 @@ const EASE = [0.23, 1, 0.32, 1] as const
  * Word-by-word mask reveal for display headlines. Each word sits in a clipped
  * box and slides up from below it, so the type appears to be uncovered rather
  * than faded in. Whitespace is preserved for correct wrapping.
+ *
+ * The same markup renders whether or not motion is reduced — only the
+ * transition duration changes. Swapping the tree on `useReducedMotion` would
+ * desync server and client HTML for anyone with the preference set.
  */
 export default function TextReveal({
   text,
@@ -27,14 +31,14 @@ export default function TextReveal({
   const reduceMotion = useReducedMotion()
   const words = text.split(' ')
 
-  if (reduceMotion) {
-    return <Tag className={className}>{text}</Tag>
-  }
-
   const animationProps =
     trigger === 'mount'
       ? { animate: 'show' as const }
       : { whileInView: 'show' as const, viewport: { once: true, margin: '-60px' } }
+
+  const wordTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.8, ease: EASE }
 
   return (
     <Tag className={className}>
@@ -43,7 +47,11 @@ export default function TextReveal({
         initial="hidden"
         variants={{
           hidden: {},
-          show: { transition: { staggerChildren: stagger, delayChildren: delay } },
+          show: {
+            transition: reduceMotion
+              ? { staggerChildren: 0, delayChildren: 0 }
+              : { staggerChildren: stagger, delayChildren: delay },
+          },
         }}
         {...animationProps}
       >
@@ -58,7 +66,7 @@ export default function TextReveal({
                 className="inline-block"
                 variants={{
                   hidden: { y: '110%' },
-                  show: { y: '0%', transition: { duration: 0.8, ease: EASE } },
+                  show: { y: '0%', transition: wordTransition },
                 }}
               >
                 {word}

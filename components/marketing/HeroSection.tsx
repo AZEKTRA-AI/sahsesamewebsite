@@ -5,12 +5,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
 } from 'framer-motion'
 import Counter from '@/components/ui/Counter'
 import Magnetic from '@/components/ui/Magnetic'
+import useReducedMotionSafe from '@/components/ui/useReducedMotionSafe'
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
@@ -20,7 +20,9 @@ const YEARS = new Date().getFullYear() - FOUNDED
 const LINES = ['From the Mills of Pakistan', 'to Markets Worldwide']
 
 export default function HeroSection() {
-  const reduceMotion = useReducedMotion()
+  // Safe variant: this value picks which styles render, so it must not differ
+  // between the server and the first client paint.
+  const reduceMotion = useReducedMotionSafe()
   const sectionRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -74,7 +76,7 @@ export default function HeroSection() {
           >
             <motion.div
               className="absolute -inset-y-[8%] inset-x-0"
-              style={reduceMotion ? undefined : { y: imageY }}
+              style={{ y: reduceMotion ? 0 : imageY }}
             >
               <Image
                 src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg"
@@ -97,7 +99,9 @@ export default function HeroSection() {
         {/* Copy */}
         <motion.div
           className="order-2 flex w-full items-center lg:order-1 lg:w-[55%]"
-          style={reduceMotion ? undefined : { y: copyY, opacity: copyOpacity }}
+          style={
+            reduceMotion ? { y: 0, opacity: 1 } : { y: copyY, opacity: copyOpacity }
+          }
         >
           <div className="container-wide w-full py-10 sm:py-14 lg:py-16">
             <motion.div

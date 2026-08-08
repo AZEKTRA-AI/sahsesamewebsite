@@ -15,6 +15,13 @@ const offset: Record<Direction, { x: number; y: number }> = {
   none: { x: 0, y: 0 },
 }
 
+/*
+ * Reduced motion is applied by collapsing the transition to zero, never by
+ * rendering a different element. `useReducedMotion` reports false on the
+ * server and the real preference on the client, so branching the tree on it
+ * produces a hydration mismatch for anyone who has the setting enabled.
+ */
+
 /**
  * Scroll-triggered entrance. Elements come in with a short travel, a fade and
  * a touch of blur — the blur bridges the gap between "not there" and "there"
@@ -40,17 +47,15 @@ export default function Reveal({
   const reduceMotion = useReducedMotion()
   const { x, y } = offset[direction]
 
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>
-  }
-
   return (
     <motion.div
       className={className}
       initial={{ opacity: 0, x, y, filter: blur ? 'blur(6px)' : 'blur(0px)' }}
       whileInView={{ opacity: 1, x: 0, y: 0, filter: 'blur(0px)' }}
       viewport={{ once, margin: '-80px' }}
-      transition={{ duration, delay, ease: EASE }}
+      transition={
+        reduceMotion ? { duration: 0 } : { duration, delay, ease: EASE }
+      }
     >
       {children}
     </motion.div>
@@ -76,13 +81,13 @@ export function RevealGroup({
 }) {
   const reduceMotion = useReducedMotion()
 
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>
-  }
-
   const container: Variants = {
     hidden: {},
-    show: { transition: { staggerChildren: stagger, delayChildren: delay } },
+    show: {
+      transition: reduceMotion
+        ? { staggerChildren: 0, delayChildren: 0 }
+        : { staggerChildren: stagger, delayChildren: delay },
+    },
   }
 
   return (
@@ -98,16 +103,6 @@ export function RevealGroup({
   )
 }
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.65, ease: EASE },
-  },
-}
-
 export function RevealItem({
   children,
   className,
@@ -117,8 +112,14 @@ export function RevealItem({
 }) {
   const reduceMotion = useReducedMotion()
 
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: reduceMotion ? { duration: 0 } : { duration: 0.65, ease: EASE },
+    },
   }
 
   return (

@@ -7,6 +7,9 @@ import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-moti
  * Pulls its child a little toward the cursor. The offset runs through a spring
  * rather than tracking the pointer directly — instant tracking reads as
  * mechanical, the spring gives the element weight and lets it settle back.
+ *
+ * With reduced motion the pointer handlers simply never move the value; the
+ * markup is identical either way so hydration stays in sync.
  */
 export default function Magnetic({
   children,
@@ -25,16 +28,13 @@ export default function Magnetic({
   const springX = useSpring(x, { stiffness: 220, damping: 18, mass: 0.6 })
   const springY = useSpring(y, { stiffness: 220, damping: 18, mass: 0.6 })
 
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>
-  }
-
   return (
     <motion.div
       ref={ref}
       className={className}
       style={{ x: springX, y: springY }}
       onMouseMove={(event) => {
+        if (reduceMotion) return
         const el = ref.current
         if (!el) return
         const rect = el.getBoundingClientRect()

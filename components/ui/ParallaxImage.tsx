@@ -2,7 +2,8 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import useReducedMotionSafe from './useReducedMotionSafe'
 
 /**
  * Image that drifts against the scroll inside its frame. The inner picture is
@@ -30,7 +31,7 @@ export default function ParallaxImage({
   children?: React.ReactNode
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const reduceMotion = useReducedMotion()
+  const reduceMotion = useReducedMotionSafe()
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -40,13 +41,16 @@ export default function ParallaxImage({
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
+      {/* The inner frame is always present and always positioned the same way;
+          only the drift value is dropped when motion is reduced. */}
       <motion.div
         className="absolute inset-0"
-        style={
-          reduceMotion
-            ? undefined
-            : { y, top: `-${overscan}%`, bottom: `-${overscan}%`, height: 'auto' }
-        }
+        style={{
+          y: reduceMotion ? 0 : y,
+          top: `-${overscan}%`,
+          bottom: `-${overscan}%`,
+          height: 'auto',
+        }}
       >
         <Image
           src={src}
