@@ -42,6 +42,18 @@ export default function Footer({
         }}
       />
 
+      {/* Oversized wordmark — sits behind the columns instead of adding its
+          own height, so the footer stays compact. Placed before the content
+          in the DOM (and unpositioned relative to it) so it paints behind. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex select-none items-center justify-center overflow-hidden"
+      >
+        <p className="whitespace-nowrap font-display text-[19vw] italic leading-[0.8] text-white/[0.045] lg:text-[15vw]">
+          Sesame · Pulses · Rice
+        </p>
+      </div>
+
       <div className="container-wide relative py-16 sm:py-20">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
           {/* Brand */}
@@ -171,16 +183,6 @@ export default function Footer({
               </p>
             </address>
           </div>
-        </div>
-
-        {/* Oversized wordmark — the footer's visual anchor, clipped by the edge. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none mt-14 select-none overflow-hidden"
-        >
-          <p className="whitespace-nowrap font-display text-[19vw] italic leading-[0.8] text-white/[0.045] lg:text-[15vw]">
-            Sesame · Pulses · Rice
-          </p>
         </div>
 
         <div className="rule-fade mt-10" />

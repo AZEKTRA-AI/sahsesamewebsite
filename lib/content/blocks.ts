@@ -64,6 +64,19 @@ export const globalContactBlock = defineBlock({
         { key: 'time', label: 'Hours (or "Closed")', type: 'text' },
       ],
     },
+    {
+      key: 'facilities',
+      label: 'Mills & factories',
+      type: 'list',
+      itemLabel: 'facility',
+      minItems: 0,
+      maxItems: 8,
+      help: 'Shown on the Contact page under "Our facilities."',
+      fields: [
+        { key: 'name', label: 'Name', type: 'text' },
+        { key: 'address', label: 'Address', type: 'textarea' },
+      ],
+    },
   ],
   defaults: {
     address: 'Office No. 170, New Grain Market, Dijkot Road, Faisalabad, Pakistan',
@@ -78,6 +91,16 @@ export const globalContactBlock = defineBlock({
       { day: 'Monday – Friday', time: '9:00 – 18:00 PKT' },
       { day: 'Saturday', time: '10:00 – 16:00 PKT' },
       { day: 'Sunday', time: 'Closed' },
+    ],
+    facilities: [
+      {
+        name: 'Hassan Daal Mills',
+        address: 'New Sabzi Mandi Road, Jhang Road, Faisalabad, Pakistan',
+      },
+      {
+        name: 'Charagh Rotion Daal Factory',
+        address: '64 Puli Stop, Tahir Pura Road, Jhang Road, Faisalabad, Pakistan',
+      },
     ],
   },
 })

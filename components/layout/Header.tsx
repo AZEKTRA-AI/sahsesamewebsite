@@ -71,30 +71,23 @@ export default function Header({ whatsapp }: { whatsapp: string }) {
             scrolled ? 'h-[4.5rem]' : 'h-[5.5rem] lg:h-24'
           }`}
         >
-          {/* Logo */}
+          {/* Logo — the mark itself carries the name, so it stands alone at a
+              size where its own lettering is actually legible. */}
           <Link
             href="/"
-            className="group flex flex-shrink-0 items-center gap-3 rounded-lg"
+            className="flex flex-shrink-0 items-center rounded-lg"
             aria-label="SAH Company — home"
           >
             <Image
               src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png"
-              alt=""
-              width={72}
-              height={72}
+              alt="Sain Abdul Hakim & Company"
+              width={120}
+              height={120}
               priority
               className={`w-auto transition-[height] duration-300 ease-out-expo ${
-                scrolled ? 'h-11' : 'h-14 lg:h-16'
+                scrolled ? 'h-12' : 'h-16 lg:h-20'
               }`}
             />
-            <span className="hidden flex-col sm:flex">
-              <span className="font-display text-lg italic leading-tight text-sah-charcoal">
-                SAH Company
-              </span>
-              <span className="font-body text-[10px] uppercase tracking-[0.22em] text-sah-gold">
-                Est. 1985
-              </span>
-            </span>
           </Link>
 
           {/* Desktop nav */}

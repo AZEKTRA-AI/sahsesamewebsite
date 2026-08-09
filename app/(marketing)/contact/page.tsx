@@ -112,6 +112,28 @@ export default async function ContactPage() {
                 </dl>
               </div>
             </Reveal>
+
+            {contact.facilities.length > 0 && (
+              <Reveal delay={0.25}>
+                <div className="mt-6 rounded-card border border-sah-gold/15 bg-white p-6">
+                  <h2 className="font-body text-[11px] uppercase tracking-[0.22em] text-sah-charcoal/55">
+                    Our facilities
+                  </h2>
+                  <div className="mt-4 space-y-4">
+                    {contact.facilities.map((facility) => (
+                      <div key={facility.name}>
+                        <p className="font-display text-base italic text-sah-charcoal">
+                          {facility.name}
+                        </p>
+                        <p className="mt-0.5 whitespace-pre-line font-body text-sm text-sah-charcoal/65">
+                          {facility.address}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            )}
           </div>
 
           {/* Form */}
