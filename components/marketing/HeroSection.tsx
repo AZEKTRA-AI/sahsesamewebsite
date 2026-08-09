@@ -19,7 +19,13 @@ const YEARS = new Date().getFullYear() - FOUNDED
 
 const LINES = ['From the Mills of Pakistan', 'to Markets Worldwide']
 
-export default function HeroSection() {
+export default function HeroSection({
+  imageUrl,
+  imageAlt,
+}: {
+  imageUrl: string
+  imageAlt: string
+}) {
   // Safe variant: this value picks which styles render, so it must not differ
   // between the server and the first client paint.
   const reduceMotion = useReducedMotionSafe()
@@ -79,8 +85,8 @@ export default function HeroSection() {
               style={{ y: reduceMotion ? 0 : imageY }}
             >
               <Image
-                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg"
-                alt="Export-grade Pakistani sesame seeds photographed up close"
+                src={imageUrl}
+                alt={imageAlt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 45vw"

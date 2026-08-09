@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { getHeroSettings } from '@/lib/site-settings'
 import HeroSection from '@/components/marketing/HeroSection'
 import TradingRootsSection from '@/components/marketing/TradingRootsSection'
 import CategoriesShowcase from '@/components/marketing/CategoriesShowcase'
@@ -16,7 +17,7 @@ async function getPage(slug: string) {
 }
 
 export default async function PageRenderer({ slug }: { slug: string }) {
-  const page = await getPage(slug)
+  const [page, hero] = await Promise.all([getPage(slug), getHeroSettings()])
 
   if (!page) {
     return (
@@ -30,7 +31,9 @@ export default async function PageRenderer({ slug }: { slug: string }) {
     <>
       {page.sections.map((section) => (
         <div key={section.id}>
-          {section.type === 'hero' && <HeroSection />}
+          {section.type === 'hero' && (
+            <HeroSection imageUrl={hero.imageUrl} imageAlt={hero.imageAlt} />
+          )}
           {section.type === 'trading-roots' && <TradingRootsSection />}
           {section.type === 'categories-showcase' && <CategoriesShowcase />}
           {section.type === 'why-choose-us' && <WhyChooseUs />}
