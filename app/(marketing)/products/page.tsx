@@ -6,6 +6,8 @@ import PageCTA from '@/components/marketing/PageCTA'
 import { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
 import SpotlightCard from '@/components/ui/SpotlightCard'
+import { getContentMap } from '@/lib/content/store'
+import { catalogHeroBlock, catalogCategoriesBlock, catalogStandardsBlock, catalogCtaBlock } from '@/lib/content/blocks'
 
 export const metadata = {
   title: 'Products — sesame, pulses & rice',
@@ -13,68 +15,36 @@ export const metadata = {
     'Export-grade sesame seeds, pulses, and rice from Pakistan. Hulled and natural sesame, Basmati and IRRI rice, chickpeas, lentils, and moong.',
 }
 
-const categoryCopy: Record<string, { description: string; meta: string }> = {
-  sesame: {
-    description:
-      'Hulled and natural white sesame cleaned to your purity and moisture ceiling, for tahini, bakery, and crushing.',
-    meta: 'Hulled · Natural',
-  },
-  pulses: {
-    description:
-      'White and black chickpeas, split red lentils, and split yellow gram milled under our own supervision.',
-    meta: 'Chickpeas · Lentils · Moong',
-  },
-  rice: {
-    description:
-      'Long-grain Basmati and IRRI varieties, sortex-cleaned and graded for wholesale and re-export.',
-    meta: '1121 · Super · PK-385 · IRRI-6',
-  },
-}
-
-const categoryImages: Record<string, string> = {
-  sesame:
-    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
-  pulses:
-    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
-  rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
-}
-
-const standards = [
-  {
-    title: 'Verified quality',
-    description: 'Batch lab analysis and third-party inspection through SGS or Intertek on request.',
-  },
-  {
-    title: 'Flexible packaging',
-    description: 'From 25 kg PP woven bags to 1 MT jumbo bags and full private-label packing.',
-  },
-  {
-    title: 'Global shipping',
-    description: 'FOB Karachi, CFR, and CIF, with documentation prepared per destination.',
-  },
-]
-
 export default async function ProductsPage() {
-  const categories = await prisma.category.findMany({
-    include: { _count: { select: { products: true } } },
-  })
+  const [categories, content] = await Promise.all([
+    prisma.category.findMany({ include: { _count: { select: { products: true } } } }),
+    getContentMap({
+      hero: catalogHeroBlock,
+      categories: catalogCategoriesBlock,
+      standards: catalogStandardsBlock,
+      cta: catalogCtaBlock,
+    }),
+  ])
+
+  const categoryContent = new Map(content.categories.items.map((item) => [item.slug, item]))
 
   return (
     <>
       <PageHero
-        eyebrow="What we supply"
-        title="Ten products, three categories"
-        subtitle="Everything below is sourced in Punjab, processed to contract specification, and shipped from Karachi."
-        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg"
+        eyebrow={content.hero.tagline}
+        title={content.hero.title}
+        subtitle={content.hero.subtitle}
+        image={categoryContent.get('sesame')?.image ?? content.categories.items[0]?.image}
         imageAlt="Macro photograph of export-grade sesame seeds"
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Products' }]}
       />
 
+      {/* Categories Grid */}
       <section className="bg-white py-20 sm:py-28">
         <div className="container-wide">
           <RevealGroup className="grid grid-cols-1 gap-5 md:grid-cols-3" stagger={0.1}>
             {categories.map((category, idx) => {
-              const copy = categoryCopy[category.slug]
+              const copy = categoryContent.get(category.slug)
               return (
                 <RevealItem key={category.id} className="h-full">
                   <SpotlightCard
@@ -87,8 +57,8 @@ export default async function ProductsPage() {
                     >
                       <div className="relative h-[24rem]">
                         <Image
-                          src={categoryImages[category.slug] || categoryImages.sesame}
-                          alt={category.name}
+                          src={copy?.image ?? content.categories.items[0].image}
+                          alt={copy?.imageAlt || category.name}
                           fill
                           sizes="(max-width: 768px) 100vw, 33vw"
                           className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.06]"
@@ -115,7 +85,7 @@ export default async function ProductsPage() {
                             {copy?.meta ?? 'Export grade'}
                           </p>
                           <h2 className="mt-2 font-display text-2xl italic text-white sm:text-3xl">
-                            {category.name}
+                            {copy?.name ?? category.name}
                           </h2>
                           <p className="mt-3 font-body text-sm leading-relaxed text-white/65">
                             {copy?.description ?? 'Quality agricultural products from Pakistan.'}
@@ -153,8 +123,8 @@ export default async function ProductsPage() {
         <div className="container-wide grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
             <SectionIntro
-              eyebrow="Our promise"
-              title="What holds across every product"
+              eyebrow={content.standards.tagline}
+              title={content.standards.title}
               size="md"
               lead="The category changes. The way we grade, test, pack, and document does not."
             />
@@ -162,7 +132,7 @@ export default async function ProductsPage() {
 
           <RevealGroup className="lg:col-span-7" stagger={0.08}>
             <div className="overflow-hidden rounded-panel border border-sah-gold/15 bg-white">
-              {standards.map((item, idx) => (
+              {content.standards.items.map((item, idx) => (
                 <RevealItem key={item.title}>
                   <div
                     className={`group flex gap-5 p-7 transition-colors duration-300 ease-out-expo hover:bg-sah-cream ${
@@ -190,9 +160,9 @@ export default async function ProductsPage() {
 
       <div className="bg-white py-20 sm:py-28">
         <PageCTA
-          title="Need a custom quote?"
-          subtitle="Send the specification, quantity, and destination port. We will price it properly."
-          primaryLabel="Request a quotation"
+          title={content.cta.title}
+          subtitle={content.cta.subtitle}
+          primaryLabel={content.cta.primaryLabel}
         />
       </div>
     </>

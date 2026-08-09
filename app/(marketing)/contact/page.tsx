@@ -3,6 +3,8 @@ import PageHero from '@/components/marketing/PageHero'
 import PageCTA from '@/components/marketing/PageCTA'
 import Reveal from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
+import { getContentMap } from '@/lib/content/store'
+import { contactHeroBlock, contactCtaBlock, globalContactBlock } from '@/lib/content/blocks'
 
 export const metadata = {
   title: 'Contact',
@@ -10,46 +12,44 @@ export const metadata = {
     'Reach the SAH export desk in Faisalabad for quotations, samples, and specification enquiries.',
 }
 
-const details = [
-  {
-    label: 'Office',
-    lines: ['Office No. 170, New Grain Market', 'Dijkot Road, Faisalabad, Pakistan'],
-  },
-  {
-    label: 'Phone',
-    lines: ['+92 300 0959524', '+92 300 8663396'],
-    hrefs: ['tel:+923000959524', 'tel:+923008663396'],
-  },
-  {
-    label: 'Email',
-    lines: ['sales@sahcompany.com', 'info@sahcompany.com'],
-    hrefs: ['mailto:sales@sahcompany.com', 'mailto:info@sahcompany.com'],
-  },
-  {
-    label: 'WhatsApp',
-    lines: ['+92 300 0959524'],
-    hrefs: ['https://wa.me/923000959524'],
-  },
-]
+export default async function ContactPage() {
+  const { hero, cta, contact } = await getContentMap({
+    hero: contactHeroBlock,
+    cta: contactCtaBlock,
+    contact: globalContactBlock,
+  })
 
-const hours = [
-  { day: 'Monday – Friday', time: '9:00 – 18:00 PKT' },
-  { day: 'Saturday', time: '10:00 – 16:00 PKT' },
-  { day: 'Sunday', time: 'Closed' },
-]
+  const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`
 
-const MAP_LINK =
-  'https://www.google.com/maps/search/?api=1&query=New+Grain+Market+Dijkot+Road+Faisalabad+Pakistan'
+  const details = [
+    { label: 'Office', lines: [contact.address] },
+    {
+      label: 'Phone',
+      lines: [contact.phone1, contact.phone2].filter(Boolean),
+      hrefs: [`tel:${contact.phone1}`, contact.phone2 ? `tel:${contact.phone2}` : ''].filter(Boolean),
+    },
+    {
+      label: 'Email',
+      lines: [contact.email, contact.salesEmail].filter(Boolean),
+      hrefs: [`mailto:${contact.email}`, contact.salesEmail ? `mailto:${contact.salesEmail}` : ''].filter(
+        Boolean
+      ),
+    },
+    {
+      label: 'WhatsApp',
+      lines: [contact.whatsapp],
+      hrefs: [`https://wa.me/${contact.whatsapp.replace(/[^\d]/g, '')}`],
+    },
+  ]
 
-export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Talk to the export desk"
-        title="Get in touch"
-        subtitle="Questions on grades, quantities, or shipping terms — you will be answered by someone who has seen the lot."
-        image="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958254/sah-marketing/contact-handshake.jpg"
-        imageAlt="Two people shaking hands to close a trade agreement"
+        eyebrow={hero.tagline}
+        title={hero.title}
+        subtitle={hero.subtitle}
+        image={hero.image}
+        imageAlt={hero.imageAlt}
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
       />
 
@@ -85,7 +85,7 @@ export default function ContactPage() {
                             {line}
                           </a>
                         ) : (
-                          <p key={line} className="font-body text-sah-charcoal/80">
+                          <p key={line} className="whitespace-pre-line font-body text-sah-charcoal/80">
                             {line}
                           </p>
                         )
@@ -103,7 +103,7 @@ export default function ContactPage() {
                   Business hours
                 </h2>
                 <dl className="mt-4 space-y-2.5">
-                  {hours.map((entry) => (
+                  {contact.hours.map((entry) => (
                     <div key={entry.day} className="flex items-baseline justify-between gap-6">
                       <dt className="font-body text-sm text-sah-charcoal/70">{entry.day}</dt>
                       <dd className="tnum font-body text-sm text-sah-charcoal">{entry.time}</dd>
@@ -132,7 +132,7 @@ export default function ContactPage() {
 
           <Reveal delay={0.15}>
             <a
-              href={MAP_LINK}
+              href={mapLink}
               target="_blank"
               rel="noopener noreferrer"
               className="grain group relative mt-12 flex h-72 items-end overflow-hidden rounded-panel bg-sah-earth p-8 transition-transform duration-300 ease-out-expo active:scale-[0.99] sm:mt-16 sm:h-96 sm:p-12"
@@ -166,11 +166,8 @@ export default function ContactPage() {
               </span>
 
               <div className="relative">
-                <p className="font-display text-2xl italic text-white sm:text-3xl">
-                  Office No. 170, New Grain Market
-                </p>
-                <p className="mt-2 font-body text-sm text-white/60">
-                  Dijkot Road, Faisalabad, Pakistan
+                <p className="whitespace-pre-line font-display text-2xl italic text-white sm:text-3xl">
+                  {contact.address}
                 </p>
                 <span className="mt-5 inline-flex items-center gap-2 font-body text-sm font-medium text-sah-gold">
                   Open in Google Maps
@@ -193,9 +190,9 @@ export default function ContactPage() {
 
       <div className="bg-white py-20 sm:py-28">
         <PageCTA
-          title="Need a detailed quotation?"
-          subtitle="The full RFQ form captures grades, quantities, packing, and incoterms in one pass."
-          primaryLabel="Open the RFQ form"
+          title={cta.title}
+          subtitle={cta.subtitle}
+          primaryLabel={cta.primaryLabel}
           primaryHref="/#rfq-form"
         />
       </div>

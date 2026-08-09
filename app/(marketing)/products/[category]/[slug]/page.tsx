@@ -6,14 +6,8 @@ import ProductGallery from '@/components/marketing/ProductGallery'
 import PageCTA from '@/components/marketing/PageCTA'
 import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SpotlightCard from '@/components/ui/SpotlightCard'
-
-const categoryImages: Record<string, string> = {
-  sesame:
-    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
-  pulses:
-    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
-  rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
-}
+import { getContentMap } from '@/lib/content/store'
+import { catalogCategoriesBlock, catalogProductCtaBlock } from '@/lib/content/blocks'
 
 const infoCards = [
   {
@@ -70,20 +64,25 @@ export default async function ProductDetailPage({
 
   if (!product || product.category.slug !== params.category) notFound()
 
-  const related = await prisma.product.findMany({
-    where: {
-      categoryId: product.categoryId,
-      status: 'PUBLISHED',
-      NOT: { id: product.id },
-    },
-    orderBy: { sortOrder: 'asc' },
-    take: 3,
-    include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
-  })
+  const [related, content] = await Promise.all([
+    prisma.product.findMany({
+      where: {
+        categoryId: product.categoryId,
+        status: 'PUBLISHED',
+        NOT: { id: product.id },
+      },
+      orderBy: { sortOrder: 'asc' },
+      take: 3,
+      include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
+    }),
+    getContentMap({ categories: catalogCategoriesBlock, cta: catalogProductCtaBlock }),
+  ])
 
   const specs = (product.specs as Record<string, unknown>) || {}
   const specEntries = Object.entries(specs)
-  const fallbackImage = categoryImages[product.category.slug] || categoryImages.sesame
+  const fallbackImage =
+    content.categories.items.find((item) => item.slug === product.category.slug)?.image ??
+    content.categories.items[0].image
 
   return (
     <>
@@ -275,10 +274,7 @@ export default async function ProductDetailPage({
       )}
 
       <div className="bg-white pb-20 sm:pb-28">
-        <PageCTA
-          title="Ready to place an order?"
-          subtitle="Quotations, samples, and bulk contracts — talk to the export desk directly."
-        />
+        <PageCTA title={content.cta.title} subtitle={content.cta.subtitle} />
       </div>
     </>
   )

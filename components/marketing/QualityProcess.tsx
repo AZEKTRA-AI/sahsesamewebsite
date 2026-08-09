@@ -5,28 +5,13 @@ import Image from 'next/image'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
+import type { homeQualityProcessBlock } from '@/lib/content/blocks'
 
-const steps = [
-  { title: 'Buyer specifications', description: 'Your exact grade, purity, and packing requirements.' },
-  { title: 'Supplier selection', description: 'Matching the lot to a processor we have vetted.' },
-  { title: 'Lot inspection', description: 'Physical assessment of the standing inventory.' },
-  { title: 'Sample preparation', description: 'Representative samples drawn and dispatched.' },
-  { title: 'Lab testing', description: 'Moisture, FFA, purity, and admixture analysis.' },
-  { title: 'Buyer approval', description: 'Your written sign-off before anything moves.' },
-  { title: 'Processing', description: 'Cleaning, grading, and packing under supervision.' },
-  { title: 'Pre-shipment QA', description: 'Third-party inspection at the loading point.' },
-  { title: 'Documentation', description: 'Full export paperwork prepared per destination.' },
-  { title: 'Shipment', description: 'Dispatched on your chosen incoterm from Karachi.' },
-]
-
-const pillars = [
-  { label: 'Batch testing', desc: 'Lab analysis matched to each shipment lot' },
-  { label: 'Product sampling', desc: 'Representative samples sent for approval' },
-  { label: 'Pre-shipment QA', desc: 'Third-party inspection by SGS or Intertek' },
-  { label: 'Traceability', desc: 'Complete documentation and audit trail' },
-]
-
-export default function QualityProcess() {
+export default function QualityProcess({
+  content,
+}: {
+  content: typeof homeQualityProcessBlock.defaults
+}) {
   const ref = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -41,7 +26,7 @@ export default function QualityProcess() {
       {/* Background photograph, heavily dimmed — depth without noise. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <Image
-          src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958261/sah-marketing/quality-lab-testing.jpg"
+          src={content.backgroundImage}
           alt=""
           fill
           sizes="100vw"
@@ -66,9 +51,9 @@ export default function QualityProcess() {
 
       <div className="container-wide relative">
         <SectionIntro
-          eyebrow="Quality & sourcing"
-          title="Ten steps between your spec and the vessel"
-          lead="Every order runs the same route. Nothing ships until each stage is signed off and documented."
+          eyebrow={content.tagline}
+          title={content.title}
+          lead={content.lead}
           tone="dark"
         />
 
@@ -85,7 +70,7 @@ export default function QualityProcess() {
           className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
           stagger={0.055}
         >
-          {steps.map((step, idx) => (
+          {content.steps.map((step, idx) => (
             <RevealItem key={step.title} className="h-full">
               <article className="glass-dark group flex h-full flex-col rounded-card p-5 transition-[background-color,border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/35 hover:bg-white/[0.09]">
                 <p className="tnum font-display text-3xl text-sah-gold/35 transition-colors duration-300 group-hover:text-sah-gold/70">
@@ -103,7 +88,7 @@ export default function QualityProcess() {
         {/* Assurance pillars */}
         <Reveal delay={0.15}>
           <div className="glass-dark mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-panel sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
-            {pillars.map((pillar) => (
+            {content.pillars.map((pillar) => (
               <div
                 key={pillar.label}
                 className="p-7 transition-colors duration-300 ease-out-expo hover:bg-white/[0.05]"

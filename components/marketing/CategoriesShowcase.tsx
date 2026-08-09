@@ -5,43 +5,16 @@ import Image from 'next/image'
 import Reveal from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
 import SpotlightCard from '@/components/ui/SpotlightCard'
+import type { homeCategoriesIntroBlock, catalogCategoriesBlock } from '@/lib/content/blocks'
 
-const categories = [
-  {
-    title: 'Sesame seeds',
-    href: '/products/sesame',
-    description:
-      'Hulled and natural white sesame, cleaned to buyer purity and moisture specs for tahini, bakery, and oil crushing.',
-    meta: 'Hulled · Natural',
-    image:
-      'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
-  },
-  {
-    title: 'Pulses',
-    href: '/products/pulses',
-    description:
-      'Chickpeas, lentils, and moong from our own mills and verified processing partners.',
-    meta: 'Chickpeas · Lentils · Moong',
-    image:
-      'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
-  },
-  {
-    title: 'Rice',
-    href: '/products/rice',
-    description:
-      'Long-grain Basmati and IRRI varieties for wholesale, import, and re-export markets.',
-    meta: '1121 · Super · PK-385 · IRRI-6',
-    image:
-      'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
-  },
-]
+type Category = (typeof catalogCategoriesBlock.defaults.items)[number]
 
 function CategoryCard({
   category,
   index,
   feature = false,
 }: {
-  category: (typeof categories)[number]
+  category: Category
   index: number
   feature?: boolean
 }) {
@@ -51,13 +24,13 @@ function CategoryCard({
       className="h-full overflow-hidden rounded-panel bg-sah-earth"
     >
       <Link
-        href={category.href}
+        href={`/products/${category.slug}`}
         className="group relative block h-full transition-transform duration-200 ease-out-expo active:scale-[0.985]"
       >
         <div className={`relative ${feature ? 'h-[26rem] lg:h-full lg:min-h-[34rem]' : 'h-64 sm:h-72'}`}>
           <Image
             src={category.image}
-            alt={category.title}
+            alt={category.imageAlt || category.name}
             fill
             sizes={feature ? '(max-width: 1024px) 100vw, 58vw' : '(max-width: 1024px) 100vw, 40vw'}
             className="object-cover transition-transform duration-[900ms] ease-out-expo group-hover:scale-[1.06]"
@@ -85,7 +58,7 @@ function CategoryCard({
                 feature ? 'text-3xl sm:text-4xl' : 'text-2xl'
               }`}
             >
-              {category.title}
+              {category.name}
             </h3>
             <p className="mt-3 max-w-md font-body text-sm leading-relaxed text-white/65">
               {category.description}
@@ -111,23 +84,26 @@ function CategoryCard({
   )
 }
 
-export default function CategoriesShowcase() {
+export default function CategoriesShowcase({
+  intro,
+  categories,
+}: {
+  intro: typeof homeCategoriesIntroBlock.defaults
+  categories: Category[]
+}) {
   const [feature, ...rest] = categories
 
   return (
     <section className="bg-white py-20 sm:py-28">
       <div className="container-wide">
         <div className="mb-12 flex flex-col gap-6 sm:mb-16 lg:flex-row lg:items-end lg:justify-between">
-          <SectionIntro
-            eyebrow="What we supply"
-            title="Three categories, one standard"
-          />
+          <SectionIntro eyebrow={intro.tagline} title={intro.title} />
           <Reveal delay={0.2} blur={false}>
             <Link
               href="/products"
               className="group inline-flex items-center gap-2 font-body text-sm font-medium text-sah-charcoal transition-colors duration-200 hover:text-sah-gold active:scale-[0.97]"
             >
-              Browse the full catalogue
+              {intro.linkLabel}
               <svg
                 className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
                 fill="none"
@@ -143,19 +119,21 @@ export default function CategoriesShowcase() {
         </div>
 
         {/* Deliberately uneven: one hero tile, two stacked beside it. */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-          <Reveal className="lg:col-span-7" duration={0.8}>
-            <CategoryCard category={feature} index={0} feature />
-          </Reveal>
+        {feature && (
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+            <Reveal className="lg:col-span-7" duration={0.8}>
+              <CategoryCard category={feature} index={0} feature />
+            </Reveal>
 
-          <div className="flex flex-col gap-5 lg:col-span-5">
-            {rest.map((category, idx) => (
-              <Reveal key={category.href} delay={0.12 + idx * 0.1} className="h-full">
-                <CategoryCard category={category} index={idx + 1} />
-              </Reveal>
-            ))}
+            <div className="flex flex-col gap-5 lg:col-span-5">
+              {rest.map((category, idx) => (
+                <Reveal key={category.slug} delay={0.12 + idx * 0.1} className="h-full">
+                  <CategoryCard category={category} index={idx + 1} />
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

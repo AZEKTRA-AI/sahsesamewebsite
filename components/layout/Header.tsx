@@ -22,7 +22,8 @@ const productLinks = [
   { label: 'Rice', href: '/products/rice', hint: '1121 · Super · PK-385 · IRRI-6' },
 ]
 
-export default function Header() {
+export default function Header({ whatsapp }: { whatsapp: string }) {
+  const waHref = `https://wa.me/${whatsapp.replace(/[^\d]/g, '')}`
   const [mobileOpen, setMobileOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -198,7 +199,7 @@ export default function Header() {
           {/* Desktop CTAs */}
           <div className="hidden items-center gap-2 md:flex">
             <a
-              href="https://wa.me/923000959524"
+              href={waHref}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-full px-3 py-2 font-body text-sm font-medium text-sah-charcoal/80 transition-colors duration-200 hover:text-sah-gold active:scale-[0.97]"
@@ -321,7 +322,7 @@ export default function Header() {
                     Request a Quote
                   </Link>
                   <a
-                    href="https://wa.me/923000959524"
+                    href={waHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex w-full items-center justify-center rounded-full border border-sah-gold/40 px-7 py-3 font-body font-medium text-sah-gold transition-colors duration-200 hover:bg-sah-gold/10 active:scale-[0.97]"

@@ -6,32 +6,23 @@ import PageHero from '@/components/marketing/PageHero'
 import PageCTA from '@/components/marketing/PageCTA'
 import { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SpotlightCard from '@/components/ui/SpotlightCard'
+import { getContent } from '@/lib/content/store'
+import { catalogCategoriesBlock } from '@/lib/content/blocks'
 
-const categoryImages: Record<string, string> = {
-  sesame:
-    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg',
-  pulses:
-    'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958251/sah-marketing/category-pulses.jpg',
-  rice: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958253/sah-marketing/category-rice.jpg',
-}
-
-const categoryLead: Record<string, string> = {
-  sesame:
-    'Hulled and natural white sesame, cleaned to your purity and moisture ceiling for tahini, bakery, and oil crushing.',
-  pulses:
-    'Chickpeas, split red lentils, and split yellow gram — milled and graded under our own supervision in Faisalabad.',
-  rice: 'Long-grain Basmati and IRRI varieties, sortex-cleaned and graded for wholesale, import, and re-export.',
+async function getCategoryContent(slug: string) {
+  const catalog = await getContent(catalogCategoriesBlock)
+  return catalog.items.find((item) => item.slug === slug) ?? catalog.items[0]
 }
 
 export async function generateMetadata({ params }: { params: { category: string } }) {
   const category = await prisma.category.findUnique({ where: { slug: params.category } })
   if (!category) return { title: 'Not found' }
 
+  const copy = await getCategoryContent(category.slug)
+
   return {
     title: category.name,
-    description:
-      categoryLead[category.slug] ??
-      `Export-grade ${category.name.toLowerCase()} from Pakistan.`,
+    description: copy?.description ?? `Export-grade ${category.name.toLowerCase()} from Pakistan.`,
   }
 }
 
@@ -58,19 +49,17 @@ export default async function CategoryPage({
 
   if (!category) notFound()
 
-  const heroImage = categoryImages[category.slug] || categoryImages.sesame
+  const copy = await getCategoryContent(category.slug)
+  const heroImage = copy?.image ?? catalogCategoriesBlock.defaults.items[0].image
 
   return (
     <>
       <PageHero
         eyebrow="Product category"
         title={category.name}
-        subtitle={
-          categoryLead[category.slug] ??
-          `Export-grade ${category.name.toLowerCase()} sourced from Pakistan’s agricultural heartland.`
-        }
+        subtitle={copy?.description ?? `Export-grade ${category.name.toLowerCase()} sourced from Pakistan's agricultural heartland.`}
         image={heroImage}
-        imageAlt={category.name}
+        imageAlt={copy?.imageAlt || category.name}
         breadcrumbs={[
           { label: 'Home', href: '/' },
           { label: 'Products', href: '/products' },

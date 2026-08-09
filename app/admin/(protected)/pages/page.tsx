@@ -14,13 +14,13 @@ export default async function PagesAdmin() {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold text-sah-charcoal">Pages</h1>
-        <Link
-          href="/admin/pages/create"
-          className="bg-sah-green text-white px-6 py-2 rounded-lg hover:bg-opacity-90"
-        >
-          + New Page
-        </Link>
+        <div>
+          <h1 className="text-4xl font-bold text-sah-charcoal">Pages</h1>
+          <p className="text-gray-600 mt-1">
+            Page titles, SEO descriptions, and publish status. For the actual content on each
+            page, use the page-specific sections in the sidebar (Homepage, About Page, etc).
+          </p>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">

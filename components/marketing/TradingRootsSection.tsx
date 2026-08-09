@@ -4,29 +4,16 @@ import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
 import ParallaxImage from '@/components/ui/ParallaxImage'
 import Counter from '@/components/ui/Counter'
+import type { homeTradingRootsBlock } from '@/lib/content/blocks'
 
 const FOUNDED = 1985
 const YEARS = new Date().getFullYear() - FOUNDED
 
-const pillars = [
-  {
-    label: 'Pulses heritage',
-    description:
-      'Decades in Pakistan’s pulses trade, with two modern mills of our own in Faisalabad.',
-  },
-  {
-    label: 'Global reach',
-    description:
-      'Pakistani agricultural products moved to international buyers through established supply networks.',
-  },
-  {
-    label: 'Quality first',
-    description:
-      'Buyer-specific specifications, batch testing, and transparent communication on every contract.',
-  },
-]
-
-export default function TradingRootsSection() {
+export default function TradingRootsSection({
+  content,
+}: {
+  content: typeof homeTradingRootsBlock.defaults
+}) {
   return (
     <section className="relative overflow-hidden border-b border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
       <div className="container-wide">
@@ -35,8 +22,8 @@ export default function TradingRootsSection() {
           <div className="relative lg:col-span-7">
             <Reveal direction="right" duration={0.9}>
               <ParallaxImage
-                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958255/sah-marketing/heritage-field.jpg"
-                alt="Golden wheat and sesame fields outside Faisalabad at harvest"
+                src={content.image}
+                alt={content.imageAlt}
                 sizes="(max-width: 1024px) 100vw, 58vw"
                 className="h-72 rounded-panel shadow-lift-lg sm:h-96 lg:h-[30rem]"
                 distance={40}
@@ -46,7 +33,7 @@ export default function TradingRootsSection() {
                   className="absolute inset-0 bg-gradient-to-t from-sah-earth/70 via-sah-earth/10 to-transparent"
                 />
                 <p className="absolute bottom-6 left-6 right-6 font-display text-xl italic text-white sm:text-2xl">
-                  Faisalabad, Punjab
+                  {content.imageCaption}
                 </p>
               </ParallaxImage>
             </Reveal>
@@ -58,7 +45,7 @@ export default function TradingRootsSection() {
                   <Counter value={YEARS} suffix=" yrs" />
                 </p>
                 <p className="mt-1 font-body text-[11px] uppercase tracking-[0.2em] text-sah-charcoal/55">
-                  Trading without interruption
+                  {content.badgeLabel}
                 </p>
               </div>
             </Reveal>
@@ -66,17 +53,15 @@ export default function TradingRootsSection() {
 
           <div className="lg:col-span-5">
             <SectionIntro
-              eyebrow={`Est. ${FOUNDED} · Family tradition`}
-              title="Family trading roots, four decades deep"
+              eyebrow={content.tagline}
+              title={content.title}
               size="md"
-              lead="For nearly four decades our family has traded on the same terms: consistent quality, honest grading, and relationships that outlast any single shipment."
+              lead={content.lead}
             />
 
             <Reveal delay={0.2}>
               <p className="mt-6 max-w-xl font-body text-base leading-relaxed text-sah-charcoal/70">
-                From the mills in Faisalabad to a container leaving Karachi Port,
-                every lot passes through the same hands — deep sourcing knowledge,
-                rigorous evaluation, and a supply chain we can answer for.
+                {content.paragraph}
               </p>
             </Reveal>
           </div>
@@ -84,7 +69,7 @@ export default function TradingRootsSection() {
 
         {/* Pillars */}
         <RevealGroup className="mt-20 grid grid-cols-1 gap-px overflow-hidden rounded-card bg-sah-gold/15 sm:mt-28 md:grid-cols-3">
-          {pillars.map((pillar, idx) => (
+          {content.pillars.map((pillar, idx) => (
             <RevealItem key={pillar.label} className="bg-sah-cream">
               <div className="group h-full bg-sah-cream p-8 transition-colors duration-300 ease-out-expo hover:bg-white">
                 <p className="font-display text-4xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">

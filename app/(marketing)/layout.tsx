@@ -3,12 +3,19 @@ import Footer from '@/components/layout/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import TrustMarquee from '@/components/marketing/TrustMarquee'
+import { getContent } from '@/lib/content/store'
+import { globalContactBlock, globalBrandBlock } from '@/lib/content/blocks'
 
-export default function MarketingLayout({
+export default async function MarketingLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const [contact, brand] = await Promise.all([
+    getContent(globalContactBlock),
+    getContent(globalBrandBlock),
+  ])
+
   return (
     <div className="min-h-screen bg-white">
       <SmoothScroll />
@@ -18,7 +25,7 @@ export default function MarketingLayout({
         Skip to content
       </a>
 
-      <Header />
+      <Header whatsapp={contact.whatsapp} />
 
       {/* Clears the fixed header. Height mirrors the header's un-scrolled state. */}
       <div aria-hidden="true" className="h-[5.5rem] lg:h-24" />
@@ -26,7 +33,7 @@ export default function MarketingLayout({
       <main id="main">{children}</main>
 
       <TrustMarquee />
-      <Footer />
+      <Footer contact={contact} brand={brand} />
     </div>
   )
 }

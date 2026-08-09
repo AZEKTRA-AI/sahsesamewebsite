@@ -11,21 +11,14 @@ import {
 import Counter from '@/components/ui/Counter'
 import Magnetic from '@/components/ui/Magnetic'
 import useReducedMotionSafe from '@/components/ui/useReducedMotionSafe'
+import type { homeHeroBlock } from '@/lib/content/blocks'
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
 const FOUNDED = 1985
 const YEARS = new Date().getFullYear() - FOUNDED
 
-const LINES = ['From the Mills of Pakistan', 'to Markets Worldwide']
-
-export default function HeroSection({
-  imageUrl,
-  imageAlt,
-}: {
-  imageUrl: string
-  imageAlt: string
-}) {
+export default function HeroSection({ content }: { content: typeof homeHeroBlock.defaults }) {
   // Safe variant: this value picks which styles render, so it must not differ
   // between the server and the first client paint.
   const reduceMotion = useReducedMotionSafe()
@@ -39,6 +32,8 @@ export default function HeroSection({
   const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '14%'])
   const copyY = useTransform(scrollYProgress, [0, 1], [0, -40])
   const copyOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0])
+
+  const lines = [content.headlineLine1, content.headlineLine2]
 
   return (
     <section
@@ -85,8 +80,8 @@ export default function HeroSection({
               style={{ y: reduceMotion ? 0 : imageY }}
             >
               <Image
-                src={imageUrl}
-                alt={imageAlt}
+                src={content.image}
+                alt={content.imageAlt}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 45vw"
@@ -118,13 +113,13 @@ export default function HeroSection({
             >
               <span className="h-px w-8 bg-sah-gold/60" />
               <p className="font-body text-[10px] uppercase tracking-[0.28em] text-sah-gold sm:text-[11px] sm:tracking-[0.32em]">
-                Established {FOUNDED} · Faisalabad, Pakistan
+                {content.tagline}
               </p>
             </motion.div>
 
             <div className="max-w-2xl">
               <h1 className="display-xl mb-5 text-4xl text-white sm:mb-6 sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-7xl">
-                {LINES.map((line, lineIdx) => (
+                {lines.map((line, lineIdx) => (
                   <span key={lineIdx} className="block overflow-hidden pb-[0.08em]">
                     <motion.span
                       className="block"
@@ -148,7 +143,7 @@ export default function HeroSection({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, duration: 0.7, ease: EASE }}
               >
-                Family-run sesame, pulses, and rice — export-grade, since {FOUNDED}.
+                {content.subtext}
               </motion.p>
 
               <motion.div
@@ -159,14 +154,14 @@ export default function HeroSection({
               >
                 <Magnetic strength={0.22} className="w-full sm:w-auto">
                   <Link href="#rfq-form" className="btn-primary w-full sm:w-auto">
-                    Request a quotation
+                    {content.primaryButtonLabel}
                   </Link>
                 </Magnetic>
                 <Link
                   href="/products"
                   className="group inline-flex items-center justify-center gap-2 px-2 py-3 font-body font-medium text-white/85 transition-colors duration-200 hover:text-sah-gold active:scale-[0.97]"
                 >
-                  See our products
+                  {content.secondaryButtonLabel}
                   <svg
                     className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
                     fill="none"
@@ -180,7 +175,8 @@ export default function HeroSection({
                 </Link>
               </motion.div>
 
-              {/* Stats — glass panel rather than three bare numbers */}
+              {/* Stats — glass panel rather than three bare numbers. Calculated,
+                  not editable, so the counters never drift from reality. */}
               <motion.dl
                 className="glass-dark grid max-w-lg grid-cols-3 divide-x divide-white/10 rounded-card px-1 py-4 sm:py-5"
                 initial={{ opacity: 0, y: 16 }}

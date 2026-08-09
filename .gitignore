@@ -44,3 +44,4 @@ Thumbs.db
 *.db
 *.db-journal
 prisma/prisma/
+tsconfig.tsbuildinfo

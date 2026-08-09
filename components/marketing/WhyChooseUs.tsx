@@ -4,43 +4,9 @@ import Link from 'next/link'
 import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
 import ParallaxImage from '@/components/ui/ParallaxImage'
+import type { homeWhyChooseUsBlock } from '@/lib/content/blocks'
 
-const reasons = [
-  {
-    title: 'Family experience',
-    description: 'Decades of commodity trading grounded in real agricultural operations since 1985.',
-  },
-  {
-    title: 'Pakistan-based sourcing',
-    description: 'Direct access to the agricultural heartland and long-standing supplier relationships.',
-  },
-  {
-    title: 'Verified partners',
-    description: 'We work only with processors whose plants and output we have inspected ourselves.',
-  },
-  {
-    title: 'Buyer specifications',
-    description: 'Lots cleaned and graded to your exact purity, moisture, and sizing requirements.',
-  },
-  {
-    title: 'Testing & inspection',
-    description: 'Batch analysis and third-party inspection through SGS or Intertek on request.',
-  },
-  {
-    title: 'Flexible packaging',
-    description: 'From 25 kg PP woven bags to jumbo bags and fully private-label packing.',
-  },
-  {
-    title: 'Export support',
-    description: 'Complete documentation and logistics handled for FOB, CFR, and CIF shipments.',
-  },
-  {
-    title: 'Direct communication',
-    description: 'One point of contact from enquiry to bill of lading — no agents in between.',
-  },
-]
-
-export default function WhyChooseUs() {
+export default function WhyChooseUs({ content }: { content: typeof homeWhyChooseUsBlock.defaults }) {
   return (
     <section className="border-y border-sah-gold/10 bg-sah-light py-20 sm:py-28">
       <div className="container-wide grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
@@ -48,16 +14,16 @@ export default function WhyChooseUs() {
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">
             <SectionIntro
-              eyebrow="Why choose SAH"
-              title="Eight reasons buyers stay with us"
-              lead="Agricultural heritage run on modern B2B discipline — from first sample through to the bill of lading."
+              eyebrow={content.tagline}
+              title={content.title}
+              lead={content.lead}
               size="md"
             />
 
             <Reveal delay={0.2}>
               <ParallaxImage
-                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958248/sah-marketing/about-hands-grain.jpg"
-                alt="Hands running through freshly milled grain"
+                src={content.image}
+                alt={content.imageAlt}
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 className="mt-10 hidden h-56 rounded-card shadow-lift lg:block"
                 distance={30}
@@ -74,7 +40,7 @@ export default function WhyChooseUs() {
                 href="/about"
                 className="group mt-8 inline-flex items-center gap-2 font-body text-sm font-medium text-sah-gold transition-colors duration-200 hover:text-sah-charcoal active:scale-[0.97]"
               >
-                Read our story
+                {content.linkLabel}
                 <svg
                   className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
                   fill="none"
@@ -93,7 +59,7 @@ export default function WhyChooseUs() {
         {/* Numbered rows rather than another grid of identical boxes. */}
         <RevealGroup className="lg:col-span-7" stagger={0.06}>
           <ol className="border-t border-sah-gold/15">
-            {reasons.map((reason, idx) => (
+            {content.reasons.map((reason, idx) => (
               <li key={reason.title} className="group relative border-b border-sah-gold/15">
                 {/* Gold bar wipes down the left edge on hover. */}
                 <span

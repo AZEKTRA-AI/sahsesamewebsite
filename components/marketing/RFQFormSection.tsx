@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import Reveal from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
+import type { homeRfqIntroBlock, globalContactBlock } from '@/lib/content/blocks'
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
@@ -23,28 +24,34 @@ const EMPTY_FORM = {
   website: '', // honeypot
 }
 
-const contactRoutes = [
-  {
-    label: 'Email',
-    value: 'sales@sahcompany.com',
-    href: 'mailto:sales@sahcompany.com',
-    note: 'Specifications and quotations',
-  },
-  {
-    label: 'WhatsApp',
-    value: '+92 300 0959524',
-    href: 'https://wa.me/923000959524',
-    note: 'Fastest route during Pakistan business hours',
-  },
-  {
-    label: 'Office',
-    value: '+92 300 8663396',
-    href: 'tel:+923008663396',
-    note: 'New Grain Market, Faisalabad',
-  },
-]
+export default function RFQFormSection({
+  intro,
+  contact,
+}: {
+  intro: typeof homeRfqIntroBlock.defaults
+  contact: typeof globalContactBlock.defaults
+}) {
+  const contactRoutes = [
+    {
+      label: 'Email',
+      value: contact.salesEmail,
+      href: `mailto:${contact.salesEmail}`,
+      note: 'Specifications and quotations',
+    },
+    {
+      label: 'WhatsApp',
+      value: contact.whatsapp,
+      href: `https://wa.me/${contact.whatsapp.replace(/[^\d]/g, '')}`,
+      note: 'Fastest route during Pakistan business hours',
+    },
+    {
+      label: 'Office',
+      value: contact.phone2 || contact.phone1,
+      href: `tel:${contact.phone2 || contact.phone1}`,
+      note: 'New Grain Market, Faisalabad',
+    },
+  ]
 
-export default function RFQFormSection() {
   const [formState, setFormState] = useState<'idle' | 'submitting' | 'submitted'>('idle')
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState(EMPTY_FORM)
@@ -91,9 +98,9 @@ export default function RFQFormSection() {
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">
             <SectionIntro
-              eyebrow="Get a quote"
-              title="Tell us what you need shipped"
-              lead="Send the specification and destination. You will have grades, packing options, and a price back within 24–48 hours."
+              eyebrow={intro.tagline}
+              title={intro.title}
+              lead={intro.lead}
               size="md"
             />
 

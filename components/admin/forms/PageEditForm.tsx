@@ -86,7 +86,15 @@ export default function PageEditForm({ page }: PageEditFormProps) {
       </div>
 
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-bold text-sah-charcoal mb-4">Sections</h3>
+        <h3 className="text-lg font-bold text-sah-charcoal mb-4">Sections on this page</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          This is the order sections appear in. To edit the text, photos, and lists inside
+          them, use{' '}
+          <a href="/admin/content/home" className="text-sah-green hover:underline font-medium">
+            Homepage
+          </a>{' '}
+          in the sidebar.
+        </p>
         <div className="space-y-3">
           {page.sections.map((section: any) => (
             <div key={section.id} className="flex items-center justify-between bg-gray-50 p-4 rounded">
@@ -94,12 +102,6 @@ export default function PageEditForm({ page }: PageEditFormProps) {
                 <p className="font-medium text-sah-charcoal">{section.type}</p>
                 <p className="text-sm text-gray-600">Sort order: {section.sortOrder}</p>
               </div>
-              <a
-                href={`/admin/pages/${page.id}/sections/${section.id}`}
-                className="text-sah-green hover:underline font-medium"
-              >
-                Edit
-              </a>
             </div>
           ))}
         </div>

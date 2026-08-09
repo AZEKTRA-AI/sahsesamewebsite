@@ -5,36 +5,27 @@ import Image from 'next/image'
 import { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
 import SpotlightCard from '@/components/ui/SpotlightCard'
+import type { homeIndustriesBlock } from '@/lib/content/blocks'
 
-const industries = [
-  { title: 'Sesame processors', description: 'Tahini lines and oil crushing plants' },
-  { title: 'Bakeries', description: 'Topping and dough-inclusion sesame' },
-  { title: 'Confectionery', description: 'Halva, brittle, and coated products' },
-  { title: 'Food ingredient firms', description: 'Contracted commodity sourcing' },
-  { title: 'Pulse importers', description: 'Wholesale import and distribution' },
-  { title: 'Food wholesalers', description: 'Retail and food-service supply' },
-  { title: 'Commodity traders', description: 'B2B trading and re-export' },
-  { title: 'Supermarket suppliers', description: 'Private-label and branded packs' },
-  { title: 'Ethnic food distributors', description: 'South Asian specialty channels' },
-  { title: 'Private-label producers', description: 'OEM and ODM manufacturing' },
-]
+export default function IndustriesServed({
+  content,
+}: {
+  content: typeof homeIndustriesBlock.defaults
+}) {
+  const first = content.industries.slice(0, 3)
+  const rest = content.industries.slice(3)
 
-export default function IndustriesServed() {
   return (
     <section className="bg-white py-20 sm:py-28">
       <div className="container-wide">
-        <SectionIntro
-          eyebrow="Who we supply"
-          title="The desks that buy from us"
-          lead="Our buyers sit across food processing, distribution, retail, and specialty channels — from single-container importers to multi-plant manufacturers."
-        />
+        <SectionIntro eyebrow={content.tagline} title={content.title} lead={content.lead} />
 
-        {/* Bento: ten trade tiles interleaved with a photo and a closing panel. */}
+        {/* Bento: trade tiles interleaved with a photo and a closing panel. */}
         <RevealGroup
           className="mt-12 grid grid-cols-1 gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4"
           stagger={0.05}
         >
-          {industries.slice(0, 3).map((industry, idx) => (
+          {first.map((industry, idx) => (
             <IndustryTile key={industry.title} industry={industry} index={idx} />
           ))}
 
@@ -42,8 +33,8 @@ export default function IndustriesServed() {
           <RevealItem className="h-full">
             <div className="relative h-full min-h-[13rem] overflow-hidden rounded-card">
               <Image
-                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958245/sah-marketing/about-farmer-field.jpg"
-                alt="A grower inspecting the standing crop before harvest"
+                src={content.photoImage}
+                alt={content.photoAlt}
                 fill
                 sizes="(max-width: 1024px) 100vw, 25vw"
                 className="object-cover"
@@ -53,12 +44,12 @@ export default function IndustriesServed() {
                 className="absolute inset-0 bg-gradient-to-t from-sah-earth/85 via-sah-earth/25 to-transparent"
               />
               <p className="absolute bottom-5 left-5 right-5 font-display text-lg italic text-white">
-                Sourced at origin, not from a warehouse
+                {content.photoCaption}
               </p>
             </div>
           </RevealItem>
 
-          {industries.slice(3).map((industry, idx) => (
+          {rest.map((industry, idx) => (
             <IndustryTile key={industry.title} industry={industry} index={idx + 3} />
           ))}
 
@@ -74,17 +65,16 @@ export default function IndustriesServed() {
                 }}
               />
               <div className="relative">
-                <h3 className="font-display text-xl italic text-white">Not listed?</h3>
+                <h3 className="font-display text-xl italic text-white">{content.closingTitle}</h3>
                 <p className="mt-2 font-body text-sm leading-relaxed text-white/65">
-                  Tell us the spec and the destination. If we can source it properly,
-                  we will quote it.
+                  {content.closingText}
                 </p>
               </div>
               <Link
                 href="/contact"
                 className="group relative mt-5 inline-flex items-center gap-2 font-body text-sm font-medium text-sah-gold transition-colors duration-200 hover:text-white active:scale-[0.97]"
               >
-                Start an enquiry
+                {content.closingLinkLabel}
                 <svg
                   className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
                   fill="none"
