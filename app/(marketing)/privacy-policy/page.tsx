@@ -3,6 +3,8 @@ import LegalShell from '@/components/marketing/LegalShell'
 export const metadata = {
   title: 'Privacy policy',
   description: 'How SAH Company collects, uses, and protects personal data submitted through this website.',
+  alternates: { canonical: '/privacy-policy' },
+  robots: { index: false, follow: true },
 }
 
 export default function PrivacyPolicyPage() {

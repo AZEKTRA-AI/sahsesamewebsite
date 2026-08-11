@@ -8,6 +8,8 @@ import { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import { getContent } from '@/lib/content/store'
 import { catalogCategoriesBlock } from '@/lib/content/blocks'
+import JsonLd from '@/components/seo/JsonLd'
+import { getSiteUrl } from '@/lib/site'
 
 // See app/(marketing)/page.tsx for why this exists on every content-driven page.
 // Combined with generateStaticParams below, this is ISR: statically built per
@@ -28,6 +30,8 @@ export async function generateMetadata({ params }: { params: { category: string 
   return {
     title: category.name,
     description: copy?.description ?? `Export-grade ${category.name.toLowerCase()} from Pakistan.`,
+    alternates: { canonical: `/products/${category.slug}` },
+    openGraph: copy?.image ? { images: [{ url: copy.image }] } : undefined,
   }
 }
 
@@ -57,8 +61,20 @@ export default async function CategoryPage({
   const copy = await getCategoryContent(category.slug)
   const heroImage = copy?.image ?? catalogCategoriesBlock.defaults.items[0].image
 
+  const siteUrl = getSiteUrl()
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: `${siteUrl}/products` },
+      { '@type': 'ListItem', position: 3, name: category.name, item: `${siteUrl}/products/${category.slug}` },
+    ],
+  }
+
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd} />
       <PageHero
         eyebrow="Product category"
         title={category.name}

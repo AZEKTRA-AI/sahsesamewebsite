@@ -23,6 +23,7 @@ export const metadata = {
   title: 'Packaging & logistics',
   description:
     'Packing formats, incoterms, transit times, and export documentation for SAH shipments out of Karachi Port.',
+  alternates: { canonical: '/packaging-logistics' },
 }
 
 export default async function PackagingLogisticsPage() {

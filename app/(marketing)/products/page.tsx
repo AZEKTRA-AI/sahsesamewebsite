@@ -13,9 +13,10 @@ import { catalogHeroBlock, catalogCategoriesBlock, catalogStandardsBlock, catalo
 export const revalidate = 60
 
 export const metadata = {
-  title: 'Products — sesame, pulses & rice',
+  title: 'Products — rice, sesame & pulses',
   description:
-    'Export-grade sesame seeds, pulses, and rice from Pakistan. Hulled and natural sesame, Basmati and IRRI rice, chickpeas, lentils, and moong.',
+    'Export-grade Basmati and IRRI rice, hulled and natural sesame seeds, and pulses from Pakistan — chickpeas, lentils, and moong.',
+  alternates: { canonical: '/products' },
 }
 
 export default async function ProductsPage() {

@@ -23,7 +23,8 @@ export const revalidate = 60
 export const metadata = {
   title: 'About us',
   description:
-    'Sain Abdul Hakim and Company — a Faisalabad family business trading sesame, pulses, and rice since 1985.',
+    'Sain Abdul Hakim and Company — a Faisalabad family business trading rice, sesame, and pulses since 1985.',
+  alternates: { canonical: '/about' },
 }
 
 const FOUNDED = 1985

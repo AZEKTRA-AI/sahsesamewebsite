@@ -20,6 +20,7 @@ export const metadata = {
   title: 'Quality & process',
   description:
     'The step-by-step sourcing and quality process behind every SAH shipment — verification, lab testing, grading, inspection, and documentation.',
+  alternates: { canonical: '/quality-process' },
 }
 
 export default async function QualityProcessPage() {

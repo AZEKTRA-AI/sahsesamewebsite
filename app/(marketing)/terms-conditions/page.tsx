@@ -3,6 +3,8 @@ import LegalShell from '@/components/marketing/LegalShell'
 export const metadata = {
   title: 'Terms & conditions',
   description: 'Terms and conditions governing use of the SAH Company website.',
+  alternates: { canonical: '/terms-conditions' },
+  robots: { index: false, follow: true },
 }
 
 export default function TermsConditionsPage() {

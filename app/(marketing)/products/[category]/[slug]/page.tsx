@@ -8,6 +8,8 @@ import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import { getContentMap } from '@/lib/content/store'
 import { catalogCategoriesBlock, catalogProductCtaBlock } from '@/lib/content/blocks'
+import JsonLd from '@/components/seo/JsonLd'
+import { getSiteUrl } from '@/lib/site'
 
 // See app/(marketing)/page.tsx for why this exists on every content-driven page.
 // Combined with generateStaticParams below, this is ISR: statically built per
@@ -37,12 +39,20 @@ export async function generateMetadata({
 }: {
   params: { category: string; slug: string }
 }) {
-  const product = await prisma.product.findUnique({ where: { slug: params.slug } })
+  const product = await prisma.product.findUnique({
+    where: { slug: params.slug },
+    include: { category: true, images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
+  })
   if (!product) return { title: 'Not found' }
+
+  const description = `${product.name} from ${product.origin || 'Pakistan'} — export-grade, packed and documented to contract specification.`
+  const image = product.images[0]?.url
 
   return {
     title: product.name,
-    description: `${product.name} from ${product.origin || 'Pakistan'} — export-grade, packed and documented to contract specification.`,
+    description,
+    alternates: { canonical: `/products/${product.category.slug}/${product.slug}` },
+    openGraph: image ? { images: [{ url: image }] } : undefined,
   }
 }
 
@@ -89,8 +99,38 @@ export default async function ProductDetailPage({
     content.categories.items.find((item) => item.slug === product.category.slug)?.image ??
     content.categories.items[0].image
 
+  const siteUrl = getSiteUrl()
+  const categoryPath = `/products/${product.category.slug}`
+  const productPath = `${categoryPath}/${product.slug}`
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Products', item: `${siteUrl}/products` },
+      { '@type': 'ListItem', position: 3, name: product.category.name, item: `${siteUrl}${categoryPath}` },
+      { '@type': 'ListItem', position: 4, name: product.name, item: `${siteUrl}${productPath}` },
+    ],
+  }
+
+  // No price/offers — this is a B2B catalog, not a storefront, and Google
+  // penalizes Product rich results that carry an Offer without real
+  // availability/price data. Name, image, and brand are all that's true here.
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: `${product.name} from ${product.origin || 'Pakistan'} — export-grade, packed and documented to contract specification.`,
+    image: product.images.length ? product.images.map((img) => img.url) : [fallbackImage],
+    category: product.category.name,
+    brand: { '@type': 'Brand', name: 'Sain Abdul Hakim and Company' },
+  }
+
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={productJsonLd} />
       {/* Breadcrumb bar */}
       <div className="border-b border-sah-gold/12 bg-sah-light">
         <nav aria-label="Breadcrumb" className="container-wide py-4">

@@ -3,8 +3,10 @@ import Footer from '@/components/layout/Footer'
 import SmoothScroll from '@/components/SmoothScroll'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import TrustMarquee from '@/components/marketing/TrustMarquee'
+import JsonLd from '@/components/seo/JsonLd'
 import { getContent } from '@/lib/content/store'
 import { globalContactBlock, globalBrandBlock } from '@/lib/content/blocks'
+import { getSiteUrl } from '@/lib/site'
 
 export default async function MarketingLayout({
   children,
@@ -16,8 +18,36 @@ export default async function MarketingLayout({
     getContent(globalBrandBlock),
   ])
 
+  const siteUrl = getSiteUrl()
+
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: brand.legalName,
+    url: siteUrl,
+    logo: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png',
+    description: brand.blurb,
+    foundingDate: '1985',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: contact.address,
+      addressCountry: 'PK',
+    },
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        telephone: contact.phone1,
+        email: contact.salesEmail || contact.email,
+        contactType: 'sales',
+        areaServed: 'Worldwide',
+      },
+    ],
+    sameAs: [contact.linkedinUrl, contact.facebookUrl].filter(Boolean),
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd data={organizationJsonLd} />
       <SmoothScroll />
       <ScrollProgress />
 

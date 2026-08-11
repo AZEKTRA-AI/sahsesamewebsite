@@ -42,39 +42,47 @@ function resolveMetadataBase(): URL | undefined {
   return undefined
 }
 
+// Cropped to the 1200x630 OG/Twitter card size Cloudinary-side so social
+// previews don't rely on the platform's own (often ugly) auto-crop.
 const ogImage =
-  'https://res.cloudinary.com/pjhvvbam/image/upload/v1785958258/sah-marketing/hero-sesame.jpg'
+  'https://res.cloudinary.com/pjhvvbam/image/upload/w_1200,h_630,c_fill,g_auto/v1786433354/sah-marketing/hero-rice.png'
+
+const siteName = 'Sain Abdul Hakim and Company'
+const titleDefault =
+  'Sain Abdul Hakim and Company | Rice, Sesame Seeds & Pulses Exporter from Pakistan'
+const descriptionDefault =
+  'Faisalabad-based exporter of Basmati and IRRI rice, hulled and natural sesame seeds, and pulses — export-grade, lab-tested, and shipped worldwide since 1985.'
 
 export const metadata: Metadata = {
   metadataBase: resolveMetadataBase(),
   title: {
-    default: 'SAH Company | Pakistani Sesame Seeds, Pulses & Rice Exporter',
-    template: '%s | SAH Company',
+    default: titleDefault,
+    template: `%s | ${siteName}`,
   },
-  description:
-    'Family-rooted sesame seeds, pulses, and rice exporter from Faisalabad, Pakistan. Supplying global buyers with export-grade agricultural commodities since 1985.',
+  description: descriptionDefault,
   keywords: [
+    'rice exporter Pakistan',
+    'basmati rice exporter',
+    'IRRI rice exporter',
     'sesame seeds exporter Pakistan',
     'hulled sesame seeds',
-    'pulses exporter',
-    'basmati rice exporter',
+    'pulses exporter Pakistan',
     'Faisalabad agricultural exporter',
-    'FOB Karachi',
+    'FOB Karachi rice',
   ],
-  authors: [{ name: 'Sain Abdul Hakim and Company' }],
+  authors: [{ name: siteName }],
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    siteName: 'SAH Company',
-    title: 'SAH Company | Pakistani Sesame Seeds, Pulses & Rice Exporter',
-    description:
-      'Export-grade sesame, pulses, and rice from Faisalabad, Pakistan. Family-run since 1985.',
-    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Premium Pakistani sesame seeds' }],
+    siteName,
+    title: titleDefault,
+    description: descriptionDefault,
+    images: [{ url: ogImage, width: 1200, height: 630, alt: 'Basmati rice grown in Punjab, Pakistan' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SAH Company | Pakistani Sesame Seeds, Pulses & Rice Exporter',
-    description:
-      'Export-grade sesame, pulses, and rice from Faisalabad, Pakistan. Family-run since 1985.',
+    title: titleDefault,
+    description: descriptionDefault,
     images: [ogImage],
   },
   icons: {

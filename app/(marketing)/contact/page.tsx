@@ -13,6 +13,7 @@ export const metadata = {
   title: 'Contact',
   description:
     'Reach the SAH export desk in Faisalabad for quotations, samples, and specification enquiries.',
+  alternates: { canonical: '/contact' },
 }
 
 export default async function ContactPage() {
