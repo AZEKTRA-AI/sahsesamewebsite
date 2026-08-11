@@ -16,7 +16,7 @@ export const metadata = {
 }
 
 export default async function ProductsPage() {
-  const [categories, content] = await Promise.all([
+  const [rawCategories, content] = await Promise.all([
     prisma.category.findMany({ include: { _count: { select: { products: true } } } }),
     getContentMap({
       hero: catalogHeroBlock,
@@ -28,14 +28,23 @@ export default async function ProductsPage() {
 
   const categoryContent = new Map(content.categories.items.map((item) => [item.slug, item]))
 
+  // The DB has no ordering of its own for categories — the content block's
+  // item order (editable in the admin) is the single source of truth for
+  // display order, here and on the homepage.
+  const orderIndex = new Map(content.categories.items.map((item, i) => [item.slug, i]))
+  const categories = [...rawCategories].sort(
+    (a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99)
+  )
+  const leadCategory = content.categories.items[0]
+
   return (
     <>
       <PageHero
         eyebrow={content.hero.tagline}
         title={content.hero.title}
         subtitle={content.hero.subtitle}
-        image={categoryContent.get('sesame')?.image ?? content.categories.items[0]?.image}
-        imageAlt="Macro photograph of export-grade sesame seeds"
+        image={leadCategory?.image}
+        imageAlt={leadCategory?.imageAlt || 'Export-grade agricultural products from Pakistan'}
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Products' }]}
       />
 

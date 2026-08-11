@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     'Faisalabad agricultural exporter',
     'FOB Karachi',
   ],
-  authors: [{ name: 'Sain Abdul Hakim & Company' }],
+  authors: [{ name: 'Sain Abdul Hakim and Company' }],
   openGraph: {
     type: 'website',
     siteName: 'SAH Company',

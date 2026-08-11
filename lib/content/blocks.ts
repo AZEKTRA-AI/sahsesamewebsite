@@ -115,7 +115,9 @@ export const globalBrandBlock = defineBlock({
     { key: 'blurb', label: 'Short description', type: 'textarea' },
   ],
   defaults: {
-    legalName: 'Sain Abdul Hakim & Company',
+    // Exact legal name per the signed client requirements form ("exactly as
+    // it should appear on the website") — "and", not "&".
+    legalName: 'Sain Abdul Hakim and Company',
     blurb:
       'A Faisalabad family business supplying sesame seeds, pulses, and rice to buyers worldwide — sourced through our own mills and verified processing partners.',
   },
@@ -153,7 +155,19 @@ export const catalogCategoriesBlock = defineBlock({
     },
   ],
   defaults: {
+    // Rice first — it's the lead category across the site (homepage feature
+    // tile, Products page grid). Reordering this list is the single place
+    // that changes both.
     items: [
+      {
+        slug: 'rice',
+        name: 'Rice',
+        description:
+          'Basmati and IRRI varieties — raw, sella, and steamed — for wholesale, import, and re-export markets.',
+        meta: '1121 · Super Kernel · 1509 · IRRI',
+        image: `${CLOUD}/v1785958253/sah-marketing/category-rice.jpg`,
+        imageAlt: 'Long-grain Basmati rice',
+      },
       {
         slug: 'sesame',
         name: 'Sesame seeds',
@@ -171,15 +185,6 @@ export const catalogCategoriesBlock = defineBlock({
         meta: 'Chickpeas · Lentils · Moong',
         image: `${CLOUD}/v1785958251/sah-marketing/category-pulses.jpg`,
         imageAlt: 'Assorted pulses including chickpeas and lentils',
-      },
-      {
-        slug: 'rice',
-        name: 'Rice',
-        description:
-          'Long-grain Basmati and IRRI varieties for wholesale, import, and re-export markets.',
-        meta: '1121 · Super · PK-385 · IRRI-6',
-        image: `${CLOUD}/v1785958253/sah-marketing/category-rice.jpg`,
-        imageAlt: 'Long-grain Basmati rice',
       },
     ],
   },
@@ -275,7 +280,7 @@ export const homeTradingRootsBlock = defineBlock({
 export const homeCategoriesIntroBlock = defineBlock({
   key: 'home.categoriesIntro',
   title: 'Product categories — heading',
-  description: 'The section title above the three category cards. Edit the cards themselves under Catalog.',
+  description: 'The section title above the category cards. Edit the cards themselves under Catalog.',
   revalidate: [{ path: '/' }],
   fields: [
     { key: 'tagline', label: 'Small tag line', type: 'text' },
@@ -284,7 +289,7 @@ export const homeCategoriesIntroBlock = defineBlock({
   ],
   defaults: {
     tagline: 'What we supply',
-    title: 'Three categories, one standard',
+    title: 'Our categories, one standard',
     linkLabel: 'Browse the full catalogue',
   },
 })
@@ -591,7 +596,7 @@ export const aboutHeritageBlock = defineBlock({
     tagline: 'Our heritage',
     title: 'Four decades of trust, one family name',
     paragraph1:
-      'Sain Abdul Hakim & Company has traded agricultural commodities for nearly forty years. What began in the pulses business in 1985 now combines old-fashioned grading judgement with the documentation and inspection standards international buyers expect.',
+      'Sain Abdul Hakim and Company has traded agricultural commodities for nearly forty years. What began in the pulses business in 1985 now combines old-fashioned grading judgement with the documentation and inspection standards international buyers expect.',
     paragraph2:
       'We sit in Faisalabad, in the middle of Pakistan’s agricultural belt. That proximity is the whole point: we see the lots, we know the processors, and we can answer for what goes into the bag.',
     image: `${CLOUD}/v1785958248/sah-marketing/about-hands-grain.jpg`,
@@ -650,9 +655,9 @@ export const aboutMilestonesBlock = defineBlock({
       },
       {
         year: 'Today',
-        title: 'Three categories, one desk',
+        title: 'Sesame, pulses, and rice — one desk',
         description:
-          'Sesame, pulses, and rice supplied to processors, wholesalers, and private-label producers worldwide.',
+          'Our full range supplied to processors, wholesalers, and private-label producers worldwide.',
       },
     ],
   },
@@ -1143,7 +1148,7 @@ export const catalogHeroBlock = defineBlock({
   ],
   defaults: {
     tagline: 'What we supply',
-    title: 'Ten products, three categories',
+    title: 'Our full range of export products',
     subtitle:
       'Everything below is sourced in Punjab, processed to contract specification, and shipped from Karachi.',
   },

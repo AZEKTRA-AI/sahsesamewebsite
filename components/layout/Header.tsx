@@ -22,7 +22,7 @@ const productLinks = [
   { label: 'Rice', href: '/products/rice', hint: '1121 · Super · PK-385 · IRRI-6' },
 ]
 
-export default function Header({ whatsapp }: { whatsapp: string }) {
+export default function Header({ whatsapp, legalName }: { whatsapp: string; legalName: string }) {
   const waHref = `https://wa.me/${whatsapp.replace(/[^\d]/g, '')}`
   const [mobileOpen, setMobileOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
@@ -71,23 +71,30 @@ export default function Header({ whatsapp }: { whatsapp: string }) {
             scrolled ? 'h-[4.5rem]' : 'h-[5.5rem] lg:h-24'
           }`}
         >
-          {/* Logo — the mark itself carries the name, so it stands alone at a
-              size where its own lettering is actually legible. */}
+          {/* Logo + name. The logo alone reads as an icon at nav height — the
+              full legal name next to it is what makes the brand identifiable. */}
           <Link
             href="/"
-            className="flex flex-shrink-0 items-center rounded-lg"
-            aria-label="SAH Company — home"
+            className="flex min-w-0 flex-shrink-0 items-center gap-3 rounded-lg"
+            aria-label={`${legalName} — home`}
           >
             <Image
               src="https://res.cloudinary.com/pjhvvbam/image/upload/v1785958262/sah-marketing/sahlogo.png"
-              alt="Sain Abdul Hakim & Company"
-              width={120}
-              height={120}
+              alt=""
+              width={96}
+              height={96}
               priority
-              className={`w-auto transition-[height] duration-300 ease-out-expo ${
-                scrolled ? 'h-12' : 'h-16 lg:h-20'
+              className={`w-auto shrink-0 transition-[height] duration-300 ease-out-expo ${
+                scrolled ? 'h-11' : 'h-14 lg:h-16'
               }`}
             />
+            <span
+              className={`truncate font-display italic leading-tight text-sah-charcoal transition-[font-size] duration-300 ease-out-expo ${
+                scrolled ? 'text-base' : 'text-lg sm:text-xl lg:text-2xl'
+              }`}
+            >
+              {legalName}
+            </span>
           </Link>
 
           {/* Desktop nav */}

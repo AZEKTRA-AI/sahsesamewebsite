@@ -49,7 +49,7 @@ export default function TermsConditionsPage() {
         <h2>5. Intellectual property</h2>
         <p>
           All content on this website — text, graphics, logos, images, and software — is
-          the property of Sain Abdul Hakim &amp; Company or its content suppliers, and is
+          the property of Sain Abdul Hakim and Company or its content suppliers, and is
           protected by international copyright law.
         </p>
       </section>
@@ -93,7 +93,7 @@ export default function TermsConditionsPage() {
         <p>For questions about these terms:</p>
         <div className="mt-4 rounded-card border border-sah-gold/15 bg-sah-light p-6">
           <p>
-            <strong>Company:</strong> Sain Abdul Hakim &amp; Company
+            <strong>Company:</strong> Sain Abdul Hakim and Company
           </p>
           <p>
             <strong>Email:</strong> <a href="mailto:info@sahcompany.com">info@sahcompany.com</a>

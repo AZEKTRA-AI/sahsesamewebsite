@@ -25,7 +25,7 @@ export default async function MarketingLayout({
         Skip to content
       </a>
 
-      <Header whatsapp={contact.whatsapp} />
+      <Header whatsapp={contact.whatsapp} legalName={brand.legalName} />
 
       {/* Clears the fixed header. Height mirrors the header's un-scrolled state. */}
       <div aria-hidden="true" className="h-[5.5rem] lg:h-24" />

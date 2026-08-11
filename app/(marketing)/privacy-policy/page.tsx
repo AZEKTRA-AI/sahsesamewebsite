@@ -11,7 +11,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>1. Introduction</h2>
         <p>
-          Sain Abdul Hakim &amp; Company (“we”, “us”, “our”) operates the SAH Company
+          Sain Abdul Hakim and Company (“we”, “us”, “our”) operates the SAH Company
           website. This page explains what personal data we collect, how we use it, and the
           choices you have.
         </p>
