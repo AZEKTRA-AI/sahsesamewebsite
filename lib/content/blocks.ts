@@ -210,8 +210,8 @@ export const homeHeroBlock = defineBlock({
     { key: 'secondaryButtonLabel', label: 'Second button text', type: 'text' },
   ],
   defaults: {
-    image: `${CLOUD}/v1785958258/sah-marketing/hero-sesame.jpg`,
-    imageAlt: 'Export-grade Pakistani sesame seeds photographed up close',
+    image: `${CLOUD}/v1785958253/sah-marketing/category-rice.jpg`,
+    imageAlt: 'Long-grain basmati rice, export grade, photographed up close',
     tagline: 'Established 1985 · Faisalabad, Pakistan',
     headlineLine1: 'From the Mills of Pakistan',
     headlineLine2: 'to Markets Worldwide',
