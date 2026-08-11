@@ -132,34 +132,9 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Differentiators */}
-      <section className="bg-white py-20 sm:py-28">
-        <div className="container-wide">
-          <SectionIntro eyebrow={facts.tagline} title={facts.title} />
-
-          <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:mt-16 md:grid-cols-3">
-            {facts.items.map((fact, idx) => (
-              <RevealItem key={fact.title} className="h-full">
-                <SpotlightCard className="group h-full rounded-card border border-sah-gold/15 bg-sah-light p-8 transition-[border-color,background-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 hover:bg-white">
-                  <p className="tnum font-display text-4xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
-                    {String(idx + 1).padStart(2, '0')}
-                  </p>
-                  <h3 className="mt-5 font-display text-xl italic text-sah-charcoal">
-                    {fact.title}
-                  </h3>
-                  <p className="mt-3 font-body text-sm leading-relaxed text-sah-charcoal/65">
-                    {fact.description}
-                  </p>
-                </SpotlightCard>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </section>
-
       {/* Facilities */}
       {contact.facilities.length > 0 && (
-        <section className="border-y border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
+        <section className="bg-white py-20 sm:py-28">
           <div className="container-wide">
             <SectionIntro
               eyebrow="Our facilities"
@@ -170,7 +145,7 @@ export default async function AboutPage() {
             <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:mt-16" stagger={0.1}>
               {contact.facilities.map((facility, idx) => (
                 <RevealItem key={facility.name}>
-                  <SpotlightCard className="group rounded-card border border-sah-gold/15 bg-white p-8 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 sm:p-10">
+                  <SpotlightCard className="group rounded-card border border-sah-gold/15 bg-sah-light p-8 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 sm:p-10">
                     <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
                       <div className="sm:flex-1">
                         <p className="tnum font-display text-3xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
@@ -201,6 +176,31 @@ export default async function AboutPage() {
           </div>
         </section>
       )}
+
+      {/* Differentiators */}
+      <section className="border-y border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
+        <div className="container-wide">
+          <SectionIntro eyebrow={facts.tagline} title={facts.title} />
+
+          <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:mt-16 md:grid-cols-3">
+            {facts.items.map((fact, idx) => (
+              <RevealItem key={fact.title} className="h-full">
+                <SpotlightCard className="group h-full rounded-card border border-sah-gold/15 bg-sah-light p-8 transition-[border-color,background-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 hover:bg-white">
+                  <p className="tnum font-display text-4xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
+                    {String(idx + 1).padStart(2, '0')}
+                  </p>
+                  <h3 className="mt-5 font-display text-xl italic text-sah-charcoal">
+                    {fact.title}
+                  </h3>
+                  <p className="mt-3 font-body text-sm leading-relaxed text-sah-charcoal/65">
+                    {fact.description}
+                  </p>
+                </SpotlightCard>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
+      </section>
 
       {/* Full-bleed field banner */}
       <section aria-label="Our sourcing region" className="relative">
