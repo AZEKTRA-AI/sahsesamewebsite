@@ -71,10 +71,17 @@ export const globalContactBlock = defineBlock({
       itemLabel: 'facility',
       minItems: 0,
       maxItems: 8,
-      help: 'Shown on the Contact page under "Our facilities."',
+      help: 'Shown on the Contact page under "Our facilities" and on the About page.',
       fields: [
         { key: 'name', label: 'Name', type: 'text' },
         { key: 'address', label: 'Address', type: 'textarea' },
+        {
+          key: 'description',
+          label: 'What happens here',
+          type: 'textarea',
+          required: false,
+          help: 'Shown on the About page under the factory name — e.g. what is processed there.',
+        },
       ],
     },
   ],
@@ -96,10 +103,14 @@ export const globalContactBlock = defineBlock({
       {
         name: 'Hassan Daal Mills',
         address: 'New Sabzi Mandi Road, Jhang Road, Faisalabad, Pakistan',
+        description:
+          'Our primary pulses processing facility — cleaning, splitting, and grading daal at scale before packing for export.',
       },
       {
         name: 'Charagh Rotion Daal Factory',
         address: '64 Puli Stop, Tahir Pura Road, Jhang Road, Faisalabad, Pakistan',
+        description:
+          'A dedicated processing and packing line for daal and pulses orders, run to the same specification and quality checks.',
       },
     ],
   },

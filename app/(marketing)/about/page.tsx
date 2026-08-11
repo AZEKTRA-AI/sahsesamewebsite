@@ -14,6 +14,7 @@ import {
   aboutFactsBlock,
   aboutBannerBlock,
   aboutCtaBlock,
+  globalContactBlock,
 } from '@/lib/content/blocks'
 
 // See app/(marketing)/page.tsx for why this exists on every content-driven page.
@@ -29,13 +30,14 @@ const FOUNDED = 1985
 const YEARS = new Date().getFullYear() - FOUNDED
 
 export default async function AboutPage() {
-  const { hero, heritage, milestones, facts, banner, cta } = await getContentMap({
+  const { hero, heritage, milestones, facts, banner, cta, contact } = await getContentMap({
     hero: aboutHeroBlock,
     heritage: aboutHeritageBlock,
     milestones: aboutMilestonesBlock,
     facts: aboutFactsBlock,
     banner: aboutBannerBlock,
     cta: aboutCtaBlock,
+    contact: globalContactBlock,
   })
 
   return (
@@ -154,6 +156,51 @@ export default async function AboutPage() {
           </RevealGroup>
         </div>
       </section>
+
+      {/* Facilities */}
+      {contact.facilities.length > 0 && (
+        <section className="border-y border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
+          <div className="container-wide">
+            <SectionIntro
+              eyebrow="Our facilities"
+              title="The mills behind every shipment"
+              lead="Every lot is cleaned, graded, and packed inside our own facilities in Faisalabad — not outsourced to a third party."
+            />
+
+            <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:mt-16" stagger={0.1}>
+              {contact.facilities.map((facility, idx) => (
+                <RevealItem key={facility.name}>
+                  <SpotlightCard className="group rounded-card border border-sah-gold/15 bg-white p-8 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 sm:p-10">
+                    <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+                      <div className="sm:flex-1">
+                        <p className="tnum font-display text-3xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
+                          {String(idx + 1).padStart(2, '0')}
+                        </p>
+                        <h3 className="mt-3 font-display text-2xl italic text-sah-charcoal">
+                          {facility.name}
+                        </h3>
+                        {facility.description && (
+                          <p className="mt-3 max-w-xl font-body text-sm leading-relaxed text-sah-charcoal/65">
+                            {facility.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="shrink-0 border-t border-sah-gold/12 pt-5 sm:max-w-xs sm:border-t-0 sm:border-l sm:pl-10 sm:pt-0">
+                        <p className="font-body text-[11px] uppercase tracking-[0.2em] text-sah-gold">
+                          Address
+                        </p>
+                        <p className="mt-2 whitespace-pre-line font-body text-sm text-sah-charcoal/70">
+                          {facility.address}
+                        </p>
+                      </div>
+                    </div>
+                  </SpotlightCard>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+          </div>
+        </section>
+      )}
 
       {/* Full-bleed field banner */}
       <section aria-label="Our sourcing region" className="relative">

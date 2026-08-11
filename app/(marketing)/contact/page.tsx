@@ -99,25 +99,8 @@ export default async function ContactPage() {
               ))}
             </div>
 
-            {/* Hours */}
-            <Reveal delay={0.2}>
-              <div className="mt-6 rounded-card border border-sah-gold/15 bg-white p-6">
-                <h2 className="font-body text-[11px] uppercase tracking-[0.22em] text-sah-charcoal/55">
-                  Business hours
-                </h2>
-                <dl className="mt-4 space-y-2.5">
-                  {contact.hours.map((entry) => (
-                    <div key={entry.day} className="flex items-baseline justify-between gap-6">
-                      <dt className="font-body text-sm text-sah-charcoal/70">{entry.day}</dt>
-                      <dd className="tnum font-body text-sm text-sah-charcoal">{entry.time}</dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </Reveal>
-
             {contact.facilities.length > 0 && (
-              <Reveal delay={0.25}>
+              <Reveal delay={0.2}>
                 <div className="mt-6 rounded-card border border-sah-gold/15 bg-white p-6">
                   <h2 className="font-body text-[11px] uppercase tracking-[0.22em] text-sah-charcoal/55">
                     Our facilities
@@ -137,6 +120,23 @@ export default async function ContactPage() {
                 </div>
               </Reveal>
             )}
+
+            {/* Hours */}
+            <Reveal delay={0.25}>
+              <div className="mt-6 rounded-card border border-sah-gold/15 bg-white p-6">
+                <h2 className="font-body text-[11px] uppercase tracking-[0.22em] text-sah-charcoal/55">
+                  Business hours
+                </h2>
+                <dl className="mt-4 space-y-2.5">
+                  {contact.hours.map((entry) => (
+                    <div key={entry.day} className="flex items-baseline justify-between gap-6">
+                      <dt className="font-body text-sm text-sah-charcoal/70">{entry.day}</dt>
+                      <dd className="tnum font-body text-sm text-sah-charcoal">{entry.time}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </Reveal>
           </div>
 
           {/* Form */}
