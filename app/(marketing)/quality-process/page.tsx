@@ -1,9 +1,9 @@
+import Image from 'next/image'
 import PageHero from '@/components/marketing/PageHero'
 import PageCTA from '@/components/marketing/PageCTA'
 import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
 import SectionIntro from '@/components/ui/SectionIntro'
 import ParallaxImage from '@/components/ui/ParallaxImage'
-import SpotlightCard from '@/components/ui/SpotlightCard'
 import { getContentMap } from '@/lib/content/store'
 import {
   qualityHeroBlock,
@@ -48,6 +48,19 @@ export default async function QualityProcessPage() {
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-32">
               <SectionIntro eyebrow={steps.tagline} title={steps.title} lead={steps.lead} size="md" />
+              {steps.image && (
+                <Reveal delay={0.15}>
+                  <div className="relative mt-8 h-64 overflow-hidden rounded-panel shadow-lift sm:h-80 lg:h-72">
+                    <Image
+                      src={steps.image}
+                      alt={steps.imageAlt}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </Reveal>
+              )}
             </div>
           </div>
 
@@ -104,36 +117,58 @@ export default async function QualityProcessPage() {
 
       {/* Commitments */}
       <section className="border-y border-sah-gold/10 bg-sah-cream py-20 sm:py-28">
-        <div className="container-wide">
-          <SectionIntro
-            eyebrow={commitments.tagline}
-            title={commitments.title}
-            lead={commitments.lead}
-          />
+        <div className="container-wide grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+          {commitments.image && (
+            <Reveal className="lg:col-span-5" direction="right" duration={0.9}>
+              <ParallaxImage
+                src={commitments.image}
+                alt={commitments.imageAlt}
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="h-72 rounded-panel shadow-lift-lg sm:h-96 lg:h-full lg:min-h-[26rem]"
+                distance={40}
+              >
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-sah-earth/40 to-transparent"
+                />
+              </ParallaxImage>
+            </Reveal>
+          )}
 
-          <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:mt-16 md:grid-cols-3" stagger={0.09}>
-            {commitments.items.map((item, idx) => (
-              <RevealItem key={item.title} className="h-full">
-                <SpotlightCard className="group h-full rounded-card border border-sah-gold/15 bg-white p-8 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40">
-                  <p className="tnum font-display text-4xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
-                    {String(idx + 1).padStart(2, '0')}
-                  </p>
-                  <h3 className="mt-5 font-display text-xl italic text-sah-charcoal">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 font-body text-sm leading-relaxed text-sah-charcoal/65">
-                    {item.description}
-                  </p>
-                </SpotlightCard>
-              </RevealItem>
-            ))}
-          </RevealGroup>
+          <div className={commitments.image ? 'lg:col-span-7' : 'lg:col-span-12'}>
+            <SectionIntro
+              eyebrow={commitments.tagline}
+              title={commitments.title}
+              lead={commitments.lead}
+              size="md"
+            />
 
-          <Reveal delay={0.2}>
-            <p className="mt-10 max-w-2xl font-body text-sm text-sah-charcoal/55">
-              {commitments.footnote}
-            </p>
-          </Reveal>
+            <RevealGroup className="mt-10 space-y-4" stagger={0.09}>
+              {commitments.items.map((item, idx) => (
+                <RevealItem key={item.title}>
+                  <div className="group flex gap-5 rounded-card border border-sah-gold/15 bg-white p-6 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-0.5 hover:border-sah-gold/40">
+                    <p className="tnum shrink-0 font-display text-2xl text-sah-gold/30 transition-colors duration-300 group-hover:text-sah-gold/55">
+                      {String(idx + 1).padStart(2, '0')}
+                    </p>
+                    <div>
+                      <h3 className="font-display text-lg italic text-sah-charcoal">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 font-body text-sm leading-relaxed text-sah-charcoal/65">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealGroup>
+
+            <Reveal delay={0.2}>
+              <p className="mt-8 font-body text-sm text-sah-charcoal/55">
+                {commitments.footnote}
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 

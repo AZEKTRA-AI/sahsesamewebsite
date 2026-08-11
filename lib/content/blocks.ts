@@ -784,6 +784,8 @@ export const qualityStepsBlock = defineBlock({
     { key: 'tagline', label: 'Small tag line', type: 'text' },
     { key: 'title', label: 'Heading', type: 'text' },
     { key: 'lead', label: 'Intro sentence', type: 'textarea' },
+    { key: 'image', label: 'Photo', type: 'image' },
+    { key: 'imageAlt', label: 'Photo description', type: 'text' },
     {
       key: 'items',
       label: 'Steps',
@@ -801,6 +803,8 @@ export const qualityStepsBlock = defineBlock({
     tagline: 'The process',
     title: 'How a lot becomes a shipment',
     lead: 'Same route every time, regardless of product or destination.',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433650/sah-marketing/packaging-warehouse-v2.png',
+    imageAlt: 'Packed and palletised export lots staged in a warehouse ready for dispatch',
     items: [
       { title: 'Supplier verification', description: 'We buy only from processors whose plants we have walked and whose output we have graded ourselves.' },
       { title: 'Batch inspection', description: 'Each lot is checked for quality, origin authenticity, and the condition of the packaging it arrives in.' },
@@ -826,7 +830,7 @@ export const qualityBannerBlock = defineBlock({
     { key: 'text', label: 'Text printed on the photo', type: 'textarea' },
   ],
   defaults: {
-    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433689/sah-marketing/color-sorting-machine.png',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433554/sah-marketing/hands-grain-v2.png',
     imageAlt: 'Grain samples prepared for laboratory analysis',
     text: 'Every batch tested. Every shipment verified.',
   },
@@ -840,6 +844,8 @@ export const qualityCommitmentsBlock = defineBlock({
     { key: 'tagline', label: 'Small tag line', type: 'text' },
     { key: 'title', label: 'Heading', type: 'text' },
     { key: 'lead', label: 'Intro sentence', type: 'textarea' },
+    { key: 'image', label: 'Photo', type: 'image' },
+    { key: 'imageAlt', label: 'Photo description', type: 'text' },
     { key: 'footnote', label: 'Footnote below the three items', type: 'textarea' },
     {
       key: 'items',
@@ -858,6 +864,8 @@ export const qualityCommitmentsBlock = defineBlock({
     tagline: 'Our commitments',
     title: 'Principles we hold to',
     lead: 'These are not marketing lines — they are the terms we expect to be held to on a claim.',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433586/sah-marketing/farmer-field-v2.png',
+    imageAlt: 'A farmer walking through a field in Punjab, Pakistan, at the start of the supply chain',
     footnote:
       'Independent inspection is arranged through SGS or Intertek at the buyer’s election. Where a destination market requires additional certification, we obtain it before loading rather than after.',
     items: [
