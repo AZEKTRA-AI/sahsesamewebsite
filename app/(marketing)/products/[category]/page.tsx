@@ -9,6 +9,11 @@ import SpotlightCard from '@/components/ui/SpotlightCard'
 import { getContent } from '@/lib/content/store'
 import { catalogCategoriesBlock } from '@/lib/content/blocks'
 
+// See app/(marketing)/page.tsx for why this exists on every content-driven page.
+// Combined with generateStaticParams below, this is ISR: statically built per
+// category, then revalidated on the next request after 60s.
+export const revalidate = 60
+
 async function getCategoryContent(slug: string) {
   const catalog = await getContent(catalogCategoriesBlock)
   return catalog.items.find((item) => item.slug === slug) ?? catalog.items[0]

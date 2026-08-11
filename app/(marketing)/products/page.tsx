@@ -9,6 +9,9 @@ import SpotlightCard from '@/components/ui/SpotlightCard'
 import { getContentMap } from '@/lib/content/store'
 import { catalogHeroBlock, catalogCategoriesBlock, catalogStandardsBlock, catalogCtaBlock } from '@/lib/content/blocks'
 
+// See app/(marketing)/page.tsx for why this exists on every content-driven page.
+export const revalidate = 60
+
 export const metadata = {
   title: 'Products — sesame, pulses & rice',
   description:

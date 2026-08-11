@@ -9,6 +9,11 @@ import SpotlightCard from '@/components/ui/SpotlightCard'
 import { getContentMap } from '@/lib/content/store'
 import { catalogCategoriesBlock, catalogProductCtaBlock } from '@/lib/content/blocks'
 
+// See app/(marketing)/page.tsx for why this exists on every content-driven page.
+// Combined with generateStaticParams below, this is ISR: statically built per
+// product, then revalidated on the next request after 60s.
+export const revalidate = 60
+
 const infoCards = [
   {
     title: 'Quality assurance',

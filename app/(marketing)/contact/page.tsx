@@ -6,6 +6,9 @@ import SectionIntro from '@/components/ui/SectionIntro'
 import { getContentMap } from '@/lib/content/store'
 import { contactHeroBlock, contactCtaBlock, globalContactBlock } from '@/lib/content/blocks'
 
+// See app/(marketing)/page.tsx for why this exists on every content-driven page.
+export const revalidate = 60
+
 export const metadata = {
   title: 'Contact',
   description:
