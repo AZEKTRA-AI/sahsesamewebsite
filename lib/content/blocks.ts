@@ -165,8 +165,8 @@ export const catalogCategoriesBlock = defineBlock({
         description:
           'Basmati and IRRI varieties — raw, sella, and steamed — for wholesale, import, and re-export markets.',
         meta: '1121 · Super Kernel · 1509 · IRRI',
-        image: `${CLOUD}/v1785958253/sah-marketing/category-rice.jpg`,
-        imageAlt: 'Long-grain Basmati rice',
+        image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433467/sah-marketing/category-rice-v2.png',
+        imageAlt: 'Long-grain Pakistani basmati rice cascading from a linen sack',
       },
       {
         slug: 'sesame',
@@ -174,8 +174,8 @@ export const catalogCategoriesBlock = defineBlock({
         description:
           'Hulled and natural white sesame, cleaned to buyer purity and moisture specs for tahini, bakery, and oil crushing.',
         meta: 'Hulled · Natural',
-        image: `${CLOUD}/v1785958258/sah-marketing/hero-sesame.jpg`,
-        imageAlt: 'Export-grade Pakistani sesame seeds photographed up close',
+        image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433393/sah-marketing/category-sesame.png',
+        imageAlt: 'Export-grade Pakistani sesame seeds spilling from a burlap sack',
       },
       {
         slug: 'pulses',
@@ -183,8 +183,8 @@ export const catalogCategoriesBlock = defineBlock({
         description:
           'Chickpeas, lentils, and moong from our own mills and verified processing partners.',
         meta: 'Chickpeas · Lentils · Moong',
-        image: `${CLOUD}/v1785958251/sah-marketing/category-pulses.jpg`,
-        imageAlt: 'Assorted pulses including chickpeas and lentils',
+        image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433431/sah-marketing/category-pulses-v2.png',
+        imageAlt: 'Assorted Pakistani pulses in ceramic bowls — chickpeas, lentils, and moong',
       },
     ],
   },
@@ -210,8 +210,8 @@ export const homeHeroBlock = defineBlock({
     { key: 'secondaryButtonLabel', label: 'Second button text', type: 'text' },
   ],
   defaults: {
-    image: `${CLOUD}/v1785958253/sah-marketing/category-rice.jpg`,
-    imageAlt: 'Long-grain basmati rice, export grade, photographed up close',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433354/sah-marketing/hero-rice.png',
+    imageAlt: 'Premium long-grain basmati rice grown in Punjab, Pakistan',
     tagline: 'Established 1985 · Faisalabad, Pakistan',
     headlineLine1: 'From the Mills of Pakistan',
     headlineLine2: 'to Markets Worldwide',
@@ -253,7 +253,7 @@ export const homeTradingRootsBlock = defineBlock({
     lead: 'For nearly four decades our family has traded on the same terms: consistent quality, honest grading, and relationships that outlast any single shipment.',
     paragraph:
       'From the mills in Faisalabad to a container leaving Karachi Port, every lot passes through the same hands — deep sourcing knowledge, rigorous evaluation, and a supply chain we can answer for.',
-    image: `${CLOUD}/v1785958255/sah-marketing/heritage-field.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433515/sah-marketing/heritage-rice-field.png',
     imageAlt: 'Golden wheat and sesame fields outside Faisalabad at harvest',
     imageCaption: 'Faisalabad, Punjab',
     badgeLabel: 'Trading without interruption',
@@ -322,7 +322,7 @@ export const homeWhyChooseUsBlock = defineBlock({
     tagline: 'Why choose SAH',
     title: 'Eight reasons buyers stay with us',
     lead: 'Agricultural heritage run on modern B2B discipline — from first sample through to the bill of lading.',
-    image: `${CLOUD}/v1785958248/sah-marketing/about-hands-grain.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433554/sah-marketing/hands-grain-v2.png',
     imageAlt: 'Hands running through freshly milled grain',
     linkLabel: 'Read our story',
     reasons: [
@@ -376,7 +376,7 @@ export const homeQualityProcessBlock = defineBlock({
     tagline: 'Quality & sourcing',
     title: 'Ten steps between your spec and the vessel',
     lead: 'Every order runs the same route. Nothing ships until each stage is signed off and documented.',
-    backgroundImage: `${CLOUD}/v1785958261/sah-marketing/quality-lab-testing.jpg`,
+    backgroundImage: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433689/sah-marketing/color-sorting-machine.png',
     steps: [
       { title: 'Buyer specifications', description: 'Your exact grade, purity, and packing requirements.' },
       { title: 'Supplier selection', description: 'Matching the lot to a processor we have vetted.' },
@@ -505,7 +505,7 @@ export const homeIndustriesBlock = defineBlock({
     tagline: 'Who we supply',
     title: 'The desks that buy from us',
     lead: 'Our buyers sit across food processing, distribution, retail, and specialty channels — from single-container importers to multi-plant manufacturers.',
-    photoImage: `${CLOUD}/v1785958245/sah-marketing/about-farmer-field.jpg`,
+    photoImage: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433586/sah-marketing/farmer-field-v2.png',
     photoAlt: 'A grower inspecting the standing crop before harvest',
     photoCaption: 'Sourced at origin, not from a warehouse',
     closingTitle: 'Not listed?',
@@ -563,7 +563,7 @@ export const aboutHeroBlock = defineBlock({
     title: 'A family name on every container',
     subtitle:
       'Four decades of grading, milling, and shipping Pakistani agricultural commodities — run by the same family that started it.',
-    image: `${CLOUD}/v1785958255/sah-marketing/heritage-field.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433515/sah-marketing/heritage-rice-field.png',
     imageAlt: 'Golden fields of the Punjab at harvest',
   },
 })
@@ -599,7 +599,7 @@ export const aboutHeritageBlock = defineBlock({
       'Sain Abdul Hakim and Company has traded agricultural commodities for nearly forty years. What began in the pulses business in 1985 now combines old-fashioned grading judgement with the documentation and inspection standards international buyers expect.',
     paragraph2:
       'We sit in Faisalabad, in the middle of Pakistan’s agricultural belt. That proximity is the whole point: we see the lots, we know the processors, and we can answer for what goes into the bag.',
-    image: `${CLOUD}/v1785958248/sah-marketing/about-hands-grain.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433554/sah-marketing/hands-grain-v2.png',
     imageAlt: 'Hands running through freshly milled grain',
     stats: [
       { value: 2, label: 'Own mills' },
@@ -718,7 +718,7 @@ export const aboutBannerBlock = defineBlock({
     { key: 'linkLabel', label: 'Link text', type: 'text' },
   ],
   defaults: {
-    image: `${CLOUD}/v1785958245/sah-marketing/about-farmer-field.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433586/sah-marketing/farmer-field-v2.png',
     imageAlt: 'A grower walking the crop rows before harvest',
     title: 'Everything starts in the Punjab',
     text: 'Sesame from the central belt, rice from Gujranwala and Sheikhupura, pulses milled in Faisalabad — all within a day’s drive of our office.',
@@ -760,7 +760,7 @@ export const qualityHeroBlock = defineBlock({
     title: 'Ten checkpoints between the field and your warehouse',
     subtitle:
       'Nothing leaves Pakistan on our account until every stage below has been signed off and documented.',
-    image: `${CLOUD}/v1785958261/sah-marketing/quality-lab-testing.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433689/sah-marketing/color-sorting-machine.png',
     imageAlt: 'Laboratory technician testing a grain sample',
   },
 })
@@ -815,7 +815,7 @@ export const qualityBannerBlock = defineBlock({
     { key: 'text', label: 'Text printed on the photo', type: 'textarea' },
   ],
   defaults: {
-    image: `${CLOUD}/v1785958261/sah-marketing/quality-lab-testing.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433689/sah-marketing/color-sorting-machine.png',
     imageAlt: 'Grain samples prepared for laboratory analysis',
     text: 'Every batch tested. Every shipment verified.',
   },
@@ -891,7 +891,7 @@ export const packagingHeroBlock = defineBlock({
     title: 'Packed to your spec, shipped on your terms',
     subtitle:
       'Packing format, incoterm, and paperwork are set by the contract — not by whatever is easiest at the mill.',
-    image: `${CLOUD}/v1785958260/sah-marketing/packaging-warehouse.jpg`,
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433650/sah-marketing/packaging-warehouse-v2.png',
     imageAlt: 'Palletised export bags stacked in a warehouse',
   },
 })
