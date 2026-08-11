@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
         <p>If you have questions about this policy:</p>
         <div className="mt-4 rounded-card border border-sah-gold/15 bg-sah-light p-6">
           <p>
-            <strong>Email:</strong> <a href="mailto:info@sahcompany.com">info@sahcompany.com</a>
+            <strong>Email:</strong> <a href="mailto:info@sainabdulhakim.com">info@sainabdulhakim.com</a>
           </p>
           <p>
             <strong>Phone:</strong> <a href="tel:+923000959524">+92 300 0959524</a>

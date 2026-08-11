@@ -96,7 +96,7 @@ export default function TermsConditionsPage() {
             <strong>Company:</strong> Sain Abdul Hakim and Company
           </p>
           <p>
-            <strong>Email:</strong> <a href="mailto:info@sahcompany.com">info@sahcompany.com</a>
+            <strong>Email:</strong> <a href="mailto:info@sainabdulhakim.com">info@sainabdulhakim.com</a>
           </p>
           <p>
             <strong>Phone:</strong> <a href="tel:+923000959524">+92 300 0959524</a>

@@ -8,7 +8,7 @@ const prisma = new PrismaClient({ log: [] })
  * Changes an admin password against whatever database DATABASE_URL points at.
  *
  *   npx tsx scripts/change-admin-password.ts
- *   npx tsx scripts/change-admin-password.ts newadmin@sahcompany.pk
+ *   npx tsx scripts/change-admin-password.ts newadmin@sainabdulhakim.com
  *
  * Prompts for the password so it never lands in shell history.
  */

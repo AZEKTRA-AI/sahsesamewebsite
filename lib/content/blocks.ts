@@ -83,8 +83,8 @@ export const globalContactBlock = defineBlock({
     phone1: '+92 300 0959524',
     phone2: '+92 300 8663396',
     whatsapp: '+92 300 0959524',
-    email: 'info@sahcompany.com',
-    salesEmail: 'sales@sahcompany.com',
+    email: 'info@sainabdulhakim.com',
+    salesEmail: 'sales@sainabdulhakim.com',
     linkedinUrl: 'https://linkedin.com',
     facebookUrl: '',
     hours: [

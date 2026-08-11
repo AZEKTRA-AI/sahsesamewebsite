@@ -20,14 +20,16 @@ const inter = Inter({
 /**
  * metadataBase is evaluated while Next collects page data, so anything thrown
  * here fails the whole build. Env vars are routinely entered without a scheme
- * ("sahcompany.com", or Vercel's bare VERCEL_URL), which `new URL` rejects —
- * so add the scheme when it is missing and fall back rather than throw.
+ * ("sainabdulhakim.com", or Vercel's bare VERCEL_URL), which `new URL`
+ * rejects — so add the scheme when it is missing and fall back rather than
+ * throw. Set NEXT_PUBLIC_SITE_URL in Vercel to the real domain; the literal
+ * below is only a last-resort fallback if that var is ever unset.
  */
 function resolveMetadataBase(): URL | undefined {
   const raw = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
   const candidates = [
     raw && (/^https?:\/\//i.test(raw) ? raw : `https://${raw}`),
-    'https://sahcompany.com',
+    'https://www.sainabdulhakim.com',
   ].filter(Boolean) as string[]
 
   for (const candidate of candidates) {
