@@ -121,3 +121,41 @@ export async function sendRfqAutoReply(data: RfqData, enquiryId: string) {
     html,
   })
 }
+
+/**
+ * Sends an admin's written reply to the enquirer, from the same shared
+ * inbox everything else routes through. Called from the admin enquiry
+ * detail page — the buyer's follow-up replies land back in that inbox too,
+ * since it's also set as replyTo.
+ */
+export async function sendEnquiryReply(params: {
+  toEmail: string
+  toName: string
+  product: string
+  message: string
+  enquiryId: string
+}) {
+  const transport = getTransport()
+
+  const from = process.env.SMTP_FROM || QUERY_INBOX
+  const replyTo = process.env.RFQ_EMAIL_TO || QUERY_INBOX
+
+  const html = `
+    <div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:560px;color:#2A2A2A;">
+      <p style="font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#9C7F45;margin:0 0 4px;">Sain Abdul Hakim and Company</p>
+      <h2 style="margin:0 0 16px;">Re: your enquiry about ${escapeHtml(params.product)}</h2>
+      <p style="line-height:1.6;">Dear ${escapeHtml(params.toName)},</p>
+      <p style="line-height:1.6;white-space:pre-line;">${escapeHtml(params.message)}</p>
+      <p style="line-height:1.6;margin-top:24px;">Regards,<br />Sain Abdul Hakim and Company</p>
+      <p style="line-height:1.6;color:#999;font-size:12px;margin-top:24px;">Reference: ${escapeHtml(params.enquiryId)}</p>
+    </div>
+  `
+
+  await transport.sendMail({
+    from,
+    to: params.toEmail,
+    replyTo,
+    subject: `Re: your enquiry about ${params.product} — Sain Abdul Hakim and Company`,
+    html,
+  })
+}

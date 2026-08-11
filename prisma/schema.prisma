@@ -97,6 +97,8 @@ model Enquiry {
   status    String @default("NEW")
   ipHash    String?
   emailSent Boolean @default(false)
+  replyMessage String?
+  repliedAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
