@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import PageHero from '@/components/marketing/PageHero'
 import PageCTA from '@/components/marketing/PageCTA'
 import Reveal, { RevealGroup, RevealItem } from '@/components/ui/Reveal'
@@ -163,14 +164,27 @@ export default async function PackagingLogisticsPage() {
           <RevealGroup className="mt-16 grid grid-cols-1 gap-5 sm:mt-20 md:grid-cols-2" stagger={0.1}>
             {process.freight.map((mode) => (
               <RevealItem key={mode.title} className="h-full">
-                <SpotlightCard className="h-full rounded-card border border-sah-gold/15 bg-sah-light p-8 transition-[border-color] duration-300 ease-out-expo hover:border-sah-gold/40">
-                  <h3 className="font-display text-xl italic text-sah-charcoal">{mode.title}</h3>
-                  <p className="mt-3 font-body text-sm leading-relaxed text-sah-charcoal/65">
-                    {mode.description}
-                  </p>
-                  <p className="mt-5 border-t border-sah-gold/15 pt-4 font-body text-xs uppercase tracking-[0.14em] text-sah-gold">
-                    {mode.detail}
-                  </p>
+                <SpotlightCard className="h-full overflow-hidden rounded-card border border-sah-gold/15 bg-sah-light transition-[border-color] duration-300 ease-out-expo hover:border-sah-gold/40">
+                  <div className="p-8">
+                    <h3 className="font-display text-xl italic text-sah-charcoal">{mode.title}</h3>
+                    <p className="mt-3 font-body text-sm leading-relaxed text-sah-charcoal/65">
+                      {mode.description}
+                    </p>
+                    <p className="mt-5 border-t border-sah-gold/15 pt-4 font-body text-xs uppercase tracking-[0.14em] text-sah-gold">
+                      {mode.detail}
+                    </p>
+                  </div>
+                  {mode.image && (
+                    <div className="relative h-56 sm:h-64">
+                      <Image
+                        src={mode.image}
+                        alt={mode.imageAlt || mode.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
                 </SpotlightCard>
               </RevealItem>
             ))}
