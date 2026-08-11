@@ -134,37 +134,39 @@ export default async function AboutPage() {
 
       {/* Facilities */}
       {contact.facilities.length > 0 && (
-        <section className="bg-white py-20 sm:py-28">
+        <section className="bg-white py-12 sm:py-16">
           <div className="container-wide">
             <SectionIntro
               eyebrow="Our facilities"
               title="The mills behind every shipment"
-              lead="Every lot is cleaned, graded, and packed inside our own facilities in Faisalabad — not outsourced to a third party."
+              size="md"
             />
 
-            <RevealGroup className="mt-12 grid grid-cols-1 gap-5 sm:mt-16" stagger={0.1}>
+            <RevealGroup className="mt-8 grid grid-cols-1 gap-4" stagger={0.1}>
               {contact.facilities.map((facility, idx) => (
                 <RevealItem key={facility.name}>
-                  <SpotlightCard className="group rounded-card border border-sah-gold/15 bg-sah-light p-8 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40 sm:p-10">
-                    <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-10">
-                      <div className="sm:flex-1">
-                        <p className="tnum font-display text-3xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
+                  <SpotlightCard className="group rounded-card border border-sah-gold/15 bg-sah-light p-6 transition-[border-color,transform] duration-300 ease-out-expo hover:-translate-y-1 hover:border-sah-gold/40">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+                      <div className="flex items-start gap-4 sm:flex-1">
+                        <p className="tnum font-display text-2xl text-sah-gold/25 transition-colors duration-300 group-hover:text-sah-gold/50">
                           {String(idx + 1).padStart(2, '0')}
                         </p>
-                        <h3 className="mt-3 font-display text-2xl italic text-sah-charcoal">
-                          {facility.name}
-                        </h3>
-                        {facility.description && (
-                          <p className="mt-3 max-w-xl font-body text-sm leading-relaxed text-sah-charcoal/65">
-                            {facility.description}
-                          </p>
-                        )}
+                        <div>
+                          <h3 className="font-display text-lg italic text-sah-charcoal">
+                            {facility.name}
+                          </h3>
+                          {facility.description && (
+                            <p className="mt-1.5 max-w-xl font-body text-sm leading-relaxed text-sah-charcoal/65">
+                              {facility.description}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div className="shrink-0 border-t border-sah-gold/12 pt-5 sm:max-w-xs sm:border-t-0 sm:border-l sm:pl-10 sm:pt-0">
+                      <div className="shrink-0 border-t border-sah-gold/12 pt-3 sm:max-w-[15rem] sm:border-t-0 sm:border-l sm:pl-6 sm:pt-0">
                         <p className="font-body text-[11px] uppercase tracking-[0.2em] text-sah-gold">
                           Address
                         </p>
-                        <p className="mt-2 whitespace-pre-line font-body text-sm text-sah-charcoal/70">
+                        <p className="mt-1.5 whitespace-pre-line font-body text-sm text-sah-charcoal/70">
                           {facility.address}
                         </p>
                       </div>
