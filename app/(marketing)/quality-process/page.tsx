@@ -50,7 +50,7 @@ export default async function QualityProcessPage() {
               <SectionIntro eyebrow={steps.tagline} title={steps.title} lead={steps.lead} size="md" />
               {steps.image && (
                 <Reveal delay={0.15}>
-                  <div className="relative mt-8 h-64 overflow-hidden rounded-panel shadow-lift sm:h-80 lg:h-72">
+                  <div className="relative mt-8 aspect-[3/4] w-full max-w-xs overflow-hidden rounded-panel shadow-lift sm:max-w-sm lg:max-w-none">
                     <Image
                       src={steps.image}
                       alt={steps.imageAlt}
