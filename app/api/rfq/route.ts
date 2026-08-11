@@ -2,7 +2,7 @@ import { createHash } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { rfqSchema } from '@/lib/validations/rfq'
-import { sendRfqEmail } from '@/lib/email'
+import { sendRfqEmail, sendRfqAutoReply } from '@/lib/email'
 
 const RATE_LIMIT_MAX = 5
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000 // 1 hour
@@ -90,6 +90,14 @@ export async function POST(request: NextRequest) {
       })
     } catch (emailError) {
       console.error('[rfq] email delivery failed for enquiry', enquiry.id, emailError)
+    }
+
+    // Also best-effort, and independent of the notification above — the buyer
+    // should get their acknowledgement even if, say, the internal one bounced.
+    try {
+      await sendRfqAutoReply(data, enquiry.id)
+    } catch (autoReplyError) {
+      console.error('[rfq] auto-reply failed for enquiry', enquiry.id, autoReplyError)
     }
 
     return NextResponse.json({ ok: true, id: enquiry.id })
