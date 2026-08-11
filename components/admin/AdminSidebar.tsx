@@ -15,6 +15,7 @@ const navItems = [
   { href: '/admin/content/packaging-logistics', label: 'Packaging & Logistics Page', icon: '🚚' },
   { href: '/admin/content/contact', label: 'Contact Page', icon: '✉️' },
   { href: '/admin/certifications', label: 'Certifications', icon: '🏅' },
+  { href: '/admin/blog', label: 'Blog', icon: '📰' },
   { href: '/admin/enquiries', label: 'Enquiries', icon: '💬' },
   { href: '/admin/settings', label: 'Site Settings', icon: '⚙️' },
 ]

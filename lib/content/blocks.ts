@@ -116,6 +116,23 @@ export const globalContactBlock = defineBlock({
   },
 })
 
+export const globalFeaturesBlock = defineBlock({
+  key: 'global.features',
+  title: 'Blog / News section',
+  description:
+    'The Blog is hidden by default. Write and manage posts any time — turn this on when you\'re ready to publish, and a "Blog" link appears in the site navigation automatically.',
+  revalidate: [{ path: '/', type: 'layout' }, { path: '/blog' }, { path: '/blog/[slug]', type: 'page' }],
+  fields: [
+    {
+      key: 'blogEnabled',
+      label: 'Show Blog on the site',
+      type: 'boolean',
+      help: 'While off, /blog is not linked anywhere and returns a 404 even if visited directly.',
+    },
+  ],
+  defaults: { blogEnabled: false },
+})
+
 export const globalBrandBlock = defineBlock({
   key: 'global.brand',
   title: 'Company name & description',
@@ -1242,12 +1259,38 @@ export const catalogProductCtaBlock = defineBlock({
 })
 
 // ------------------------------------------------------------------------
+// Blog
+// ------------------------------------------------------------------------
+
+export const blogHeroBlock = defineBlock({
+  key: 'blog.hero',
+  title: 'Blog page — banner',
+  revalidate: [{ path: '/blog' }],
+  fields: [
+    { key: 'tagline', label: 'Small tag line', type: 'text' },
+    { key: 'title', label: 'Heading', type: 'text' },
+    { key: 'subtitle', label: 'Supporting sentence', type: 'textarea' },
+    { key: 'image', label: 'Photo', type: 'image' },
+    { key: 'imageAlt', label: 'Photo description', type: 'text' },
+  ],
+  defaults: {
+    tagline: 'News & updates',
+    title: 'From the export desk',
+    subtitle: 'Harvest updates, shipments, and what is happening at Sain Abdul Hakim and Company.',
+    image: 'https://res.cloudinary.com/pjhvvbam/image/upload/v1786433586/sah-marketing/farmer-field-v2.png',
+    imageAlt: 'A farmer walking through a field in Punjab, Pakistan',
+  },
+})
+
+// ------------------------------------------------------------------------
 // Registry
 // ------------------------------------------------------------------------
 
 export const CONTENT_BLOCKS: Record<string, BlockDef<any>> = {
   [globalContactBlock.key]: globalContactBlock,
   [globalBrandBlock.key]: globalBrandBlock,
+  [globalFeaturesBlock.key]: globalFeaturesBlock,
+  [blogHeroBlock.key]: blogHeroBlock,
   [catalogCategoriesBlock.key]: catalogCategoriesBlock,
   [homeHeroBlock.key]: homeHeroBlock,
   [homeTradingRootsBlock.key]: homeTradingRootsBlock,

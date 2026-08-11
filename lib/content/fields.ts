@@ -6,7 +6,7 @@ import { z } from 'zod'
  * are shown to a non-technical site owner, so they stay in plain language —
  * no design or CMS jargon.
  */
-export type FieldType = 'text' | 'textarea' | 'url' | 'image' | 'number' | 'stringList'
+export type FieldType = 'text' | 'textarea' | 'url' | 'image' | 'number' | 'stringList' | 'boolean'
 
 export interface FieldDef {
   key: string
@@ -77,6 +77,8 @@ function scalarSchema(field: FieldDef): z.ZodTypeAny {
       return z.coerce.number().finite()
     case 'stringList':
       return z.array(z.string().trim().max(500)).max(60)
+    case 'boolean':
+      return z.coerce.boolean()
   }
 }
 
@@ -102,7 +104,8 @@ export function schemaToZod(fields: AnyFieldDef[]) {
 export function emptyListItem(field: ListFieldDef): Record<string, unknown> {
   const item: Record<string, unknown> = {}
   for (const sub of field.fields) {
-    item[sub.key] = sub.type === 'number' ? 0 : sub.type === 'stringList' ? [] : ''
+    item[sub.key] =
+      sub.type === 'number' ? 0 : sub.type === 'stringList' ? [] : sub.type === 'boolean' ? false : ''
   }
   return item
 }

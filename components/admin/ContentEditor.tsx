@@ -257,6 +257,34 @@ function ScalarFieldEditor({
   onChange: (v: unknown) => void
   compact?: boolean
 }) {
+  if (field.type === 'boolean') {
+    const checked = value === true
+    return (
+      <div>
+        <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-gray-200 px-4 py-3">
+          <span>
+            <span className="block text-sm font-medium text-sah-charcoal">{field.label}</span>
+            {field.help && <span className="mt-0.5 block text-xs text-gray-500">{field.help}</span>}
+          </span>
+          <span
+            role="switch"
+            aria-checked={checked}
+            onClick={() => onChange(!checked)}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ${
+              checked ? 'bg-sah-green' : 'bg-gray-300'
+            }`}
+          >
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${
+                checked ? 'translate-x-5' : 'translate-x-1'
+              }`}
+            />
+          </span>
+        </label>
+      </div>
+    )
+  }
+
   if (field.type === 'stringList') {
     return (
       <StringListEditor

@@ -103,6 +103,20 @@ model Enquiry {
   updatedAt DateTime @updatedAt
 }
 
+model BlogPost {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  excerpt       String?
+  content       String
+  coverImage    String?
+  coverImageAlt String?
+  status        String    @default("DRAFT")
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model AdminUser {
   id        String @id @default(cuid())
   email     String @unique

@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { prisma } from '@/lib/prisma'
 import { getSiteUrl } from '@/lib/site'
+import { getContent } from '@/lib/content/store'
+import { globalFeaturesBlock } from '@/lib/content/blocks'
 
 // Crawlers hit this rarely enough that an hourly cache is plenty fresh
 // without querying the DB on every request.
@@ -21,12 +23,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/terms-conditions`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
   ]
 
-  const [categories, products] = await Promise.all([
+  const [categories, products, features] = await Promise.all([
     prisma.category.findMany(),
     prisma.product.findMany({
       where: { status: 'PUBLISHED' },
       include: { category: true },
     }),
+    getContent(globalFeaturesBlock),
   ])
 
   const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
@@ -43,5 +46,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes]
+  let blogRoutes: MetadataRoute.Sitemap = []
+  if (features.blogEnabled) {
+    const posts = await prisma.blogPost.findMany({ where: { status: 'PUBLISHED' } })
+    blogRoutes = [
+      { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
+      ...posts.map((post) => ({
+        url: `${base}/blog/${post.slug}`,
+        lastModified: post.updatedAt,
+        changeFrequency: 'yearly' as const,
+        priority: 0.5,
+      })),
+    ]
+  }
+
+  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...blogRoutes]
 }

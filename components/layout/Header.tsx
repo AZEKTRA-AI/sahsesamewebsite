@@ -8,13 +8,15 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
-const navLinks = [
+const baseNavLinks = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Quality & Process', href: '/quality-process' },
   { label: 'Packaging & Logistics', href: '/packaging-logistics' },
-  { label: 'Contact', href: '/contact' },
 ]
+
+const contactLink = { label: 'Contact', href: '/contact' }
+const blogLink = { label: 'Blog', href: '/blog' }
 
 const productLinks = [
   { label: 'Sesame Seeds', href: '/products/sesame', hint: 'Hulled · Natural' },
@@ -22,7 +24,16 @@ const productLinks = [
   { label: 'Rice', href: '/products/rice', hint: '1121 · Super · PK-385 · IRRI-6' },
 ]
 
-export default function Header({ whatsapp, legalName }: { whatsapp: string; legalName: string }) {
+export default function Header({
+  whatsapp,
+  legalName,
+  blogEnabled = false,
+}: {
+  whatsapp: string
+  legalName: string
+  blogEnabled?: boolean
+}) {
+  const navLinks = blogEnabled ? [...baseNavLinks, blogLink, contactLink] : [...baseNavLinks, contactLink]
   const waHref = `https://wa.me/${whatsapp.replace(/[^\d]/g, '')}`
   const [mobileOpen, setMobileOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)

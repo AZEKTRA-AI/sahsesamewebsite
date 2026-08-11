@@ -5,7 +5,7 @@ import ScrollProgress from '@/components/ui/ScrollProgress'
 import TrustMarquee from '@/components/marketing/TrustMarquee'
 import JsonLd from '@/components/seo/JsonLd'
 import { getContent } from '@/lib/content/store'
-import { globalContactBlock, globalBrandBlock } from '@/lib/content/blocks'
+import { globalContactBlock, globalBrandBlock, globalFeaturesBlock } from '@/lib/content/blocks'
 import { getSiteUrl } from '@/lib/site'
 
 export default async function MarketingLayout({
@@ -13,9 +13,10 @@ export default async function MarketingLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [contact, brand] = await Promise.all([
+  const [contact, brand, features] = await Promise.all([
     getContent(globalContactBlock),
     getContent(globalBrandBlock),
+    getContent(globalFeaturesBlock),
   ])
 
   const siteUrl = getSiteUrl()
@@ -55,7 +56,7 @@ export default async function MarketingLayout({
         Skip to content
       </a>
 
-      <Header whatsapp={contact.whatsapp} legalName={brand.legalName} />
+      <Header whatsapp={contact.whatsapp} legalName={brand.legalName} blogEnabled={features.blogEnabled} />
 
       {/* Clears the fixed header. Height mirrors the header's un-scrolled state. */}
       <div aria-hidden="true" className="h-[5.5rem] lg:h-24" />
