@@ -1,6 +1,7 @@
 'use client'
 
 import ContentEditor from '@/components/admin/ContentEditor'
+import AccountSettingsForm from '@/components/admin/AccountSettingsForm'
 import { globalContactBlock, globalBrandBlock } from '@/lib/content/blocks'
 
 export default function SettingsAdmin() {
@@ -15,6 +16,7 @@ export default function SettingsAdmin() {
       <div className="max-w-3xl space-y-4">
         <ContentEditor block={globalContactBlock} defaultOpen />
         <ContentEditor block={globalBrandBlock} />
+        <AccountSettingsForm />
       </div>
     </div>
   )
