@@ -26,7 +26,7 @@ const inter = Inter({
  * below is only a last-resort fallback if that var is ever unset.
  */
 function resolveMetadataBase(): URL | undefined {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL
+  const raw = (process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL || '').trim()
   const candidates = [
     raw && (/^https?:\/\//i.test(raw) ? raw : `https://${raw}`),
     'https://www.sainabdulhakim.com',
