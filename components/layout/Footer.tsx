@@ -206,6 +206,28 @@ export default function Footer({
             </Link>
           </div>
         </div>
+
+        <div className="mt-6 flex justify-center">
+          <a
+            href="https://www.azektra.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 rounded-full bg-white/5 py-1.5 pl-3 pr-1.5 transition-colors duration-200 hover:bg-white/10"
+          >
+            <span className="font-body text-[11px] text-white/40 group-hover:text-white/60">
+              Powered by
+            </span>
+            <span className="inline-flex items-center rounded bg-white px-1.5 py-1">
+              <Image
+                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1786516778/sah-marketing/azektra-logo.jpg"
+                alt="Azektra"
+                width={80}
+                height={20}
+                className="h-3 w-auto"
+              />
+            </span>
+          </a>
+        </div>
       </div>
     </footer>
   )
