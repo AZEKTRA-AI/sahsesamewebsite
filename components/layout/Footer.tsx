@@ -217,13 +217,13 @@ export default function Footer({
             <span className="font-body text-[11px] text-white/40 group-hover:text-white/60">
               Powered by
             </span>
-            <span className="inline-flex items-center rounded bg-white px-1.5 py-1">
+            <span className="inline-flex items-center rounded bg-white px-2 py-1.5">
               <Image
-                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1786516778/sah-marketing/azektra-logo.jpg"
+                src="https://res.cloudinary.com/pjhvvbam/image/upload/v1786517773/sah-marketing/azektra-logo.jpg"
                 alt="Azektra"
-                width={80}
-                height={20}
-                className="h-3 w-auto"
+                width={124}
+                height={28}
+                className="h-5 w-auto"
               />
             </span>
           </a>
