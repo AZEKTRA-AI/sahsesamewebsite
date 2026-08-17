@@ -2,7 +2,7 @@ import LegalShell from '@/components/marketing/LegalShell'
 
 export const metadata = {
   title: 'Privacy policy',
-  description: 'How SAH Company collects, uses, and protects personal data submitted through this website.',
+  description: 'How Sain Abdul Hakim and Company collects, uses, and protects personal data submitted through this website.',
   alternates: { canonical: '/privacy-policy' },
   robots: { index: false, follow: true },
 }
@@ -13,7 +13,7 @@ export default function PrivacyPolicyPage() {
       <section>
         <h2>1. Introduction</h2>
         <p>
-          Sain Abdul Hakim and Company (“we”, “us”, “our”) operates the SAH Company
+          Sain Abdul Hakim and Company (“we”, “us”, “our”) operates this
           website. This page explains what personal data we collect, how we use it, and the
           choices you have.
         </p>
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
 
       <section>
         <h2>3. How we use it</h2>
-        <p>SAH Company uses the collected data to:</p>
+        <p>Sain Abdul Hakim and Company uses the collected data to:</p>
         <ul>
           <li>Provide and maintain this website</li>
           <li>Respond to your enquiries and quotation requests</li>

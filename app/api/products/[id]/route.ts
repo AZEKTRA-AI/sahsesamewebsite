@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
+import { productSchema } from '@/lib/validations/admin'
 
 export async function PUT(
   request: NextRequest,
@@ -12,19 +13,15 @@ export async function PUT(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  try {
-    const { name, slug, categoryId, origin, status, specs } = await request.json()
+  const parsed = productSchema.safeParse(await request.json().catch(() => ({})))
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || 'Invalid input' }, { status: 400 })
+  }
 
+  try {
     const product = await prisma.product.update({
       where: { id: params.id },
-      data: {
-        name,
-        slug,
-        categoryId,
-        origin,
-        status,
-        specs,
-      },
+      data: parsed.data,
       include: { category: true },
     })
 
@@ -35,7 +32,9 @@ export async function PUT(
     revalidatePath('/admin/products')
 
     return NextResponse.json(product)
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
+  } catch (error: any) {
+    const message = error?.code === 'P2002' ? 'That slug is already in use.' : 'Failed to update product'
+    if (error?.code !== 'P2002') console.error('[products] update failed', error)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
 import { authConfig } from './auth.config'
+import { isLockedOut, recordFailedAttempt, clearAttempts } from './login-rate-limit'
 
 /**
  * Full Auth.js setup — Node runtime only. Imports Prisma, which cannot run on
@@ -26,11 +27,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null
         }
 
+        const email = credentials.email as string
+
+        if (isLockedOut(email)) {
+          return null
+        }
+
         const adminUser = await prisma.adminUser.findUnique({
-          where: { email: credentials.email as string },
+          where: { email },
         })
 
         if (!adminUser) {
+          recordFailedAttempt(email)
           return null
         }
 
@@ -40,8 +48,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         )
 
         if (!passwordMatch) {
+          recordFailedAttempt(email)
           return null
         }
+
+        clearAttempts(email)
 
         return {
           id: adminUser.id,

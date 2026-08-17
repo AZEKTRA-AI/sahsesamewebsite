@@ -2,7 +2,7 @@ import LegalShell from '@/components/marketing/LegalShell'
 
 export const metadata = {
   title: 'Terms & conditions',
-  description: 'Terms and conditions governing use of the SAH Company website.',
+  description: 'Terms and conditions governing use of the Sain Abdul Hakim and Company website.',
   alternates: { canonical: '/terms-conditions' },
   robots: { index: false, follow: true },
 }
@@ -13,7 +13,7 @@ export default function TermsConditionsPage() {
       <section>
         <h2>1. Acceptance of terms</h2>
         <p>
-          By accessing and using the SAH Company website you accept and agree to be bound
+          By accessing and using the Sain Abdul Hakim and Company website you accept and agree to be bound
           by these terms. If you do not agree to them, please do not use this website.
         </p>
       </section>
@@ -59,7 +59,7 @@ export default function TermsConditionsPage() {
       <section>
         <h2>6. Limitation of liability</h2>
         <p>
-          SAH Company is not liable for indirect, incidental, special, consequential, or
+          Sain Abdul Hakim and Company is not liable for indirect, incidental, special, consequential, or
           punitive damages arising from your use of, or inability to use, this website or
           products purchased through us.
         </p>
@@ -85,7 +85,7 @@ export default function TermsConditionsPage() {
       <section>
         <h2>9. Modifications</h2>
         <p>
-          SAH Company may modify these terms at any time. Continued use of the website after
+          Sain Abdul Hakim and Company may modify these terms at any time. Continued use of the website after
           a modification constitutes acceptance of the updated terms.
         </p>
       </section>
